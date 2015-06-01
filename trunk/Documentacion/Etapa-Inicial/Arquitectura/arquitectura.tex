@@ -1,0 +1,107 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{framed}
+\usepackage{hyperref}
+
+\author{Moisés Gautier Gómez}
+\title{Arquitectura}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Vamos a analizar la posible estructura funcional del sistema para desgranar cada uno de los componentes el mismo en profundidad.
+
+\section{Monitor}
+
+Habrá una capa de monitorización por cada asset que reciba del sistema.
+\begin{itemize}
+\item Este monitor podría ser un demonio que se ejecutara en background y que pudiera levantarse cuando se quisiera hacer uso real del mismo.
+\item También podría ser un sistema sincrono restfull/nodejs o servicio web que solicitase información al dispositivo de red.
+\item Sistema de multiprocesamiento en el que cada hilo del proceso principal fuera para un asset de información distinta que manipula y obtiene los resultados deseados para que el padre sea capaz de compactarlos y enviarlos a su capa superior de monitorización.
+\item ¿Recibirá la información comprimida por tiempo, momento del día o constantemente? La idea más simple podría ser un socket de comunicación con el monitor en tiempo real que vaya haciendo minería sobre los datos extraídos.
+\item Data Warehouse, ¿se podría aplicar esto cómo metaconcepto? (Extraído de la wikipedia)
+  \begin{itemize}
+  \item Bill Inmon1 fue uno de los primeros autores en escribir sobre el tema de los almacenes de datos, define un data warehouse (almacén de datos) en términos de las características del repositorio de datos:
+    \begin{itemize}
+    \item Orientado a temas.- Los datos en la base de datos están organizados de manera que todos los elementos de datos relativos al mismo evento u objeto del mundo real queden unidos entre sí.
+    \item Variante en el tiempo.- Los cambios producidos en los datos a lo largo del tiempo quedan registrados para que los informes que se puedan generar reflejen esas variaciones.
+    \item No volátil.- La información no se modifica ni se elimina, una vez almacenado un dato, éste se convierte en información de sólo lectura, y se mantiene para futuras consultas.
+    \item Integrado.- La base de datos contiene los datos de todos los sistemas operacionales de la organización, y dichos datos deben ser consistentes.
+    \end{itemize}
+Inmon defiende una metodología descendente (top-down) a la hora de diseñar un almacén de datos, ya que de esta forma se considerarán mejor todos los datos corporativos. En esta metodología los Data marts se crearán después de haber terminado el data warehouse completo de la organización.
+  \end{itemize}
+\item Simplemente puede ser algo que analice algo y nada más. Extraer información de unos ficheros con unos determinados formatos y extraer rasgos característicos.
+\end{itemize}
+
+\section{Assets}
+
+Las distintas formas que tienen los assets de generar logs o información.
+
+\subsection{Firewall logs}
+
+\begin{itemize}
+\item Iptables: \url{https://www.frozentux.net/iptables-tutorial/spanish/iptables-tutorial.html\#LOGTARGET} Coge la información de sus logs mediante el registo del núcleo syslog que puede ser leía mediante dmesg. (Mirar también syslog.conf)
+\item Ipcop: \url{http://www.ipcop.org/} Ofrece monitorización de elementos de la red así cómo del pc en el que se encuentra instalado \url{http://www.ipcop.org/2.0.0/es/admin/html/status.html}. La forma en cómo obtiene registros del sistema viene descrita aquí: \url{http://www.ipcop.org/2.0.0/es/admin/html/logs.html} y es usando una vez más el demonio syslogd.
+\item Más firewalls:  \url{http://www.tecmint.com/open-source-security-firewalls-for-linux-systems/}
+\end{itemize}
+
+\subsection{IDS logs}
+\url{https://www.alienvault.com/blogs/security-essentials/open-source-intrusion-detection-tools-a-quick-overview}
+\begin{itemize}
+\item Suricata: \url{http://suricata-ids.org/} Guía de usuario: \url{https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricata_User_Guide} Tipo de logs que nos ofrece suricata:
+  \begin{itemize}
+  \item syslog alerting:\url{https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Syslog_Alerting_Compatibility}
+  \item json.log output: \url{https://redmine.openinfosecfoundation.org/projects/suricata/wiki/What_to_do_with_files-jsonlog_output}
+  \item Suricata with OOSIM: \url{https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricata_with_OSSIM}
+  \end{itemize}
+\item Snort: \url{https://www.snort.org/} - RSyslog rate limiting configuration: \url{https://s3.amazonaws.com/snort-org-site/production/document_files/files/000/000/025/original/snort-rate-limiting-rev1.pdf?AWSAccessKeyId=AKIAIXACIED2SPMSC7GA&Expires=1433101726&Signature=wnGRl\%2FEmKc\%2BftdA6um3VT2O99R4\%3D}
+\item Para hosts: OSSEC - \url{http://www.ossec.net/}
+\item Otros:
+  \begin{itemize}
+  \item Snorby: \url{https://snorby.org/}
+  \item Sguil: \url{http://bammv.github.io/sguil/index.html}
+  \end{itemize}
+\end{itemize}
+
+\subsection{CPU, processes, memory, IO}
+
+\begin{itemize}
+\item Hardinfo: \url{https://github.com/lpereira/hardinfo}
+\end{itemize}
+
+\subsection{Netflow}
+
+\subsection{Antivirus logs}
+
+\subsection{SNMP info}
+
+\subsection{Nessus}
+
+\section{SIS format}
+
+\subsection{BBDD}
+
+\section{Local Visualization}
+
+\subsection{Web UI}
+
+\subsection{Local visualization algorithms}
+
+\section{Manager}
+
+\subsection{SIS Protocol}
+
+\subsubsection{PCA algorithm}
+
+\subsubsection{BBDD management}
+
+\subsubsection{Watchdog of monitors}
+
+\subsubsection{Communication with other managers}
+
+\end{document}

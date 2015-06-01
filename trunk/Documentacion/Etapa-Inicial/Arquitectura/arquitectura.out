@@ -1,0 +1,20 @@
+\BOOKMARK [1][-]{section.1}{Monitor}{}% 1
+\BOOKMARK [1][-]{section.2}{Assets}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Firewall logs}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{IDS logs}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{CPU, processes, memory, IO}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Netflow}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Antivirus logs}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.6}{SNMP info}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.7}{Nessus}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{SIS format}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{BBDD}{section.3}% 11
+\BOOKMARK [1][-]{section.4}{Local Visualization}{}% 12
+\BOOKMARK [2][-]{subsection.4.1}{Web UI}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.2}{Local visualization algorithms}{section.4}% 14
+\BOOKMARK [1][-]{section.5}{Manager}{}% 15
+\BOOKMARK [2][-]{subsection.5.1}{SIS Protocol}{section.5}% 16
+\BOOKMARK [3][-]{subsubsection.5.1.1}{PCA algorithm}{subsection.5.1}% 17
+\BOOKMARK [3][-]{subsubsection.5.1.2}{BBDD management}{subsection.5.1}% 18
+\BOOKMARK [3][-]{subsubsection.5.1.3}{Watchdog of monitors}{subsection.5.1}% 19
+\BOOKMARK [3][-]{subsubsection.5.1.4}{Communication with other managers}{subsection.5.1}% 20
