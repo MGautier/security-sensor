@@ -114,15 +114,64 @@ Comentan que los logs de nessus son muy pesados de procesar y manipular.
 
 \section{SIS format}
 
-
+Se intentará buscar un formato de tablas o base de datos que pueda ir desde la granularidad más fina a la más alta posible dentro del sistema de gestión de incidencias.
 
 \subsection{BBDD}
 
+Primer tabla: Monitores \\
+
+\hspace*{-1in}{
+\begin{tabular}{|c|c|c|c|c|c|c|}
+  \hline
+  ID\_monitor & ID\_monitor\_process & IP\_host & IP\_host & MAC\_origen & Tipo\_log & ID\_incidencia \\
+  \hline
+  1.1 & 1.2 & 1.3 & 1.4 & 1.5 & 1.6 & 1.7 \\
+  \hline
+\end{tabular}}
+
+\begin{enumerate}
+\item Identificador del monitor para dicha tabla
+\item Identificador del monitor cómo proceso dentro del sistema desde dónde lo invoca
+\item Dirección ip del host desde dónde opera el monitor
+\item Dirección mac del dispositivo de origen
+\item Tipo de log: Intrusión, Tráfico Red, Benchmak, Puertos, etc (Podría ser otra tabla en dónde se podría incluir dato anómalos)
+\item Identificador de la incidencia en el caso que fuera (primary\_key de el id de la tabla que haga referencia)
+\end{enumerate}
+
+¿Incluir el nombre del archivo log en un registro o campo de bd?\\
+¿Se va almacenar los archivos dentro de la bd o cómo índices que podremos consultar a la bd para buscarlos dentro del sistema de archivos?\\
+
+Segunda tabla: Incidencia\\
+
+\hspace*{-1.2in}{
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  ID  & Descripción  & Tipo\_Incidencia & Hora y Fecha & IP\_host & IP\_origen & MAC\_origen & Traceo\_IP \\
+  \hline
+  2.1  & 2.2  & 2.3  & 2.4  &  2.5  & 2.6  & 2.7  & 2.8  \\
+  \hline
+\end{tabular}}
+
+\begin{enumerate}
+\item Identificador de la incidencia para dicha tabla
+\item Descripción de la incidencia (ver el tamaño máximo que se podría poner como string)
+\item Tipo de Incidencia: Intrusión, Tráfico Red, Virus, etc
+\item Hora y fecha de la incidencia en el sistema origen
+\item Dirección ip del host dónde se ha encontrado la incidencia
+\item Dirección ip del nodo o dispositivo dónde está la incidencia
+\item Dirección mac del dispositivo origen
+\item Traceo de la ip con algún software del estilo (\href{https://github.com/epsylon/Border-Check}{border-check}) 
+\end{enumerate}
+
 \section{Local Visualization}
+
+Biblioteca gráfica: \href{http://d3js.org}{d3js} \& \href{http://bost.ocks.org/mike/selection/}{Más info}
 
 \subsection{Web UI}
 
 \subsection{Local visualization algorithms}
+
+\href{http://visualgo.net}{VisuAlgo}
 
 \section{Manager}
 
