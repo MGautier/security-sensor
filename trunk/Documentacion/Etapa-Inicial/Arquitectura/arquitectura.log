@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2015.3.23)  31 MAY 2015 21:29
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2015.3.23)  1 JUN 2015 21:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -468,120 +468,36 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 31.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 48.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
-File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-Overfull \hbox (8.39224pt too wide) in paragraph at lines 48--49
-[]\T1/bch/m/n/12 Iptables: []$\T1/cmtt/m/n/12 https : / / www . frozentux . net
- / iptables-[]tutorial / spanish /
- []
-
-
-Overfull \hbox (1.61021pt too wide) in paragraph at lines 48--49
-\T1/cmtt/m/n/12 iptables-[]tutorial . html # LOGTARGET$[] \T1/bch/m/n/12 Co-ge 
-la in-for-ma-ción de sus logs
- []
-
-
-Overfull \hbox (161.3021pt too wide) in paragraph at lines 50--51
-[]\T1/bch/m/n/12 Más fi-re-walls: []$\T1/cmtt/m/n/12 http : / / www . tecmint .
- com / open-[]source-[]security-[]firewalls-[]for-[]linux-[]systems/$[] 
- []
-
-[2]
-Overfull \hbox (292.1885pt too wide) in paragraph at lines 54--55
-[][]$\T1/cmtt/m/n/12 https : / / www . alienvault . com / blogs / security-[]es
-sentials / open-[]source-[]intrusion-[]detection-[]tools-[]a-[]quick-[]overview
-$[] 
- []
-
-
-Overfull \hbox (26.3263pt too wide) in paragraph at lines 56--57
-[]\T1/bch/m/n/12 Suricata: []$\T1/cmtt/m/n/12 http : / / suricata-[]ids . org/$
-[] \T1/bch/m/n/12 Guía de usua-rio: []$\T1/cmtt/m/n/12 https : / / redmine .
- []
-
-
-Overfull \hbox (28.30472pt too wide) in paragraph at lines 56--57
-\T1/cmtt/m/n/12 openinfosecfoundation . org / projects / suricata / wiki / Suri
-cata _ User _
- []
-
-
-Overfull \hbox (2.94293pt too wide) in paragraph at lines 58--59
-[]\T1/bch/m/n/12 syslog aler-ting:[]$\T1/cmtt/m/n/12 https : / / redmine . open
-infosecfoundation . org /
- []
-
-
-Overfull \hbox (8.89494pt too wide) in paragraph at lines 59--60
-[]\T1/bch/m/n/12 json.log out-put: []$\T1/cmtt/m/n/12 https : / / redmine . ope
-ninfosecfoundation . org /
- []
-
-
-Overfull \hbox (29.96043pt too wide) in paragraph at lines 59--60
-\T1/cmtt/m/n/12 projects / suricata / wiki / What _ to _ do _ with _ files-[]js
-onlog _ output$[] 
- []
-
-
-Overfull \hbox (16.097pt too wide) in paragraph at lines 60--61
-[]\T1/bch/m/n/12 Suricata with OO-SIM: []$\T1/cmtt/m/n/12 https : / / redmine .
- openinfosecfoundation .
- []
-
-
-Overfull \hbox (37.7962pt too wide) in paragraph at lines 62--63
-\T1/bch/m/n/12 tion: []$\T1/cmtt/m/n/12 https : / / s3 . amazonaws . com / snor
-t-[]org-[]site / production / document _
- []
-
-
-Overfull \hbox (23.63123pt too wide) in paragraph at lines 62--63
-\T1/cmtt/m/n/12 files / files / 000 / 000 / 025 / original / snort-[]rate-[]lim
-iting-[]rev1 . pdf ?
- []
-
-
-Overfull \hbox (40.6517pt too wide) in paragraph at lines 62--63
-\T1/cmtt/m/n/12 AWSAccessKeyId = AKIAIXACIED2SPMSC7GA&Expires = 1433101726&Sign
-ature =
- []
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 103.
-[3] [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 103.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 125.
+ [4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 125.
  (./arquitectura.aux
 LaTeX Info: Redefining \. on input line 21.
 LaTeX Info: Redefining \% on input line 21.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 103.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 103.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 125.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 125.
 Package rerunfilecheck Info: File `arquitectura.out' has not changed.
 (rerunfilecheck)             Checksum: DBD059EE9CBFEE9AFE994B32BDF661C4;1226.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 103.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 125.
  ) 
 Here is how much of TeX's memory you used:
- 5296 strings out of 493485
- 75366 string characters out of 3143526
- 159702 words of memory out of 3000000
- 8549 multiletter control sequences out of 15000+200000
- 27838 words of font info for 41 fonts, out of 3000000 for 9000
+ 5277 strings out of 493485
+ 74765 string characters out of 3143526
+ 156702 words of memory out of 3000000
+ 8534 multiletter control sequences out of 15000+200000
+ 27525 words of font info for 40 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 29i,6n,28p,406b,521s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texliv
-e/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/t
-ype1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bit
-strea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on arquitectura.pdf (4 pages, 84924 bytes).
+ 29i,6n,28p,434b,521s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on arquitectura.pdf (4 pages, 48368 bytes).
 PDF statistics:
- 157 PDF objects out of 1000 (max. 8388607)
- 145 compressed objects within 2 object streams
+ 144 PDF objects out of 1000 (max. 8388607)
+ 133 compressed objects within 2 object streams
  25 named destinations out of 1000 (max. 500000)
  161 words of extra memory for PDF output out of 10000 (max. 10000000)
 
