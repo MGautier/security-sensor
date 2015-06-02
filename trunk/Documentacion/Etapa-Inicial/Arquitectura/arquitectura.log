@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2015.3.23)  2 JUN 2015 19:06
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2015.3.23)  2 JUN 2015 20:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -469,42 +469,43 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
-Underfull \hbox (badness 10000) in paragraph at lines 121--122
+Underfull \hbox (badness 10000) in paragraph at lines 123--124
 
  []
 
 
-Overfull \hbox (65.61829pt too wide) in paragraph at lines 123--131
+Overfull \hbox (65.61829pt too wide) in paragraph at lines 125--133
 []|  [] 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 141--143
+Underfull \hbox (badness 10000) in paragraph at lines 143--145
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--145
+Underfull \hbox (badness 10000) in paragraph at lines 146--147
 
  []
 
 
-Overfull \hbox (73.3525pt too wide) in paragraph at lines 146--154
+Overfull \hbox (73.3525pt too wide) in paragraph at lines 148--156
 []|  [] 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 184.
-[5] [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 184.
+[5]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 190.
+ [6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 190.
  (./arquitectura.aux
 LaTeX Info: Redefining \. on input line 21.
 LaTeX Info: Redefining \% on input line 21.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 184.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 184.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 190.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 190.
 Package rerunfilecheck Info: File `arquitectura.out' has not changed.
 (rerunfilecheck)             Checksum: DBD059EE9CBFEE9AFE994B32BDF661C4;1226.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 184.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 190.
  ) 
 Here is how much of TeX's memory you used:
  5293 strings out of 493485
@@ -518,10 +519,10 @@ Here is how much of TeX's memory you used:
 e/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on arquitectura.pdf (6 pages, 52098 bytes).
+Output written on arquitectura.pdf (6 pages, 52666 bytes).
 PDF statistics:
- 176 PDF objects out of 1000 (max. 8388607)
- 163 compressed objects within 2 object streams
+ 179 PDF objects out of 1000 (max. 8388607)
+ 166 compressed objects within 2 object streams
  41 named destinations out of 1000 (max. 500000)
  161 words of extra memory for PDF output out of 10000 (max. 10000000)
 
