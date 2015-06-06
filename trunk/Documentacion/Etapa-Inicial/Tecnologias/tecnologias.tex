@@ -1,0 +1,50 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{charter}
+\usepackage{framed}
+\usepackage{hyperref}
+
+\author{Moisés Gautier Gómez}
+\title{Tecnologías}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Tecnologías de los assets}
+
+En los sistemas UNIX todo va derivado al demonio syslogd, siempre y cuando lo usen, sino tienen sus propios directorios de logs. El cómo extraerlo podría ser con algún tipo de lenguaje de scripting o si están en servicios de nube con algún tipo de biblioteca de curl.
+
+\section{Tecnología de los monitores}
+
+Tendría que ser un lenguaje que pudiera o tuviera una capacidad de lectura de archivos simple y rápida. Dependiendo de cómo se acceda a estos datos así será el lenguaje que se debería usar. Si es algo que debería ser en java por el tema multiplataforma, podría ser Scala ya que es el sucesor de java; si fuera web se podría usar ruby y si es algo más de escritorio pues python, c o c++.
+
+\section{Tecnología de la BBDD}
+
+Tecnologías encontradas:
+\begin{itemize}
+\item \href{https://mariadb.com/}{MariaDB}
+\item \href{http://www.firebirdsql.org/}{FireBird}
+\item \href{http://redis.io/}{Redis}
+\item \href{http://www.postgresql.org.es/}{PostgreSQL}
+\item \href{https://www.mongodb.org/}{MongoDB}
+\end{itemize}
+
+He encontrado en esta web unos conceptos claves para poder orientarme a la hora de la decisión de la tecnología de base de datos (\href{http://www.postgresql.org.es/primeros\_pasos}{Fuente}):
+
+\begin{itemize}
+\item Experiencia: ¿Tenemos alguna experiencia con otras bases de datos relacionales? ¿Estamos acostumbrados a la terminologia utilizada ó conocemos algo de teoria de bases de datos relacionales?
+\item Tipo de uso: ¿Cómo vamos a utilizarla, en sistemas de producción, para desarrollar otros sistemas, para jugar y aprender SQL con ella?
+\item Tamaño del sistema: ¿Cual es el tamaño de las bases de datos que quereis administrar, las medis en MB, GB, TB?
+\item Carga del sistema: ¿Cuantos usuarios van a utilizar el sistema y que concurrencia podemos esperar?
+\item Disponibilidad: ¿Cuales son los requisitos de disponibilidad (uptime) de nuestro sistema?
+\end{itemize}
+
+\section{Tecnología de la visualización}
+
+\section{Tecnología de los manager}
+
+\end{document}
