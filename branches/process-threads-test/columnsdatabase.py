@@ -29,7 +29,14 @@ class ColumnsDatabase:
             print "Delete column", name_column, "..."
         except Exception as ex:
             print "delete_column :->", type(ex), '-> ', ex
-            sys.exit(1)
+
+    def name_column_list(self):
+        """Método consultor que nos devuelve la lista de nombres de columnas"""
+        return self.name_column
+
+    def type_column_list(self):
+        """Método consultor que nos devuevle la lista de los tipos de cada columna"""
+        return self.type_column
 
     def list_columns(self):
         """Método que nos permite ver el contenido de las columnas introducidas"""
@@ -43,3 +50,7 @@ col.insert_column('col3','integer')
 col.list_columns()
 col.delete_column('col1')
 col.delete_column('col4')
+
+print col.name_column_list()
+
+print col.type_column_list()
