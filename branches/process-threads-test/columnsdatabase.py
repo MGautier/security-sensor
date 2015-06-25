@@ -42,7 +42,10 @@ class ColumnsDatabase(object):
         print 'Name column: ', self.name_column, ' Type column: ',  self.type_column
 
     def list_columns(self):
-        """Método consultor con el contenido de las columnas introducidas"""
+        """
+        Método consultor con el contenido de las columnas
+        introducidas en formato cadena (para insertar en la query)
+        """
         self.listing = ""
         if self.count() > 0:
             for self.element in self.name_column:
