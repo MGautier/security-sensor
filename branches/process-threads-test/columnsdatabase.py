@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
-
-class ColumnsDatabase:
+class ColumnsDatabase(object):
     """
     Clase que nos facilita la recolección de información para las columnas
     para cada tabla a la hora de crearlas.
@@ -30,6 +28,7 @@ class ColumnsDatabase:
         except Exception as ex:
             print "delete_column :->", type(ex), '-> ', ex
 
+
     def name_column_list(self):
         """Método consultor que nos devuelve la lista de nombres de columnas"""
         return self.name_column
@@ -38,19 +37,43 @@ class ColumnsDatabase:
         """Método consultor que nos devuevle la lista de los tipos de cada columna"""
         return self.type_column
 
-    def list_columns(self):
-        """Método que nos permite ver el contenido de las columnas introducidas"""
+    def print_columns(self):
+        """"Método que nos imprime las columnas introducidas"""
         print 'Name column: ', self.name_column, ' Type column: ',  self.type_column
 
-col = ColumnsDatabase()
+    def list_columns(self):
+        """Método consultor con el contenido de las columnas introducidas"""
+        self.listing = []
+        if self.count() > 0:
+            for self.element in self.name_column:
+                self.index = self.name_column.index(self.element)
+                if self.index + 1 < self.count():
+                    self.listing.append("" + self.name_column[self.index] + " " + self.type_column[self.index] + ", ")
+                else:
+                    self.listing.append("" + self.name_column[self.index] + " " + self.type_column[self.index])
+            return self.listing
+        else:
+            return self.listing
 
-col.insert_column('col1','varchar(80)')
-col.insert_column('col2','text')
-col.insert_column('col3','integer')
-col.list_columns()
-col.delete_column('col1')
-col.delete_column('col4')
 
-print col.name_column_list()
+    def count(self):
+        """Método consultor que nos devuelve el número de columnas. Si el valor es 0 es que las listas son distintas"""
+        if len(self.name_column) == len(self.type_column):
+            return len(self.name_column)
+        else:
+            return 0
 
-print col.type_column_list()
+#col = ColumnsDatabase()
+
+#col.insert_column('col1','varchar(80)')
+#col.insert_column('col2','text')
+#col.insert_column('col3','integer')
+#col.list_columns()
+#col.delete_column('col1')
+#col.delete_column('col4')
+
+#print col.name_column_list()
+
+#print col.type_column_list()
+
+#print col.list_columns()
