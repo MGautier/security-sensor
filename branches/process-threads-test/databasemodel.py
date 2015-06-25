@@ -14,20 +14,25 @@ class DatabaseModel(object):
     def __init__(self, db_name):
         """Crea una base de datos con el nombre db_name. Si no existe, la crea."""
         self.database = db.connect(db_name +'.db')
-        print "Base de datos %s creada" % db_name
+        print "Base de datos '%s' creada con éxito" % db_name
 
     def create_table(self, table_name, table_columns):
-        self.listing = table_columns.list_columns()
-        print self.listing
-        self.test_listing = [('col1 varchar(50)'),('col2 text')]
-        with self.database:
+        self.create_query = table_columns.list_columns()
+
+        try:
             self.cursor = self.database.cursor()
-            self.cursor.execute("create table %s (%s)" % (table_name, self.test_listing))
-            #self.cursor.execute("create table %s (%s)" % (table_name,table_columns.list_columns()))
+            self.cursor.execute('''create table %s (%s)''' % (table_name,self.create_query))
+            print "Tabla '%s' creada con éxito" % table_name
+        except db.Error, e:
+            print "create_table :-> %s" % e.args[0]
+        finally:
+            if self.database:
+                self.database.close()
 
 
 test = DatabaseModel('test')
 columns = ColumnsDatabase()
 columns.insert_column('col1','varchar(50)')
 columns.insert_column('col2','text')
+columns.insert_column('col3','integer')
 test.create_table('prueba',columns)

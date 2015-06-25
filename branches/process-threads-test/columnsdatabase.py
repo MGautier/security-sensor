@@ -43,14 +43,14 @@ class ColumnsDatabase(object):
 
     def list_columns(self):
         """Método consultor con el contenido de las columnas introducidas"""
-        self.listing = []
+        self.listing = ""
         if self.count() > 0:
             for self.element in self.name_column:
                 self.index = self.name_column.index(self.element)
                 if self.index + 1 < self.count():
-                    self.listing.append("" + self.name_column[self.index] + " " + self.type_column[self.index] + ", ")
+                    self.listing += "" + self.name_column[self.index] + " " + self.type_column[self.index] + ", "
                 else:
-                    self.listing.append("" + self.name_column[self.index] + " " + self.type_column[self.index])
+                    self.listing += "" + self.name_column[self.index] + " " + self.type_column[self.index]
             return self.listing
         else:
             return self.listing
