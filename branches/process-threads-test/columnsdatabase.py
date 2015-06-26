@@ -14,6 +14,18 @@ class ColumnsDatabase(object):
 
     def insert_column(self, name_column, type_column):
         """Método que permite introducir los datos asociados a cada columna"""
+        # Los tipos a la hora de definir las columnas de la tabla no se comprueba
+        # cuando se introducen. Supongo que se comprobarán a la hora de introducir los
+        # valores y darán el error. (SQLite es de tipado dinámico)
+
+        # SQLite uses a more general dynamic type system. In SQLite, the datatype of a
+        # value is associated with the value itself, not with its container.
+        # The dynamic type system of SQLite is backwards compatible with the more
+        # common static type systems of other database engines in the sense
+        # that SQL statements that work on statically typed databases should work
+        # the same way in SQLite. However, the dynamic typing in SQLite allows it
+        # to do things which are not possible in traditional rigidly typed databases.
+
         self.name_column.append(name_column)
         self.type_column.append(type_column)
         print "Insert column ", name_column, " : ", type_column
