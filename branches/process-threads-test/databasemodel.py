@@ -4,6 +4,7 @@
 import sqlite3 as db
 import sys
 from columnsdatabase import ColumnsDatabase
+from rowsdatabase import RowsDatabase
 
 
 class DatabaseModel(object):
@@ -96,13 +97,36 @@ class DatabaseModel(object):
         """
         Método que nos permite visualizar la información de la tabla que queramos
         """
-
+        self.info = []
         try:
             self.cursor = self.database.cursor()
             self.cursor.execute("pragma table_info('%s')" % table_name)
-            print self.cursor
+            self.info = [(self.record[1], self.record[2]) for self.record in self.cursor.fetchall()]
+            return self.info
         except db.Error, e:
             print "info_tables :-> %s" % e.args
+            return self.info
+
+    def insert_row(self, table_name, rows_value):
+        """
+        Método para introducir valores en nuestra tabla de la base de datos.
+        """
+        self.rows_value = rows_value.get_rows()
+
+        try:
+            self.cursor = self.database.cursor()
+            self.cursor.executemany("insert into '%s' values(?)" % (table_name, rows_value))
+            self.database.commit()
+            print "Valores introducidos en la tabla %s" % table_name
+        except db.Error, e:
+            print "insert_row :->" % (table_name)
+
+    def num_columns_table(self, table_name):
+        """
+        Método consultor que nos devuelve el número de columnas de una tabla.
+        Nos es útil a la hora de crear el objeto RowsDatabase.
+        """
+        return len(self.info_tables(table_name))
 
     def close_db(self):
         """
@@ -112,14 +136,20 @@ class DatabaseModel(object):
 
 test = DatabaseModel('test')
 columns = ColumnsDatabase()
+
 columns.insert_column('col1','varchar(50)')
 columns.insert_column('col2','text')
 columns.insert_column('col3','integer')
 test.create_table('prueba',columns)
 test.create_table('ejemplo',columns)
+#print test.num_columns_table('prueba')
 col = ColumnsDatabase()
 col.insert_column('col4','tinyint')
 test.alter_table_column('prueba',col)
 print test.list_tables()[0]
 print test.info_tables('prueba')
+rows = RowsDatabase(int(test.num_columns_table('prueba')))
+rows.insert_value(('fila1','más texto',200))
+rows.insert_value(('fila2','menos texto',160))
+test.insert_row('prueba', rows)
 test.close_db()
