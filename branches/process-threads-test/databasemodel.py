@@ -115,11 +115,25 @@ class DatabaseModel(object):
 
         try:
             self.cursor = self.database.cursor()
-            self.cursor.executemany("insert into '%s' values(?)" % (table_name, rows_value))
+            self.cursor.executemany(("insert or replace into " + table_name + " values(?)"),  self.rows_value)
             self.database.commit()
             print "Valores introducidos en la tabla %s" % table_name
         except db.Error, e:
-            print "insert_row :->" % (table_name)
+            print "insert_row :-> %s" % e.args
+
+    def delete_row(self, table_name, column_id, row_value):
+        """
+        Método para eliminar una fila de datos de una tabla.
+        """
+
+        try:
+            self.cursor = self.database.cursor()
+            print '''delete from %s where %s = %s ''' % (table_name, column_id, row_value)
+            self.cursor.execute('''delete from %s where %s = '%s' ''' % (table_name, column_id, row_value))
+            self.database.commit()
+            print "Valor %s = '%s' eliminado de la tabla %s" % (column_id, row_value, table_name)
+        except db.Error, e:
+            print "delete_row :-> %s" % e.args
 
     def num_columns_table(self, table_name):
         """
@@ -149,7 +163,8 @@ test.alter_table_column('prueba',col)
 print test.list_tables()[0]
 print test.info_tables('prueba')
 rows = RowsDatabase(int(test.num_columns_table('prueba')))
-rows.insert_value(('fila1','más texto',200))
+rows.insert_value(('fila1','mas texto',200))
 rows.insert_value(('fila2','menos texto',160))
 test.insert_row('prueba', rows)
+test.delete_row('prueba', 'col1', 'fila1')
 test.close_db()
