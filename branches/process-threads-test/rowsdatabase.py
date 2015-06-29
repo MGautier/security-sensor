@@ -17,7 +17,7 @@ class RowsDatabase(object):
         Método que almacena internamente los valores de la fila
         para la tabla que queramos rellenar.
         """
-        if len(values) < self.num_columns:
+        if len(values) <= self.num_columns:
             self.row_values.append(values)
         else:
             print "Insert_value: El tamaño es superior al número de columnas"

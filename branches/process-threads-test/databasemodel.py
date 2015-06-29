@@ -110,12 +110,24 @@ class DatabaseModel(object):
     def insert_row(self, table_name, rows_value):
         """
         Método para introducir valores en nuestra tabla de la base de datos.
+        Ejemplo: INSERT INTO table_name VALUES(rows_value)
         """
-        self.rows_value = rows_value.get_rows()
+        self.rows_value = self.check_columns_insert(table_name,rows_value.get_rows())
+        self.size_table = self.num_columns_table(table_name)
+        self.size_insert = ""
 
         try:
             self.cursor = self.database.cursor()
-            self.cursor.executemany(("insert or replace into " + table_name + " values(?)"),  self.rows_value)
+            while self.size_table > 0:
+                if self.size_table - 1 != 0:
+                    self.size_insert += "?, "
+                else:
+                    self.size_insert += "?"
+
+                self.size_table -= 1
+
+            print self.size_insert, self.num_columns_table(table_name)
+            self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
             self.database.commit()
             print "Valores introducidos en la tabla %s" % table_name
         except db.Error, e:
@@ -124,16 +136,30 @@ class DatabaseModel(object):
     def delete_row(self, table_name, column_id, row_value):
         """
         Método para eliminar una fila de datos de una tabla.
+        Ejemplo: DELETE FROM table_name WHERE column_id = row_value
         """
 
         try:
             self.cursor = self.database.cursor()
-            print '''delete from %s where %s = %s ''' % (table_name, column_id, row_value)
             self.cursor.execute('''delete from %s where %s = '%s' ''' % (table_name, column_id, row_value))
             self.database.commit()
             print "Valor %s = '%s' eliminado de la tabla %s" % (column_id, row_value, table_name)
         except db.Error, e:
             print "delete_row :-> %s" % e.args
+
+    def update_row(self, table_name, column_value, row_value, column_id, value_id):
+        """
+        Método para actualizar una fila de datos de una tabla.
+        Ejemplo: UPDATE table_name SET column_value = row_value WHERE column_id = value_id
+        """
+
+        try:
+            self.cursor = self.database.cursor()
+            self.cursor.execute("update prueba set col4 = ? where col1 =?", (row_value, value_id))
+            self.database.commit()
+            print "Valor %s = %s del campo id %s = %s actualizado" % (column_value, row_value, column_id, value_id)
+        except db.Error, e:
+            print "update_row :-> %s" % e.args
 
     def num_columns_table(self, table_name):
         """
@@ -141,6 +167,35 @@ class DatabaseModel(object):
         Nos es útil a la hora de crear el objeto RowsDatabase.
         """
         return len(self.info_tables(table_name))
+
+    def check_columns_insert(self, table_name, values):
+        """
+        Método que comprueba si el numero de columnas coincide con el
+        de valores a introducir en la fila de la tabla. Si hay discordancia,
+        introduce valores empty ' '
+        """
+        self.list_checked = []
+        self.aux_checked = []
+
+        # Si el numero de columnas es mayor al numero de valores
+        # que vamos a introducir, introducimos valores empty ' '
+        # por cada columna que falta
+
+        for self.iterator in values:
+
+            print self.iterator
+            self.aux_checked = self.iterator
+
+            if self.aux_checked.__len__() < self.num_columns_table(table_name):
+
+                while self.aux_checked.__len__() < self.num_columns_table(table_name):
+                    self.aux_checked += ('',)
+
+            self.list_checked.append(self.aux_checked)
+
+        print "hola", self.list_checked
+
+        return self.iterator
 
     def close_db(self):
         """
@@ -154,17 +209,26 @@ columns = ColumnsDatabase()
 columns.insert_column('col1','varchar(50)')
 columns.insert_column('col2','text')
 columns.insert_column('col3','integer')
+
 test.create_table('prueba',columns)
 test.create_table('ejemplo',columns)
-#print test.num_columns_table('prueba')
-col = ColumnsDatabase()
-col.insert_column('col4','tinyint')
-test.alter_table_column('prueba',col)
-print test.list_tables()[0]
-print test.info_tables('prueba')
+
 rows = RowsDatabase(int(test.num_columns_table('prueba')))
 rows.insert_value(('fila1','mas texto',200))
 rows.insert_value(('fila2','menos texto',160))
+
 test.insert_row('prueba', rows)
-test.delete_row('prueba', 'col1', 'fila1')
+
+col = ColumnsDatabase()
+col.insert_column('col4','tinyint')
+
+test.alter_table_column('prueba',col)
+
+
+
+
+#test.delete_row('prueba', 'col1', 'fila1')
+
+#test.update_row('prueba', 'col4', 'gatitos', 'col2', 'fila2')
+
 test.close_db()
