@@ -245,3 +245,4 @@ class DatabaseModel(object):
 
 
 bd_pfc = DatabaseModel('proyecto_bd')
+bd_pfc.close_db()
