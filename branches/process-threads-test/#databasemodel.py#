@@ -107,15 +107,15 @@ class DatabaseModel(object):
             print "info_tables :-> %s" % e.args
             return self.info
 
-    def insert_row(self, table_name, values):
+    def insert_row(self, table_name, rows_value):
         """
         Método para introducir valores en nuestra tabla de la base de datos.
-        Ejemplo: INSERT INTO table_name VALUES(values)
+        Ejemplo: INSERT INTO table_name VALUES(rows_value)
         """
-        self.rows_value = self.check_columns_insert(table_name,values.get_rows())
+        self.rows_value = self.check_columns_insert(table_name,rows_value.get_rows())
         self.size_table = self.num_columns_table(table_name)
         self.size_insert = ""
-        print self.rows_value
+        print rm trows_value
 
         try:
             self.cursor = self.database.cursor()
@@ -184,6 +184,7 @@ class DatabaseModel(object):
 
         for self.iterator in values:
 
+            print self.iterator, self.num_columns_table(table_name)
             self.aux_checked = self.iterator
 
             if self.aux_checked.__len__() < self.num_columns_table(table_name):
@@ -193,7 +194,9 @@ class DatabaseModel(object):
 
             self.list_checked.append(self.aux_checked)
 
-        return self.list_checked
+        print "hola", self.list_checked
+
+        return self.iterator
 
     def close_db(self):
         """
@@ -221,6 +224,11 @@ col.insert_column('col4','tinyint')
 test.alter_table_column('prueba',col)
 
 test.insert_row('prueba', rows)
+
+
+
+
+
 
 #test.delete_row('prueba', 'col1', 'fila1')
 
