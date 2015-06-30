@@ -14,9 +14,51 @@ class DatabaseModel(object):
     """
 
     def __init__(self, db_name):
-        """Crea una base de datos con el nombre db_name. Si no existe, la crea."""
+        """
+        Crea una base de datos con el nombre db_name. Si no existe, la crea.
+        Por defecto crea las tablas especificadas para el proyecto.
+        """
         self.database = db.connect(db_name +'.db')
-        print "Base de datos '%s' creada con éxito" % db_name
+
+        with self.database:
+
+            self.cursor = self.database.cursor()
+
+            self.cursor.execute('''pragma foreign_keys=ON''')
+
+            self.cursor.execute('''create table if not exists ips
+            (ID_IP INTEGER PRIMARY KEY, Hostname VARCHAR(60),
+            Tag VARCHAR(255))''')
+
+            self.cursor.execute('''create table if not exists ports
+            (ID_PORT INTEGER PRIMARY KEY, Service VARCHAR(60),
+            Tag VARCHAR(255))''')
+
+            self.cursor.execute('''create table if not exists sources
+            (ID_sources VARCHAR(70) PRIMARY KEY, Description TEXT, Type VARCHAR(100),
+            Model VARCHAR(255), Active TINYINT, Software_class VARCHAR(50),
+            Path VARCHAR(20))''')
+
+            self.cursor.execute('''create table if not exists process
+            (ID_process INTEGER PRIMARY KEY ASC, Info_1 VARCHAR(255),
+            Info_2 VARCHAR(255), Info_3 VARCHAR(255), Info_4 VARCHAR(255),
+            Info_5 VARCHAR(255), Info_6 VARCHAR(255), Info_7 VARCHAR(255),
+            Info_8 VARCHAR(255), Info_9 VARCHAR(255), Info_10 VARCHAR(255))''')
+
+            self.cursor.execute('''create table if not exists events
+            (ID_events INTEGER PRIMARY KEY ASC, Timestamp DATETIME,
+            S_IP VARCHAR(60), D_IP VARCHAR(60), S_PORT INTEGER,
+            D_PORT INTEGER, Protocol CHARACTER(20), S_MAC VARCHAR(17),
+            D_MAC VARCHAR(17), IP_ID VARCHAR(70),
+            Info_RAW TEXT, Info_Proc INTEGER, TAG VARCHAR(255),
+            FOREIGN KEY(S_IP) REFERENCES ips(ID_IP),
+            FOREIGN KEY(D_IP) REFERENCES ips(ID_IP),
+            FOREIGN KEY(S_PORT) REFERENCES ports(ID_PORT),
+            FOREIGN KEY(D_PORT) REFERENCES ports(ID_PORT),
+            FOREIGN KEY(IP_ID) REFERENCES sources(ID_sources),
+            FOREIGN KEY(Info_Proc) REFERENCES process(ID_process))''')
+
+            print "Base de datos '%s' creada con éxito" % db_name
 
     def create_table(self, table_name, table_columns):
         """
@@ -201,29 +243,5 @@ class DatabaseModel(object):
         """
         self.database.close()
 
-test = DatabaseModel('test')
-columns = ColumnsDatabase()
 
-columns.insert_column('col1','varchar(50)')
-columns.insert_column('col2','text')
-columns.insert_column('col3','integer')
-
-test.create_table('prueba',columns)
-test.create_table('ejemplo',columns)
-
-rows = RowsDatabase(int(test.num_columns_table('prueba')))
-rows.insert_value(('fila1','mas texto',200))
-rows.insert_value(('fila2','menos texto',160))
-
-col = ColumnsDatabase()
-col.insert_column('col4','tinyint')
-
-test.alter_table_column('prueba',col)
-
-test.insert_row('prueba', rows)
-
-#test.delete_row('prueba', 'col1', 'fila1')
-
-#test.update_row('prueba', 'col4', 'gatitos', 'col2', 'fila2')
-
-test.close_db()
+bd_pfc = DatabaseModel('proyecto_bd')
