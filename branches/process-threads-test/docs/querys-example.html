@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>querys-example.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+  <div class='section'>
+    <div class='docs'><h1>querys-example.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">test</span> <span class="o">=</span> <span class="n">DatabaseModel</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">)</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="n">ColumnsDatabase</span><span class="p">()</span>
+
+<span class="n">columns</span><span class="o">.</span><span class="n">insert_column</span><span class="p">(</span><span class="s">&#39;col1&#39;</span><span class="p">,</span><span class="s">&#39;varchar(50)&#39;</span><span class="p">)</span>
+<span class="n">columns</span><span class="o">.</span><span class="n">insert_column</span><span class="p">(</span><span class="s">&#39;col2&#39;</span><span class="p">,</span><span class="s">&#39;text&#39;</span><span class="p">)</span>
+<span class="n">columns</span><span class="o">.</span><span class="n">insert_column</span><span class="p">(</span><span class="s">&#39;col3&#39;</span><span class="p">,</span><span class="s">&#39;integer&#39;</span><span class="p">)</span>
+
+<span class="n">test</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="s">&#39;prueba&#39;</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">test</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="s">&#39;ejemplo&#39;</span><span class="p">,</span><span class="n">columns</span><span class="p">)</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="n">RowsDatabase</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">num_columns_table</span><span class="p">(</span><span class="s">&#39;prueba&#39;</span><span class="p">)))</span>
+<span class="n">rows</span><span class="o">.</span><span class="n">insert_value</span><span class="p">((</span><span class="s">&#39;fila1&#39;</span><span class="p">,</span><span class="s">&#39;mas texto&#39;</span><span class="p">,</span><span class="mi">200</span><span class="p">))</span>
+<span class="n">rows</span><span class="o">.</span><span class="n">insert_value</span><span class="p">((</span><span class="s">&#39;fila2&#39;</span><span class="p">,</span><span class="s">&#39;menos texto&#39;</span><span class="p">,</span><span class="mi">160</span><span class="p">))</span>
+
+<span class="n">col</span> <span class="o">=</span> <span class="n">ColumnsDatabase</span><span class="p">()</span>
+<span class="n">col</span><span class="o">.</span><span class="n">insert_column</span><span class="p">(</span><span class="s">&#39;col4&#39;</span><span class="p">,</span><span class="s">&#39;tinyint&#39;</span><span class="p">)</span>
+
+<span class="n">test</span><span class="o">.</span><span class="n">alter_table_column</span><span class="p">(</span><span class="s">&#39;prueba&#39;</span><span class="p">,</span><span class="n">col</span><span class="p">)</span>
+
+<span class="n">test</span><span class="o">.</span><span class="n">insert_row</span><span class="p">(</span><span class="s">&#39;prueba&#39;</span><span class="p">,</span> <span class="n">rows</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>test.delete_row('prueba', 'col1', 'fila1')</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>test.update_row('prueba', 'col4', 'gatitos', 'col2', 'fila2')</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">test</span><span class="o">.</span><span class="n">close_db</span><span class="p">()</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>sqlite-bd-compact.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+  <div class='section'>
+    <div class='docs'><h1>sqlite-bd-compact.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">sqlite3</span> <span class="kn">as</span> <span class="nn">bd</span>
+<span class="kn">import</span> <span class="nn">sys</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Conexion de base de datos que devuelve la version del SQLite</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">connection</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;pfc&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">connection</span><span class="p">:</span>
+
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&#39;select sqlite_version()&#39;</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+
+    <span class="k">print</span> <span class="s">&quot;SQLite version is: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">data</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
