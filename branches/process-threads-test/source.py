@@ -28,18 +28,15 @@ class Source(threading.Thread):
         #self.linea = self.linea.strip()
 
         self.resultado = []
+        self.log_input = []
 
-        #for self.linea in self.log_file:
-            #self.resultado.append(re.split("/(\W?)\s+(\W?)/ ", self.linea))
-
-        #print self.resultado[6][9]
-
-        self.resultado = [re.split("(\W?) ", self.entry) for self.entry in self.log_file]
-        print self.resultado[9]
+        for self.linea in self.log_file:
+            self.resultado.append(re.split("\W? ", self.linea))
 
 
-        #for self.line in self.log_file:
-         #   print self.line.split(' ')
+        #self.resultado = [re.split("(\W?) ", self.entry) for self.entry in self.log_file]
+        print self.resultado[1]
+
 
         #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
