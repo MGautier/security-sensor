@@ -28,7 +28,7 @@ class Source(threading.Thread):
         #self.linea = self.linea.strip()
 
         self.resultado = []
-        self.log_input = []
+
 
         for self.linea in self.log_file:
             self.resultado.append(re.split("\W? ", self.linea))
