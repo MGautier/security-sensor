@@ -16,6 +16,7 @@ class Source(threading.Thread):
         self.type_source = source['T']
         self.model_source = source['M']
         self.path_source = source['P']
+        self.parser = []
 
         return
 
@@ -27,20 +28,18 @@ class Source(threading.Thread):
 
         #self.linea = self.linea.strip()
 
-        self.resultado = []
-
 
         for self.linea in self.log_file:
-            self.resultado.append(re.split("\W? ", self.linea))
+            self.parser.append(re.split("\W? ", self.linea))
 
 
         #self.resultado = [re.split("(\W?) ", self.entry) for self.entry in self.log_file]
-        print self.resultado[1]
+        #print self.resultado[1][1]
 
 
         #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
 
-for i in range(1):
-    gth = Source(args=(i,), source={'T' : 'Firewall', 'M' : 'iptables', 'P' : 'source.log'})
-    gth.start()
+    def processing(self):
+
+        return self.parser
