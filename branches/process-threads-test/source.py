@@ -34,6 +34,12 @@ class Source(threading.Thread):
         """
         pass
 
+    def process(self):
+        pass
+
+    def get_log_values(self):
+        pass
+
 class Firewall(Source):
 
     def __init__(self, db_name=None, group=None, target=None, name=None,
@@ -48,6 +54,7 @@ class Firewall(Source):
         self.db = db_name
 
         self.result = []
+        self.insert_db = {} #Diccionario con los valores del log iptables
 
     def run(self):
         """
@@ -65,6 +72,37 @@ class Firewall(Source):
 
         #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
+
+    def get_log_values(self):
+
+
+        for self.j in range(item_list()):
+            if(self.result.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
+                self.day_log = "" + date.today().year + "/" + self.result[self.j][0] + "/" + self.result[self.j][1] + ""
+                self.insert_db["Timestamp"] = [self.day_log + " - " + self.result[self.i][2]]
+                #self.insert_db["S_IP"] = [((re.compile("SRC=(.*) DST")).search(self.result[self.i])).group(1)]
+                self.insert_db["S_IP"] = [self.regexp('SRC',self.result[self.i])]
+                self.insert_db["D_IP"] = [self.regexp('DST',self.result[self.i])]
+                self.insert_db["S_PORT"] =  [self.regexp('SPT',self.result[self.i])]
+                self.insert_db["D_PORT"] =  [self.regexp('DPT',self.result[self.i])]
+                self.insert_db["Protocol"] =  [self.regexp('PROTO',self.result[self.i])]
+                self.insert_db["S_MAC"] =  [self.regexp('MAC',self.result[self.i])]
+                self.insert_db["D_MAC"] =  [self.regexp('MAC',self.result[self.i])]
+                #Coger la key para el IP_ID de Sources de la base de datos
+                self.insert_db["Info_RAW"] = [self.result[self.i]]
+                #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
+                #self.insert_db["Info_Proc"] =
+                self.insert_db["TAG"] = [self.get_tag(self.result[self.i])]
+
+
+
+    def regexp(self, source, values):
+
+        return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + "=")[1]
+
+    def get_tag(self, values):
+
+        return ((((re.compile("MSG=(.*) IN")).search(values)).group(0)).split("IN")[0]).split("MSG=")[1]
 
     def process(self):
         """
