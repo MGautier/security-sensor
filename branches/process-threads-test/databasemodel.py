@@ -58,7 +58,7 @@ class DatabaseModel(object):
             FOREIGN KEY(IP_ID) REFERENCES sources(ID_sources),
             FOREIGN KEY(Info_Proc) REFERENCES process(ID_process))''')
 
-            print "Base de datos '%s' abiera/creada con éxito" % db_name
+            print "Base de datos '%s' abierta/creada con éxito" % db_name
 
     def create_table(self, table_name, table_columns):
         """

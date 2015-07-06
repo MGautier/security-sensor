@@ -6,6 +6,7 @@ import sys
 import re
 from datetime import date
 from pygtail import Pygtail
+from databasemodel import DatabaseModel
 
 class Source(threading.Thread):
 
@@ -54,7 +55,7 @@ class Firewall(Source):
         self.db = db_name
 
         self.result = []
-        self.insert_db = {} #Diccionario con los valores del log iptables
+
 
     def run(self):
         """
@@ -68,39 +69,44 @@ class Firewall(Source):
             #sys.stdout.write(self.line)
 
         for self.line in self.log_file:
-            self.result.append(re.split("\W? ", self.line))
+            if(self.line.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
+                self.result.append(re.split("\W? ", self.line))
 
         #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
 
-    def get_log_values(self):
+    def get_log_values(self, line):
 
+        self.insert_db = {} #Diccionario con los valores del log iptables
 
-        for self.j in range(item_list()):
-            if(self.result.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
-                self.day_log = "" + date.today().year + "/" + self.result[self.j][0] + "/" + self.result[self.j][1] + ""
-                self.insert_db["Timestamp"] = [self.day_log + " - " + self.result[self.i][2]]
-                #self.insert_db["S_IP"] = [((re.compile("SRC=(.*) DST")).search(self.result[self.i])).group(1)]
-                self.insert_db["S_IP"] = [self.regexp('SRC',self.result[self.i])]
-                self.insert_db["D_IP"] = [self.regexp('DST',self.result[self.i])]
-                self.insert_db["S_PORT"] =  [self.regexp('SPT',self.result[self.i])]
-                self.insert_db["D_PORT"] =  [self.regexp('DPT',self.result[self.i])]
-                self.insert_db["Protocol"] =  [self.regexp('PROTO',self.result[self.i])]
-                self.insert_db["S_MAC"] =  [self.regexp('MAC',self.result[self.i])]
-                self.insert_db["D_MAC"] =  [self.regexp('MAC',self.result[self.i])]
-                #Coger la key para el IP_ID de Sources de la base de datos
-                self.insert_db["Info_RAW"] = [self.result[self.i]]
-                #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-                #self.insert_db["Info_Proc"] =
-                self.insert_db["TAG"] = [self.get_tag(self.result[self.i])]
+        self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
+        self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
+        #self.insert_db["S_IP"] = [((re.compile("SRC=(.*) DST")).search(self.result[self.i])).group(1)]
+        self.insert_db["S_IP"] = [self.regexp('SRC',str(line))]
+        self.insert_db["D_IP"] = [self.regexp('DST',str(line))]
+        self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
+        self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
+        self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
+        self.insert_db["S_MAC"] =  [self.regexp('MAC',str(line))]
+        self.insert_db["D_MAC"] =  [self.regexp('MAC',str(line))]
+        #Coger la key para el IP_ID de Sources de la base de datos
+        self.insert_db["Info_RAW"] = [str(line)]
+        #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
+        #self.insert_db["Info_Proc"] =
+        self.insert_db["TAG"] = [self.get_tag(str(line))]
 
-
+        return self.insert_db
 
     def regexp(self, source, values):
 
-        return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + "=")[1]
+        #print (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+        return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def get_tag(self, values):
+
+        #print "EXAMPLE", ((re.compile("MSG=(\S+) ")).search(values)).group(0)
+        print "EXAMPLE"
 
         return ((((re.compile("MSG=(.*) IN")).search(values)).group(0)).split("IN")[0]).split("MSG=")[1]
 
@@ -110,23 +116,14 @@ class Firewall(Source):
         introduce en la base de datos correspondiente.
         """
         self._db_ = DatabaseModel(self.db)
+        self.dictionary = {}
 
         #Ahora toca introducir los campos extraidos de log para iptables
-        for self.i in range(item_list()):
-            if(self.result.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
-                self.day_log = "" + date.today().year + "/" + self.result[self.i][0] + "/" + self.result[self.i][1] + ""
-                self.timestamp = self.day_log + " - " + self.result[self.i][2]
+        for self.i in range(self.items_list()):
 
-                self.s_ip = self.result[self.i][10]
-                self.d_ip = self.result[self.i][11]
-
-                self.s_port = self.result[self.i][19]
-                self.d_port = self.result[self.i][20]
-
-                self.protocol = self.result[self.i][18]
-
-                self.s_mac = self.result[self.i][9]
-                self.d_mac = self.result[self.i][9]
+            print "TAM", self.result.__len__()
+            self.dictionary = self.get_log_values(self.result[self.i])
+            print self.dictionary
 
 
 
@@ -155,4 +152,5 @@ class Firewall(Source):
         en el controlador.
         """
         super(Source, self).join()
+        self.process()
         return self.result

@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from source import Firewall
-from databasemodel import DatabaseModel
 from datetime import date
 
 
@@ -14,5 +13,5 @@ test.start()
 #print test.processing()
 lista = test.join()
 
-print date.today().year
-print lista[0]
+#print date.today().year
+#print lista[0]
