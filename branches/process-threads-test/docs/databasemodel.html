@@ -113,7 +113,7 @@ Por defecto crea las tablas especificadas para el proyecto.</p>
 <span class="s">            FOREIGN KEY(IP_ID) REFERENCES sources(ID_sources),</span>
 <span class="s">            FOREIGN KEY(Info_Proc) REFERENCES process(ID_process))&#39;&#39;&#39;</span><span class="p">)</span>
 
-            <span class="k">print</span> <span class="s">&quot;Base de datos &#39;</span><span class="si">%s</span><span class="s">&#39; creada con éxito&quot;</span> <span class="o">%</span> <span class="n">db_name</span></pre></div>
+            <span class="k">print</span> <span class="s">&quot;Base de datos &#39;</span><span class="si">%s</span><span class="s">&#39; abierta/creada con éxito&quot;</span> <span class="o">%</span> <span class="n">db_name</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -515,13 +515,20 @@ por cada columna que falta</p>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-
-<span class="n">bd_pfc</span> <span class="o">=</span> <span class="n">DatabaseModel</span><span class="p">(</span><span class="s">&#39;proyecto_bd&#39;</span><span class="p">)</span>
-<span class="n">bd_pfc</span><span class="o">.</span><span class="n">close_db</span><span class="p">()</span>
-
-</pre></div>
+      <div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>bd_pfc = DatabaseModel('proyecto_bd')
+bd_pfc.close_db()</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

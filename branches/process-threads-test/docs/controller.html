@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>controller.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+  <div class='section'>
+    <div class='docs'><h1>controller.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">from</span> <span class="nn">source</span> <span class="kn">import</span> <span class="n">Firewall</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Creamos un objeto del tipo Source y operamos con él</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">test</span> <span class="o">=</span> <span class="n">Firewall</span><span class="p">(</span><span class="s">&#39;proyecto_bd&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">source</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;T&#39;</span> <span class="p">:</span> <span class="s">&#39;Firewall&#39;</span><span class="p">,</span> <span class="s">&#39;M&#39;</span> <span class="p">:</span> <span class="s">&#39;iptables&#39;</span><span class="p">,</span> <span class="s">&#39;P&#39;</span> <span class="p">:</span> <span class="s">&#39;source.log&#39;</span><span class="p">})</span>
+<span class="n">lista</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>print test.processing()</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">lista</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>print date.today().year
+print lista[0]</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
