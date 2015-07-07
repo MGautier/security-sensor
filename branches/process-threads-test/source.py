@@ -90,25 +90,22 @@ class Firewall(Source):
         self.insert_db["S_MAC"] =  [self.regexp('MAC',str(line))]
         self.insert_db["D_MAC"] =  [self.regexp('MAC',str(line))]
         #Coger la key para el IP_ID de Sources de la base de datos
-        self.insert_db["Info_RAW"] = [str(line)]
+        self.insert_db["Info_RAW"] = [re.sub('\[','',re.sub('\n',''," ".join(line)))]
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
         #self.insert_db["Info_Proc"] =
-        self.insert_db["TAG"] = [self.get_tag(str(line))]
+        self.insert_db["TAG"] = [self.get_tag(line)]
 
         return self.insert_db
 
     def regexp(self, source, values):
 
-        #print (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-
         return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def get_tag(self, values):
 
-        #print "EXAMPLE", ((re.compile("MSG=(\S+) ")).search(values)).group(0)
-        print "EXAMPLE"
+        self.string = " ".join(values)
 
-        return ((((re.compile("MSG=(.*) IN")).search(values)).group(0)).split("IN")[0]).split("MSG=")[1]
+        return (re.compile('MSG=(.*) IN')).search(self.string).group(1)
 
     def process(self):
         """
@@ -121,11 +118,11 @@ class Firewall(Source):
         #Ahora toca introducir los campos extraidos de log para iptables
         for self.i in range(self.items_list()):
 
-            print "TAM", self.result.__len__()
             self.dictionary = self.get_log_values(self.result[self.i])
             print self.dictionary
 
 
+        self._db_.close_db()
 
     def items_list(self):
         """
