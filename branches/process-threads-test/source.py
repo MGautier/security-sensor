@@ -4,6 +4,7 @@
 import threading
 import sys
 import re
+import socket
 from datetime import date
 from pygtail import Pygtail
 from databasemodel import DatabaseModel
@@ -81,9 +82,8 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
-        #self.insert_db["S_IP"] = [((re.compile("SRC=(.*) DST")).search(self.result[self.i])).group(1)]
-        self.insert_db["S_IP"] = [self.regexp('SRC',str(line))]
-        self.insert_db["D_IP"] = [self.regexp('DST',str(line))]
+        self.insert_db["S_IP"] = [self.get_ip('SRC',line)]
+        self.insert_db["D_IP"] = [self.get_ip('DST',line)]
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
         self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
@@ -106,6 +106,16 @@ class Firewall(Source):
         self.string = " ".join(values)
 
         return (re.compile('MSG=(.*) IN')).search(self.string).group(1)
+
+    def get_ip(self, source, values):
+
+        self.ip_result = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        self.rows = RowsDatabase(self._db_.num_columns_table('ips'))
+        self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyadd(self.ip_result)
+        self.rows.insert_value((self.ip_result, self.hostname, ))
+        #ME FALTA ESTA PARTE
+        self._db_.insert_row('ips',self.ip_result)
+
 
     def process(self):
         """
