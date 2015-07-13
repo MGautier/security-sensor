@@ -111,7 +111,7 @@ class Firewall(Source):
 
         self.ip_result = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
         self.rows = RowsDatabase(self._db_.num_columns_table('ips'))
-        self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyadd(self.ip_result)
+        self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
         self.rows.insert_value((self.ip_result, self.hostname, ))
         #ME FALTA ESTA PARTE
         self._db_.insert_row('ips',self.ip_result)
