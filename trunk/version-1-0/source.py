@@ -8,6 +8,7 @@ import socket
 from datetime import date
 from pygtail import Pygtail
 from databasemodel import DatabaseModel
+from rowsdatabase import RowsDatabase
 
 class Source(threading.Thread):
 
@@ -82,8 +83,8 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
-        self.insert_db["S_IP"] = [self.get_ip('SRC',line)]
-        self.insert_db["D_IP"] = [self.get_ip('DST',line)]
+        self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
+        self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
         self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
@@ -111,7 +112,14 @@ class Firewall(Source):
 
         self.ip_result = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
         self.rows = RowsDatabase(self._db_.num_columns_table('ips'))
-        self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
+        self.hostname = ""
+        self.aliaslist = ""
+        self.ipaddrlist = ""
+        try:
+            self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
+        except socket.error as msg:
+            print msg
+            
         self.rows.insert_value((self.ip_result, self.hostname, ))
         #ME FALTA ESTA PARTE
         self._db_.insert_row('ips',self.ip_result)
