@@ -119,10 +119,10 @@ class Firewall(Source):
             self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
         except socket.error as msg:
             print msg
-            
+        
         self.rows.insert_value((self.ip_result, self.hostname, ))
         #ME FALTA ESTA PARTE
-        self._db_.insert_row('ips',self.ip_result)
+        self._db_.insert_row('ips',self.rows)
 
 
     def process(self):
