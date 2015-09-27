@@ -83,8 +83,8 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
-        self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
-        self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
+        #self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
+        #self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
         self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
