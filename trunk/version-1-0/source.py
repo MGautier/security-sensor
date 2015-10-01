@@ -85,6 +85,8 @@ class Firewall(Source):
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
         #self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
         #self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
+        self.insert_db["S_IP"] = "127.0.0.1"
+        self.insert_db["D_IP"] = "192.168.0.1"
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
         self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
@@ -132,12 +134,19 @@ class Firewall(Source):
         """
         self._db_ = DatabaseModel(self.db)
         self.dictionary = {}
+        self.list_aux = []
+        self.rows_events = RowsDatabase(self._db_.num_columns_table('events'))
 
         #Ahora toca introducir los campos extraidos de log para iptables
         for self.i in range(self.items_list()):
 
             self.dictionary = self.get_log_values(self.result[self.i])
             print self.dictionary
+            print self.dictionary["S_IP"]
+            self.rows_events.insert_value((self.dictionary["Timestamp"], self.dictionary["S_IP"], ))
+            self.list_aux.append(self.dictionary["S_IP"])
+            self.list_aux.append(self.dictionary["D_IP"])
+            self._db_.insert_row('ips',)
 
 
         self._db_.close_db()
