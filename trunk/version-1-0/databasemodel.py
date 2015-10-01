@@ -170,6 +170,9 @@ class DatabaseModel(object):
                 self.size_table -= 1
 
             #print self.size_insert, self.num_columns_table(table_name)
+            #print "SIZE_INSERT", self.size_insert
+            print "ROWS_VALUE", self.rows_value, "FIN"
+            print "-"
             self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
             self.database.commit()
             print "Valores introducidos en la tabla %s" % table_name

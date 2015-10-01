@@ -83,8 +83,8 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
-        #self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
-        #self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
+        self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
+        self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
         self.insert_db["S_IP"] = "127.0.0.1"
         self.insert_db["D_IP"] = "192.168.0.1"
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
@@ -112,17 +112,17 @@ class Firewall(Source):
 
     def get_ip(self, source, values):
 
-        self.ip_result = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        self.hostname = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
         self.rows = RowsDatabase(self._db_.num_columns_table('ips'))
-        self.hostname = ""
-        self.aliaslist = ""
-        self.ipaddrlist = ""
-        try:
-            self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
-        except socket.error as msg:
-            print msg
+        self.aliaslist = "TAG"
+        #self.ipaddrlist = ""
+        #try:
+        #    self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
+        #except socket.error as msg:
+        #    print msg
         
-        self.rows.insert_value((self.ip_result, self.hostname, ))
+        #self.rows.insert_value((self.ip_result, self.hostname, ))
+        self.rows.insert_value((None, self.hostname, self.aliaslist))
         #ME FALTA ESTA PARTE
         self._db_.insert_row('ips',self.rows)
 
@@ -133,20 +133,32 @@ class Firewall(Source):
         introduce en la base de datos correspondiente.
         """
         self._db_ = DatabaseModel(self.db)
-        self.dictionary = {}
-        self.list_aux = []
-        self.rows_events = RowsDatabase(self._db_.num_columns_table('events'))
 
         #Ahora toca introducir los campos extraidos de log para iptables
         for self.i in range(self.items_list()):
 
+            self.dictionary = {}
             self.dictionary = self.get_log_values(self.result[self.i])
-            print self.dictionary
-            print self.dictionary["S_IP"]
-            self.rows_events.insert_value((self.dictionary["Timestamp"], self.dictionary["S_IP"], ))
+
+            self.list_aux = []
+            self.list_aux.append(self.dictionary["Timestamp"])
             self.list_aux.append(self.dictionary["S_IP"])
             self.list_aux.append(self.dictionary["D_IP"])
-            self._db_.insert_row('ips',)
+            self.list_aux.append(self.dictionary["S_PORT"])
+            self.list_aux.append(self.dictionary["D_PORT"])
+            self.list_aux.append(self.dictionary["Protocol"])
+            self.list_aux.append(self.dictionary["S_MAC"])
+            self.list_aux.append(self.dictionary["D_MAC"])
+            self.list_aux.append("IP_ID")
+            self.list_aux.append(self.dictionary["Info_RAW"])
+            self.list_aux.append(1)
+            self.list_aux.append(self.dictionary["TAG"])
+
+            self.rows_events = RowsDatabase(self._db_.num_columns_table('events'))
+            self.rows_events.insert_value(self.list_aux)
+            print "ROWS_EVENTS", self.rows_events.get_rows()
+
+            self._db_.insert_row('events',self.rows_events)
 
 
         self._db_.close_db()
