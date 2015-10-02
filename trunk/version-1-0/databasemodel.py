@@ -197,6 +197,13 @@ class DatabaseModel(object):
 
         return return_values
 
+    def get_row_events(self, values):
+        """
+        Método que sirve para extraer los campos pertenecientes a la
+        tabla events dentro de un conjunto de datos.
+        """
+
+
     def delete_row(self, table_name, column_id, row_value):
         """
         Método para eliminar una fila de datos de una tabla.

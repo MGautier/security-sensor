@@ -5,7 +5,8 @@ import threading
 import sys
 import re
 import socket
-from datetime import date
+from datetime import date, datetime
+import time
 from pygtail import Pygtail
 from databasemodel import DatabaseModel
 from rowsdatabase import RowsDatabase
@@ -83,6 +84,9 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
+        timestamp = 12982.320129
+        print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(11354.641909))
+        print datetime.datetime(2015, 10, 2, 12, 30)
         self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
         self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
@@ -121,7 +125,12 @@ class Firewall(Source):
         #    print msg
         
         #self.rows.insert_value((self.ip_result, self.hostname, ))
+        
         id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"'")
+
+        #Aquí lo que hago es comprobar si existe una ip similar en la
+        # tabla. Si la hay introduzco en el mismo id el valor, y sino
+        # se inserta un nuevo registro de ip en la tabla.
         
         if id_ip:
             rows.insert_value((id_ip[0][0], hostname, aliaslist))
@@ -146,22 +155,23 @@ class Firewall(Source):
             self.dictionary = {}
             self.dictionary = self.get_log_values(self.result[self.i])
 
-            self.list_aux = []
-            self.list_aux.append(self.dictionary["Timestamp"])
-            self.list_aux.append(self.dictionary["S_IP"])
-            self.list_aux.append(self.dictionary["D_IP"])
-            self.list_aux.append(self.dictionary["S_PORT"])
-            self.list_aux.append(self.dictionary["D_PORT"])
-            self.list_aux.append(self.dictionary["Protocol"])
-            self.list_aux.append(self.dictionary["S_MAC"])
-            self.list_aux.append(self.dictionary["D_MAC"])
-            self.list_aux.append("IP_ID")
-            self.list_aux.append(self.dictionary["Info_RAW"])
-            self.list_aux.append(1)
-            self.list_aux.append(self.dictionary["TAG"])
+            list_aux = []
+            list_aux.append(None)
+            list_aux.append(self.dictionary["Timestamp"])
+            list_aux.append(self.dictionary["S_IP"])
+            list_aux.append(self.dictionary["D_IP"])
+            list_aux.append(self.dictionary["S_PORT"])
+            list_aux.append(self.dictionary["D_PORT"])
+            list_aux.append(self.dictionary["Protocol"])
+            list_aux.append(self.dictionary["S_MAC"])
+            list_aux.append(self.dictionary["D_MAC"])
+            list_aux.append("IP_ID")
+            list_aux.append(self.dictionary["Info_RAW"])
+            list_aux.append(1)
+            list_aux.append(self.dictionary["TAG"])
 
             self.rows_events = RowsDatabase(self._db_.num_columns_table('events'))
-            self.rows_events.insert_value(self.list_aux)
+            self.rows_events.insert_value(list_aux)
             print "ROWS_EVENTS", self.rows_events.get_rows()
 
             self._db_.insert_row('events',self.rows_events)
