@@ -179,6 +179,24 @@ class DatabaseModel(object):
         except db.Error, e:
             print "insert_row :-> %s" % e.args
 
+    def query(self, query_string):
+        """Método que nos permite realizar querys directamente a la
+        base de datos para obtener información directa. En este caso,
+        para usar selecciones que nos permitan obtener información
+        directa antes de introducir nueva (comprobaciones atómicas).
+        """
+        return_values = []
+        try:
+            self.cursor = self.database.cursor()
+
+            for row in self.cursor.execute(query_string):
+                return_values.append(row)
+            self.database.commit()
+        except db.Error, e:
+            print "query : -> %s " % e.args
+
+        return return_values
+
     def delete_row(self, table_name, column_id, row_value):
         """
         Método para eliminar una fila de datos de una tabla.

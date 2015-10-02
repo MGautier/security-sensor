@@ -85,8 +85,6 @@ class Firewall(Source):
         self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
         self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
         self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
-        self.insert_db["S_IP"] = "127.0.0.1"
-        self.insert_db["D_IP"] = "192.168.0.1"
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
         self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
@@ -112,9 +110,10 @@ class Firewall(Source):
 
     def get_ip(self, source, values):
 
-        self.hostname = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-        self.rows = RowsDatabase(self._db_.num_columns_table('ips'))
-        self.aliaslist = "TAG"
+        hostname = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        print "HOST: ", hostname
+        rows = RowsDatabase(self._db_.num_columns_table('ips'))
+        aliaslist = "TAG"
         #self.ipaddrlist = ""
         #try:
         #    self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
@@ -122,9 +121,16 @@ class Firewall(Source):
         #    print msg
         
         #self.rows.insert_value((self.ip_result, self.hostname, ))
-        self.rows.insert_value((None, self.hostname, self.aliaslist))
-        #ME FALTA ESTA PARTE
-        self._db_.insert_row('ips',self.rows)
+        id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"'")
+        
+        if id_ip:
+            rows.insert_value((id_ip[0][0], hostname, aliaslist))
+        else:
+            rows.insert_value((None, hostname, aliaslist))
+
+        self._db_.insert_row('ips',rows)
+
+        return hostname
 
 
     def process(self):
