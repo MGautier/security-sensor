@@ -187,6 +187,7 @@ class DatabaseModel(object):
         para usar selecciones que nos permitan obtener información
         directa antes de introducir nueva (comprobaciones atómicas).
         """
+        print "QUERY", query_string
         return_values = []
         try:
             self.cursor = self.database.cursor()

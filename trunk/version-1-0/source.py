@@ -102,13 +102,16 @@ class Firewall(Source):
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
         self.insert_db["S_MAC"] =  [self.regexp('MAC',str(line))]
         self.insert_db["D_MAC"] =  [self.regexp('MAC',str(line))]
-        self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = "+"".join(self.get_ip('SRC',str(line))))
-        self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = "+"".join(self.insert_db["D_IP"]))
+        #self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["S_IP"])+"'")
+        self.insert_db["S_IP_ID"] = "1"
+        self.insert_db["D_IP_ID"] = "2"
+        #self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["D_IP"])+"'")
+
         self.insert_db["Info_RAW"] = [re.sub('\[','',re.sub('\n',''," ".join(line)))]
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
         self.insert_db["Info_Proc"] = 1
         self.insert_db["TAG"] = [self.get_tag(line)]
-
+        print "AQUÍ"
         return self.insert_db
 
     def regexp(self, source, values):
@@ -135,7 +138,7 @@ class Firewall(Source):
         
         #self.rows.insert_value((self.ip_result, self.hostname, ))
         
-        id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"'")
+        id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"';")
 
         #Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si la hay introduzco en el mismo id el valor, y sino
@@ -145,8 +148,9 @@ class Firewall(Source):
             rows.insert_value((id_ip[0][0], hostname, aliaslist))
         else:
             rows.insert_value((None, hostname, aliaslist))
-
+        print "MEOW"
         self._db_.insert_row('ips',rows)
+
 
         return hostname
 
@@ -164,26 +168,7 @@ class Firewall(Source):
             self.dictionary = {}
             self.dictionary = self.get_log_values(self.result[self.i])
 
-            list_aux = []
-            list_aux.append(None)
-            list_aux.append(self.dictionary["Timestamp"])
-            list_aux.append(self.dictionary["S_IP"])
-            list_aux.append(self.dictionary["D_IP"])
-            list_aux.append(self.dictionary["S_PORT"])
-            list_aux.append(self.dictionary["D_PORT"])
-            list_aux.append(self.dictionary["Protocol"])
-            list_aux.append(self.dictionary["S_MAC"])
-            list_aux.append(self.dictionary["D_MAC"])
-            list_aux.append("IP_ID")
-            list_aux.append(self.dictionary["Info_RAW"])
-            list_aux.append(1)
-            list_aux.append(self.dictionary["TAG"])
-
-            self.rows_events = RowsDatabase(self._db_.num_columns_table('events'))
-            self.rows_events.insert_value(list_aux)
-            print "ROWS_EVENTS", self.rows_events.get_rows()
-
-            self._db_.insert_row('events',self.rows_events)
+            self._db_.insert_row('events',self.dictionary)
 
 
         self._db_.close_db()
