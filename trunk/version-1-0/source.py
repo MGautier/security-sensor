@@ -5,8 +5,9 @@ import threading
 import sys
 import re
 import socket
-from datetime import date, datetime
 import time
+from datetime import date
+from datetime import datetime
 from pygtail import Pygtail
 from databasemodel import DatabaseModel
 from rowsdatabase import RowsDatabase
@@ -82,11 +83,18 @@ class Firewall(Source):
 
         self.insert_db = {} #Diccionario con los valores del log iptables
 
-        self.day_log = "" + str(date.today().year) + "/" + line[0] + "/" + line[1] + ""
-        self.insert_db["Timestamp"] = [self.day_log + " - " + line[2]]
-        timestamp = 12982.320129
-        print time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(11354.641909))
-        print datetime.datetime(2015, 10, 2, 12, 30)
+        self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
+
+        self.insert_db["ID_events"] = None
+        self.insert_db["Timestamp"] = [self.day_log + " " + str(line[2])]
+        self.insert_db["Timestamp_insert"] = datetime.now()
+
+        #ahora = datetime.strptime(''.join(self.insert_db["Timestamp"]), "%Y %b %d %H:%M:%S")
+        #despues = datetime.now()
+        #print "Ahora: ", ahora
+        #print "Despues: ", despues
+        #print ahora > despues
+        
         self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
         self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
         self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
@@ -94,10 +102,11 @@ class Firewall(Source):
         self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
         self.insert_db["S_MAC"] =  [self.regexp('MAC',str(line))]
         self.insert_db["D_MAC"] =  [self.regexp('MAC',str(line))]
-        #Coger la key para el IP_ID de Sources de la base de datos
+        self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = "+"".join(self.get_ip('SRC',str(line))))
+        self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = "+"".join(self.insert_db["D_IP"]))
         self.insert_db["Info_RAW"] = [re.sub('\[','',re.sub('\n',''," ".join(line)))]
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-        #self.insert_db["Info_Proc"] =
+        self.insert_db["Info_Proc"] = 1
         self.insert_db["TAG"] = [self.get_tag(line)]
 
         return self.insert_db

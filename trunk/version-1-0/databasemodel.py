@@ -47,15 +47,17 @@ class DatabaseModel(object):
 
             self.cursor.execute('''create table if not exists events
             (ID_events INTEGER PRIMARY KEY ASC, Timestamp DATETIME,
+            Timestamp_insert DATETIME,
             S_IP VARCHAR(60), D_IP VARCHAR(60), S_PORT INTEGER,
             D_PORT INTEGER, Protocol CHARACTER(20), S_MAC VARCHAR(17),
-            D_MAC VARCHAR(17), IP_ID VARCHAR(70),
+            D_MAC VARCHAR(17), S_IP_ID INTEGER, D_IP_ID INTEGER,
             Info_RAW TEXT, Info_Proc INTEGER, TAG VARCHAR(255),
             FOREIGN KEY(S_IP) REFERENCES ips(ID_IP),
             FOREIGN KEY(D_IP) REFERENCES ips(ID_IP),
             FOREIGN KEY(S_PORT) REFERENCES ports(ID_PORT),
             FOREIGN KEY(D_PORT) REFERENCES ports(ID_PORT),
-            FOREIGN KEY(IP_ID) REFERENCES sources(ID_sources),
+            FOREIGN KEY(S_IP_ID) REFERENCES sources(ID_sources),
+            FOREIGN KEY(D_IP_ID) REFERENCES sources(ID_sources),
             FOREIGN KEY(Info_Proc) REFERENCES process(ID_process))''')
 
             print "Base de datos '%s' abierta/creada con éxito" % db_name
