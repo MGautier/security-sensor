@@ -111,7 +111,7 @@ class Firewall(Source):
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
         self.insert_db["Info_Proc"] = 1
         self.insert_db["TAG"] = [self.get_tag(line)]
-        print "AQUÍ"
+
         return self.insert_db
 
     def regexp(self, source, values):
@@ -138,7 +138,7 @@ class Firewall(Source):
         
         #self.rows.insert_value((self.ip_result, self.hostname, ))
         
-        id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"';")
+        id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"'")
 
         #Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si la hay introduzco en el mismo id el valor, y sino
@@ -148,7 +148,7 @@ class Firewall(Source):
             rows.insert_value((id_ip[0][0], hostname, aliaslist))
         else:
             rows.insert_value((None, hostname, aliaslist))
-        print "MEOW"
+        
         self._db_.insert_row('ips',rows)
 
 
@@ -167,7 +167,22 @@ class Firewall(Source):
 
             self.dictionary = {}
             self.dictionary = self.get_log_values(self.result[self.i])
+            columns_items = ""
+            values_items = ""
+            list_items = []
 
+            print "LLAVES", self.dictionary.keys().sort()
+            for key, val in self.dictionary.iteritems():
+                columns_items += str(key) + ", "
+                values_items += str(val) + ", "
+                list_items.append(str(key))
+                list_items.append(str(val))
+                print "insert o replace into events()"
+                
+
+            print "COLUMNS: ", columns_items
+            print "VALUES: ", values_items
+            print "LISTA: ", list_items
             self._db_.insert_row('events',self.dictionary)
 
 
