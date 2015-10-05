@@ -156,15 +156,12 @@ class DatabaseModel(object):
         Método para introducir valores en nuestra tabla de la base de datos.
         Ejemplo: INSERT INTO table_name VALUES(values)
         """
-        if table_name == "events":
-            print "Eventos"
-        else:
+        if table_name != "events":
             self.rows_value = self.check_columns_insert(table_name,values.get_rows())
-            
-        
+
         self.size_table = self.num_columns_table(table_name)
         self.size_insert = ""
-        #print self.rows_value
+        
 
         try:
             self.cursor = self.database.cursor()
@@ -176,16 +173,16 @@ class DatabaseModel(object):
 
                 self.size_table -= 1
 
-            #print self.size_insert, self.num_columns_table(table_name)
-            #print "SIZE_INSERT", self.size_insert
-            #print "ROWS_VALUE", self.rows_value, "FIN"
             print "-"
-            
+
             if table_name == "events":
-                print "Eventos2"
-                self.cursor.execute("insert or replace into events (ID_events, Timestamp, Timestamp_insert, S_IP, D_IP, S_PORT, D_PORT, Protocol, S_MAC, D_MAC, S_IP_ID, D_IP_ID, Info_RAW, Info_Proc, TAG) values(:ID_events, :Timestamp, :Timestamp:insert, :S_IP, :D_IP, :S_PORT, :D_PORT, :Protocol, :S_MAC, :D_MAC, :S_IP_ID, :D_IP_ID, :Info_RAW, :Info_Proc, :TAG )", values)
+                columns_list = ", ".join(values.keys())
+                values_list = ", ".join(values.values())
+                #print columns_list
+                #print values_list
+                #print "insert or replace into " + table_name + "("+", ".join(values.keys())+") values('"+"', '".join(values.values()) +"' )"
+                self.cursor.execute("insert or replace into " + table_name + "("+", ".join(values.keys())+") values('"+"', '".join(values.values()) +"' )")
             else:
-                print "No Eventos2"
                 self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
 
             self.database.commit()

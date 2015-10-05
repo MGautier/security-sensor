@@ -85,9 +85,9 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
 
-        self.insert_db["ID_events"] = None
-        self.insert_db["Timestamp"] = [self.day_log + " " + str(line[2])]
-        self.insert_db["Timestamp_insert"] = datetime.now()
+        self.insert_db["ID_events"] = 'None'
+        self.insert_db["Timestamp"] = self.day_log + " " + str(line[2])
+        self.insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
         #ahora = datetime.strptime(''.join(self.insert_db["Timestamp"]), "%Y %b %d %H:%M:%S")
         #despues = datetime.now()
@@ -95,22 +95,22 @@ class Firewall(Source):
         #print "Despues: ", despues
         #print ahora > despues
         
-        self.insert_db["S_IP"] = [self.get_ip('SRC',str(line))]
-        self.insert_db["D_IP"] = [self.get_ip('DST',str(line))]
-        self.insert_db["S_PORT"] =  [self.regexp('SPT',str(line))]
-        self.insert_db["D_PORT"] =  [self.regexp('DPT',str(line))]
-        self.insert_db["Protocol"] =  [self.regexp('PROTO',str(line))]
-        self.insert_db["S_MAC"] =  [self.regexp('MAC',str(line))]
-        self.insert_db["D_MAC"] =  [self.regexp('MAC',str(line))]
+        self.insert_db["S_IP"] = self.get_ip('SRC',str(line))
+        self.insert_db["D_IP"] = self.get_ip('DST',str(line))
+        self.insert_db["S_PORT"] =  self.regexp('SPT',str(line))
+        self.insert_db["D_PORT"] =  self.regexp('DPT',str(line))
+        self.insert_db["Protocol"] =  self.regexp('PROTO',str(line))
+        self.insert_db["S_MAC"] =  self.regexp('MAC',str(line))
+        self.insert_db["D_MAC"] =  self.regexp('MAC',str(line))
         #self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["S_IP"])+"'")
         self.insert_db["S_IP_ID"] = "1"
         self.insert_db["D_IP_ID"] = "2"
         #self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["D_IP"])+"'")
 
-        self.insert_db["Info_RAW"] = [re.sub('\[','',re.sub('\n',''," ".join(line)))]
+        self.insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-        self.insert_db["Info_Proc"] = 1
-        self.insert_db["TAG"] = [self.get_tag(line)]
+        self.insert_db["Info_Proc"] = "1"
+        self.insert_db["TAG"] = self.get_tag(line)
 
         return self.insert_db
 
@@ -167,22 +167,10 @@ class Firewall(Source):
 
             self.dictionary = {}
             self.dictionary = self.get_log_values(self.result[self.i])
-            columns_items = ""
-            values_items = ""
-            list_items = []
 
-            print "LLAVES", self.dictionary.keys().sort()
-            for key, val in self.dictionary.iteritems():
-                columns_items += str(key) + ", "
-                values_items += str(val) + ", "
-                list_items.append(str(key))
-                list_items.append(str(val))
-                print "insert o replace into events()"
-                
-
-            print "COLUMNS: ", columns_items
-            print "VALUES: ", values_items
-            print "LISTA: ", list_items
+            print "LLAVES", self.dictionary.keys()
+            print "VALORSITOS", self.dictionary.values()
+            
             self._db_.insert_row('events',self.dictionary)
 
 
