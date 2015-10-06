@@ -1,16 +1,9 @@
-Base de datos 'proyecto_bd' abierta/creada con éxito
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 Traceback (most recent call last):
-  File "controller.py", line 14, in <module>
-    lista = test.join()
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 202, in join
-    self.process()
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 167, in process
-    self.dictionary = self.get_log_values(self.result[self.i])
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 98, in get_log_values
-    self.insert_db["S_IP"] = self.get_ip('SRC',str(line))
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 139, in get_ip
-    id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"'")
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/databasemodel.py", line 207, in query
-    return_values.append(row)
-AttributeError: 'tuple' object has no attribute 'append'
+  File "controller.py", line 4, in <module>
+    from source import Firewall
+  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 12, in <module>
+    from databasemodel import DatabaseModel
+  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/databasemodel.py", line 189
+    else:
+       ^
+SyntaxError: invalid syntax

@@ -85,7 +85,7 @@ class Firewall(Source):
 
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
 
-        self.insert_db["ID_events"] = 'None'
+        self.insert_db["ID_events"] = eval(str(None))
         self.insert_db["Timestamp"] = self.day_log + " " + str(line[2])
         self.insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 

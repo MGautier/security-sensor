@@ -178,11 +178,13 @@ class DatabaseModel(object):
                 #values_list = ", ".join(values.values())
                 print "EJEMPLO", eval(str(values.keys()))
                 print "MAS", eval(str(values.values()))
-                prueba = eval(str(values.values()))
+                tupla = ()
+                tupla = eval(str(values.values()))
+                print "TUPLA", tuple(tupla)
                 #print columns_list
                 #print values_list
-                print "insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", values.values()
-                #self.cursor.execute("insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", values.values())
+                #print "insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", tuple(values.values())
+                #self.cursor.execute("insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", tuple(values.values()))
 
             else:
                 self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
