@@ -97,19 +97,17 @@ class Firewall(Source):
         
         self.insert_db["S_IP"] = self.get_ip('SRC',str(line))
         self.insert_db["D_IP"] = self.get_ip('DST',str(line))
-        self.insert_db["S_PORT"] =  self.regexp('SPT',str(line))
-        self.insert_db["D_PORT"] =  self.regexp('DPT',str(line))
+        self.insert_db["S_PORT"] =  eval(str(self.regexp('SPT',str(line))))
+        self.insert_db["D_PORT"] =  eval(str(self.regexp('DPT',str(line))))
         self.insert_db["Protocol"] =  self.regexp('PROTO',str(line))
         self.insert_db["S_MAC"] =  self.regexp('MAC',str(line))
         self.insert_db["D_MAC"] =  self.regexp('MAC',str(line))
-        #self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["S_IP"])+"'")
-        self.insert_db["S_IP_ID"] = "1"
-        self.insert_db["D_IP_ID"] = "2"
-        #self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["D_IP"])+"'")
+        self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["S_IP"])+"'")[0][0]
+        self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["D_IP"])+"'")[0][0]
 
         self.insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-        self.insert_db["Info_Proc"] = "1"
+        self.insert_db["Info_Proc"] = 1
         self.insert_db["TAG"] = self.get_tag(line)
 
         return self.insert_db
@@ -127,7 +125,7 @@ class Firewall(Source):
     def get_ip(self, source, values):
 
         hostname = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-        print "HOST: ", hostname
+        #print "HOST: ", hostname
         rows = RowsDatabase(self._db_.num_columns_table('ips'))
         aliaslist = "TAG"
         #self.ipaddrlist = ""
@@ -168,9 +166,9 @@ class Firewall(Source):
             self.dictionary = {}
             self.dictionary = self.get_log_values(self.result[self.i])
 
-            print "LLAVES", self.dictionary.keys()
+            #print "LLAVES", self.dictionary.keys()
             print "VALORSITOS", self.dictionary.values()
-            
+            #print type(eval(str(1)))
             self._db_.insert_row('events',self.dictionary)
 
 

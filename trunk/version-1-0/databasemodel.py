@@ -46,14 +46,12 @@ class DatabaseModel(object):
             Info_8 VARCHAR(255), Info_9 VARCHAR(255), Info_10 VARCHAR(255))''')
 
             self.cursor.execute('''create table if not exists events
-            (ID_events INTEGER PRIMARY KEY ASC, Timestamp DATETIME,
-            Timestamp_insert DATETIME,
+            (ID_events INTEGER PRIMARY KEY ASC, Timestamp VARCHAR(60),
+            Timestamp_insert VARCHAR(60),
             S_IP VARCHAR(60), D_IP VARCHAR(60), S_PORT INTEGER,
             D_PORT INTEGER, Protocol CHARACTER(20), S_MAC VARCHAR(17),
             D_MAC VARCHAR(17), S_IP_ID INTEGER, D_IP_ID INTEGER,
             Info_RAW TEXT, Info_Proc INTEGER, TAG VARCHAR(255),
-            FOREIGN KEY(S_IP) REFERENCES ips(ID_IP),
-            FOREIGN KEY(D_IP) REFERENCES ips(ID_IP),
             FOREIGN KEY(S_PORT) REFERENCES ports(ID_PORT),
             FOREIGN KEY(D_PORT) REFERENCES ports(ID_PORT),
             FOREIGN KEY(S_IP_ID) REFERENCES sources(ID_sources),
@@ -176,12 +174,16 @@ class DatabaseModel(object):
             print "-"
 
             if table_name == "events":
-                columns_list = ", ".join(values.keys())
-                values_list = ", ".join(values.values())
+                #columns_list = ", ".join(values.keys())
+                #values_list = ", ".join(values.values())
+                print "EJEMPLO", eval(str(values.keys()))
+                print "MAS", eval(str(values.values()))
+                prueba = eval(str(values.values()))
                 #print columns_list
                 #print values_list
-                #print "insert or replace into " + table_name + "("+", ".join(values.keys())+") values('"+"', '".join(values.values()) +"' )"
-                self.cursor.execute("insert or replace into " + table_name + "("+", ".join(values.keys())+") values('"+"', '".join(values.values()) +"' )")
+                print "insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", values.values()
+                #self.cursor.execute("insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", values.values())
+
             else:
                 self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
 
