@@ -4,6 +4,7 @@
 import threading
 import sys
 import re
+import subprocess
 import socket
 import time
 from datetime import date
@@ -96,8 +97,8 @@ class Firewall(Source):
         
         insert_db["S_IP"] = self.get_ip('SRC',str(line))
         insert_db["D_IP"] = self.get_ip('DST',str(line))
-        insert_db["S_PORT"] =  eval(str(self.regexp('SPT',str(line))))
-        insert_db["D_PORT"] =  eval(str(self.regexp('DPT',str(line))))
+        insert_db["S_PORT"] =  self.get_port('SPT',str(line))
+        insert_db["D_PORT"] =  self.get_port('DPT',str(line))
         insert_db["Protocol"] =  self.regexp('PROTO',str(line))
         insert_db["S_MAC"] =  self.regexp('MAC',str(line))
         insert_db["D_MAC"] =  self.regexp('MAC',str(line))
@@ -110,10 +111,9 @@ class Firewall(Source):
         insert_db["TAG"] = self.get_tag(line)
 
         rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
-        print "AQUI"
+
         self._db_.insert_row('events',rows)
         
-        #return self.insert_db
 
     def regexp(self, source, values):
 
@@ -124,6 +124,32 @@ class Firewall(Source):
         self.string = " ".join(values)
 
         return (re.compile('MSG=(.*) IN')).search(self.string).group(1)
+
+    def get_port(self, source, values):
+
+        port_bd = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+        rows = RowsDatabase(self._db_.num_columns_table('ports'))
+
+        id_ports = self._db_.query("select count(*) from ports where ID_PORT = '"+port_bd+"'")
+        
+        p = subprocess.Popen(["grep -w 80 /etc/services"], stdout=subprocess.PIPE, shell=True)
+        (output, err) = p.communicate()
+        port_tcp = (output.split('\n'))[0].split('\t')
+        port_udp = (output.split('\n'))[1].split('\t')
+        
+        print "TCP: \n", port__tcp
+        print "UDP: \n", port__udp
+        
+        
+        if id_ports[0][0] == 0:
+            #TCP
+            rows.insert_value((port_bd, 'tcp', port_tcp[4], port_tcp[6], port_tcp[0]))
+            #UDP - HAY QUE COMPROBAR QUE EXISTA UNA FILA UDP QUE NO TODOS LOS PUERTOS LA TRAEN- FALTA HACER
+            rows.insert_value((port_bd, 'udp', port_tcp[4], port_tcp[6], port_tcp[0]))
+            self._db_.insert_row('ports',rows)
+
+        return eval(str(port_bd))
 
     def get_ip(self, source, values):
 

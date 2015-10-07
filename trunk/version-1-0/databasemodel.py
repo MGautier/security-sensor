@@ -31,13 +31,14 @@ class DatabaseModel(object):
             Tag VARCHAR(255))''')
 
             self.cursor.execute('''create table if not exists ports
-            (ID_PORT INTEGER PRIMARY KEY, Service VARCHAR(60),
-            Tag VARCHAR(255))''')
+            (ID_PORT INTEGER PRIMARY KEY, Protocol VARCHAR(10),
+            Service VARCHAR(60), Description VARCHAR(100),
+            Tag VARCHAR(25))''')
 
             self.cursor.execute('''create table if not exists sources
-            (ID_sources VARCHAR(70) PRIMARY KEY, Description TEXT, Type VARCHAR(100),
-            Model VARCHAR(255), Active TINYINT, Software_class VARCHAR(50),
-            Path VARCHAR(20))''')
+            (ID_sources VARCHAR(70) PRIMARY KEY, Description TEXT,
+            Type VARCHAR(100), Model VARCHAR(255), Active TINYINT,
+            Software_class VARCHAR(50), Path VARCHAR(20))''')
 
             self.cursor.execute('''create table if not exists process
             (ID_process INTEGER PRIMARY KEY ASC, Info_1 VARCHAR(255),
