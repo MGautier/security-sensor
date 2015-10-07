@@ -9,7 +9,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -20,7 +20,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -31,7 +31,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -42,7 +42,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -53,7 +53,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -64,7 +64,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -75,7 +75,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -86,7 +86,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -97,7 +97,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -108,7 +108,7 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
@@ -119,7 +119,7 @@ QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
@@ -130,7 +130,7 @@ QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
@@ -141,7 +141,7 @@ QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
@@ -152,4 +152,4 @@ QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 AQUI
 -
-insert_row :-> FOREIGN KEY constraint failed
+Valores introducidos en la tabla events

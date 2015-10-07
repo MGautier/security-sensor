@@ -51,12 +51,8 @@ class DatabaseModel(object):
             S_IP VARCHAR(60), D_IP VARCHAR(60), S_PORT INTEGER,
             D_PORT INTEGER, Protocol CHARACTER(20), S_MAC VARCHAR(17),
             D_MAC VARCHAR(17), S_IP_ID INTEGER, D_IP_ID INTEGER,
-            Info_RAW TEXT, Info_Proc INTEGER, TAG VARCHAR(255),
-            FOREIGN KEY(S_PORT) REFERENCES ports(ID_PORT),
-            FOREIGN KEY(D_PORT) REFERENCES ports(ID_PORT),
-            FOREIGN KEY(S_IP_ID) REFERENCES sources(ID_sources),
-            FOREIGN KEY(D_IP_ID) REFERENCES sources(ID_sources),
-            FOREIGN KEY(Info_Proc) REFERENCES process(ID_process))''')
+            Info_RAW TEXT, Info_Proc INTEGER, TAG VARCHAR(255)
+            )''')
 
             print "Base de datos '%s' abierta/creada con éxito" % db_name
 
