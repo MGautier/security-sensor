@@ -81,13 +81,12 @@ class Firewall(Source):
 
     def get_log_values(self, line):
 
-        self.insert_db = {} #Diccionario con los valores del log iptables
-
+        insert_db = {} #Diccionario con los valores del log iptables
+        rows = RowsDatabase(self._db_.num_columns_table('events'))
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
 
-        self.insert_db["ID_events"] = eval(str(None))
-        self.insert_db["Timestamp"] = self.day_log + " " + str(line[2])
-        self.insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+        insert_db["Timestamp"] = self.day_log + " " + str(line[2])
+        insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
         #ahora = datetime.strptime(''.join(self.insert_db["Timestamp"]), "%Y %b %d %H:%M:%S")
         #despues = datetime.now()
@@ -95,22 +94,26 @@ class Firewall(Source):
         #print "Despues: ", despues
         #print ahora > despues
         
-        self.insert_db["S_IP"] = self.get_ip('SRC',str(line))
-        self.insert_db["D_IP"] = self.get_ip('DST',str(line))
-        self.insert_db["S_PORT"] =  eval(str(self.regexp('SPT',str(line))))
-        self.insert_db["D_PORT"] =  eval(str(self.regexp('DPT',str(line))))
-        self.insert_db["Protocol"] =  self.regexp('PROTO',str(line))
-        self.insert_db["S_MAC"] =  self.regexp('MAC',str(line))
-        self.insert_db["D_MAC"] =  self.regexp('MAC',str(line))
-        self.insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["S_IP"])+"'")[0][0]
-        self.insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(self.insert_db["D_IP"])+"'")[0][0]
+        insert_db["S_IP"] = self.get_ip('SRC',str(line))
+        insert_db["D_IP"] = self.get_ip('DST',str(line))
+        insert_db["S_PORT"] =  eval(str(self.regexp('SPT',str(line))))
+        insert_db["D_PORT"] =  eval(str(self.regexp('DPT',str(line))))
+        insert_db["Protocol"] =  self.regexp('PROTO',str(line))
+        insert_db["S_MAC"] =  self.regexp('MAC',str(line))
+        insert_db["D_MAC"] =  self.regexp('MAC',str(line))
+        insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
+        insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
 
-        self.insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+        insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-        self.insert_db["Info_Proc"] = 1
-        self.insert_db["TAG"] = self.get_tag(line)
+        insert_db["Info_Proc"] = 1
+        insert_db["TAG"] = self.get_tag(line)
 
-        return self.insert_db
+        rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
+        print "AQUI"
+        self._db_.insert_row('events',rows)
+        
+        #return self.insert_db
 
     def regexp(self, source, values):
 
@@ -163,13 +166,13 @@ class Firewall(Source):
         #Ahora toca introducir los campos extraidos de log para iptables
         for self.i in range(self.items_list()):
 
-            self.dictionary = {}
-            self.dictionary = self.get_log_values(self.result[self.i])
-
+            #self.dictionary = {}
+            #self.dictionary = self.get_log_values(self.result[self.i])
+            self.get_log_values(self.result[self.i])
             #print "LLAVES", self.dictionary.keys()
-            print "VALORSITOS", self.dictionary.values()
+            #print "VALORSITOS", self.dictionary.values()
             #print type(eval(str(1)))
-            self._db_.insert_row('events',self.dictionary)
+            #self._db_.insert_row('events',self.dictionary)
 
 
         self._db_.close_db()

@@ -1,9 +1,155 @@
-Traceback (most recent call last):
-  File "controller.py", line 4, in <module>
-    from source import Firewall
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 12, in <module>
-    from databasemodel import DatabaseModel
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/databasemodel.py", line 189
-    else:
-       ^
-SyntaxError: invalid syntax
+Base de datos 'proyecto_bd' abierta/creada con éxito
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+AQUI
+-
+insert_row :-> FOREIGN KEY constraint failed

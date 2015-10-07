@@ -154,8 +154,8 @@ class DatabaseModel(object):
         Método para introducir valores en nuestra tabla de la base de datos.
         Ejemplo: INSERT INTO table_name VALUES(values)
         """
-        if table_name != "events":
-            self.rows_value = self.check_columns_insert(table_name,values.get_rows())
+
+        self.rows_value = self.check_columns_insert(table_name,values.get_rows())
 
         self.size_table = self.num_columns_table(table_name)
         self.size_insert = ""
@@ -172,22 +172,8 @@ class DatabaseModel(object):
                 self.size_table -= 1
 
             print "-"
-
-            if table_name == "events":
-                #columns_list = ", ".join(values.keys())
-                #values_list = ", ".join(values.values())
-                print "EJEMPLO", eval(str(values.keys()))
-                print "MAS", eval(str(values.values()))
-                tupla = ()
-                tupla = eval(str(values.values()))
-                print "TUPLA", tuple(tupla)
-                #print columns_list
-                #print values_list
-                #print "insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", tuple(values.values())
-                #self.cursor.execute("insert or replace into " + table_name + "("+", ".join(values.keys())+") values("+ self.size_insert+ ")", tuple(values.values()))
-
-            else:
-                self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
+            
+            self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
 
             self.database.commit()
             print "Valores introducidos en la tabla %s" % table_name
