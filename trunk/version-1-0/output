@@ -5,11 +5,8 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '39'
-GREP_PORT ['rlp\t\t39/udp\t\tresource\t# resource location', '']
-PORT 1  ['rlp', '', '39/udp', '', 'resource', '# resource location']
--
-Valores introducidos en la tabla ports
+QUERY select count(*) from ports where ID_PORT = '58801'
+GREP_PORT ['']
 QUERY select count(*) from ports where ID_PORT = '22'
 GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
 PORT 1  ['ssh', '', '22/tcp', '', '', '', '# SSH Remote Login Protocol']
@@ -28,14 +25,8 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '80'
-GREP_PORT ['http\t\t80/tcp\t\twww\t\t# WorldWideWeb HTTP', 'http\t\t80/udp\t\t\t\t# HyperText Transfer Protocol', '']
-PORT 1  ['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-LONGITUD  7
-AQUI  2
-PORT 2  ['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
--
-Valores introducidos en la tabla ports
+QUERY select count(*) from ports where ID_PORT = '58801'
+GREP_PORT ['']
 QUERY select count(*) from ports where ID_PORT = '22'
 GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
@@ -50,8 +41,6 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 Valores introducidos en la tabla ips
 QUERY select count(*) from ports where ID_PORT = '58801'
 GREP_PORT ['']
--
-Valores introducidos en la tabla ports
 QUERY select count(*) from ports where ID_PORT = '22'
 GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'

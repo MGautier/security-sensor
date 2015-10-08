@@ -156,7 +156,10 @@ class Firewall(Source):
                     port_description = '-'
 
                 if len(port_1) > 3:
-                    port_service = port_1[4]
+                    if port_1[4] != '':
+                        port_service = port_1[4]
+                    else:
+                        port_service = '-'
                 else:
                     port_service = '-'
 
