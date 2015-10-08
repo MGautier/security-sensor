@@ -6,17 +6,20 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
 QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
 QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-PORT 1  ['ssh', '', '22/tcp', '', '', '', '# SSH Remote Login Protocol']
-LONGITUD  3
-AQUI  1
-PORT 2  ['ssh', '', '22/udp']
--
-Valores introducidos en la tabla ports
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+INFO_1 lo
+INFO_2 0
+INFO_3 52
+INFO_4 0x00
+INFO_5 0x00
+INFO_6 64
+INFO_7 35184 DF
+INFO_8 256
+INFO_9 0x00 ACK
+INFO_10 0
+Insert_value: El tamaño es superior al número de columnas
 -
 Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
@@ -26,180 +29,18 @@ QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
 QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
 QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '58801'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-QUERY select ID_IP from ips where Hostname = '192.168.1.218'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '54724'
-GREP_PORT ['']
--
-Valores introducidos en la tabla ports
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '54724'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '54724'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla events
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla ips
-QUERY select count(*) from ports where ID_PORT = '54724'
-GREP_PORT ['']
-QUERY select count(*) from ports where ID_PORT = '22'
-GREP_PORT ['ssh\t\t22/tcp\t\t\t\t# SSH Remote Login Protocol', 'ssh\t\t22/udp', '']
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
-QUERY select ID_IP from ips where Hostname = '172.20.211.36'
--
-Valores introducidos en la tabla events
+Traceback (most recent call last):
+  File "controller.py", line 14, in <module>
+    lista = test.join()
+  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 316, in join
+    self.process()
+  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 282, in process
+    self.get_log_values(self.result[self.i])
+  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 110, in get_log_values
+    insert_db["Info_Proc"] = self.get_id_process(line)
+  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 129, in get_id_process
+    info_2 = (((re.compile('OUT' + '=\S+')).search(str_values)).group(0)).split('OUT' + '=')[1].strip("',")
+AttributeError: 'NoneType' object has no attribute 'group'

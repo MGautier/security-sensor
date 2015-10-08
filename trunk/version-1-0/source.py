@@ -107,7 +107,7 @@ class Firewall(Source):
 
         insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-        insert_db["Info_Proc"] = 1
+        insert_db["Info_Proc"] = self.get_id_process(line)
         insert_db["TAG"] = self.get_tag(line)
 
         rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
@@ -118,6 +118,40 @@ class Firewall(Source):
     def regexp(self, source, values):
 
         return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+    def get_id_process(self, values):
+
+        rows = RowsDatabase(self._db_.num_columns_table('ports'))
+        str_values = str(values)
+        string = " ".join(values)
+        
+        info_1 = (((re.compile('IN' + '=\S+')).search(str_values)).group(0)).split('IN' + '=')[1].strip("',")
+        info_2 = (((re.compile('OUT' + '=\S+')).search(str_values)).group(0)).split('OUT' + '=')[1].strip("',")
+        info_3 = (((re.compile('LEN' + '=\S+')).search(str_values)).group(0)).split('LEN' + '=')[1].strip("',")
+        info_4 = (((re.compile('TOS' + '=\S+')).search(str_values)).group(0)).split('TOS' + '=')[1].strip("',")
+        info_5 = (((re.compile('PREC' + '=\S+')).search(str_values)).group(0)).split('PREC' + '=')[1].strip("',")
+        info_6 = (((re.compile('TTL' + '=\S+')).search(str_values)).group(0)).split('TTL' + '=')[1].strip("',")
+        info_7 = (re.compile('ID=(.*) PROTO')).search(string).group(1)
+        info_8 = (((re.compile('WINDOW' + '=\S+')).search(str_values)).group(0)).split('WINDOW' + '=')[1].strip("',")
+        info_9 = (re.compile('RES=(.*) URGP')).search(string).group(1)
+        info_10 = ((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',")).split('\\n\']')[0]
+
+        print "INFO_1", info_1
+        print "INFO_2", info_2
+        print "INFO_3", info_3
+        print "INFO_4", info_4
+        print "INFO_5", info_5
+        print "INFO_6", info_6
+        print "INFO_7", info_7
+        print "INFO_8", info_8
+        print "INFO_9", info_9
+        print "INFO_10", info_10
+        
+        rows.insert_value((None, info_1, info_2, info_3, info_4, info_5, info_6, info_7, info_8, info_9, info_10))
+
+        #self._db_.insert_row('process',rows)
+
+        return 1
 
     def get_tag(self, values):
 
@@ -136,7 +170,6 @@ class Firewall(Source):
         p = subprocess.Popen(["grep -w "+port_bd+" /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         grep_port = (output.split('\n'))
-        print "GREP_PORT", grep_port
 
 
         if (id_ports[0][0] == 0):
@@ -172,10 +205,10 @@ class Firewall(Source):
             if len(grep_port) > 1:
                 if len(grep_port[1]) != 0 :
                     port_2 = grep_port[1].split('\t')
-                    print "LONGITUD ", len(port_2)
+                    
                     port_number = (grep_port[1].split('\t'))[2].split('/')[0]
                     port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
-                    print "AQUI ", len((grep_port[1].split('# ')))
+                    
 
                     if len((grep_port[1].split('# '))) > 1:
                         port_description = (grep_port[1].split('# '))[1]
