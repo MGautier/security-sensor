@@ -136,25 +136,61 @@ class Firewall(Source):
         p = subprocess.Popen(["grep -w "+port_bd+" /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         grep_port = (output.split('\n'))
+        print "GREP_PORT", grep_port
 
 
-        if (id_ports[0][0] == 0) :
-
+        if (id_ports[0][0] == 0):
+            
 
             if len(grep_port[0]) == 0 :
                 rows.insert_value((port_bd, '-', '-', '-', '-'))
-
+            
             #TCP
-            if len(grep_port[0]) != 0:
-                port_tcp = grep_port[0].split('\t')
-                print "TCP ", port_tcp
-                rows.insert_value((port_bd, 'tcp', port_tcp[4], port_tcp[6], port_tcp[0]))
+            if len(grep_port[0]) != 0 :
+                port_1 = grep_port[0].split('\t')
+                port_number = (grep_port[0].split('\t'))[2].split('/')[0]
+                port_protocol = (grep_port[0].split('\t'))[2].split('/')[1]
+                if len((grep_port[0].split('# '))) > 1:
+                    port_description = (grep_port[0].split('# '))[1]
+                else:
+                    port_description = '-'
+
+                if len(port_1) > 3:
+                    port_service = port_1[4]
+                else:
+                    port_service = '-'
+
+                if port_number == port_bd :
+
+                    print "PORT 1 ", port_1
+                    rows.insert_value((port_bd, port_protocol, port_service, port_description, port_1[0]))
 
             #UDP
             if len(grep_port) > 1:
-                port_udp = grep_port[1].split('\t')
-                print "UDP ", port_udp
-                rows.insert_value((port_bd, 'udp', port_tcp[4], port_tcp[6], port_tcp[0]))
+                if len(grep_port[1]) != 0 :
+                    port_2 = grep_port[1].split('\t')
+                    print "LONGITUD ", len(port_2)
+                    port_number = (grep_port[1].split('\t'))[2].split('/')[0]
+                    port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
+                    print "AQUI ", len((grep_port[1].split('# ')))
+
+                    if len((grep_port[1].split('# '))) > 1:
+                        port_description = (grep_port[1].split('# '))[1]
+                    else:
+                        port_description = '-'
+
+                    if len(port_2) > 3:
+                        if port_2[4] != '':
+                            port_service = port_2[4]
+                        else:
+                            port_service = '-'
+                    else:
+                        port_service = '-'
+                        
+                    if port_number == port_bd :
+
+                        print "PORT 2 ", port_2
+                        rows.insert_value((port_bd, port_protocol, port_service, port_description, port_2[0]))
 
 
             if rows.get_length() > 0:
