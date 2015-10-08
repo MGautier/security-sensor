@@ -29,3 +29,11 @@ class RowsDatabase(object):
         para la tabla que queramos rellenar
         """
         return self.row_values
+
+    def get_length(self):
+        """
+        Método consultor que devuelve la el numero de elementos
+        introducidos en el objeto de la clase.
+        """
+
+        return len(self.row_values)

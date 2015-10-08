@@ -132,22 +132,33 @@ class Firewall(Source):
         rows = RowsDatabase(self._db_.num_columns_table('ports'))
 
         id_ports = self._db_.query("select count(*) from ports where ID_PORT = '"+port_bd+"'")
-        
-        p = subprocess.Popen(["grep -w 80 /etc/services"], stdout=subprocess.PIPE, shell=True)
+
+        p = subprocess.Popen(["grep -w "+port_bd+" /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
-        port_tcp = (output.split('\n'))[0].split('\t')
-        port_udp = (output.split('\n'))[1].split('\t')
-        
-        print "TCP: \n", port__tcp
-        print "UDP: \n", port__udp
-        
-        
-        if id_ports[0][0] == 0:
+        grep_port = (output.split('\n'))
+
+
+        if (id_ports[0][0] == 0) :
+
+
+            if len(grep_port[0]) == 0 :
+                rows.insert_value((port_bd, '-', '-', '-', '-'))
+
             #TCP
-            rows.insert_value((port_bd, 'tcp', port_tcp[4], port_tcp[6], port_tcp[0]))
-            #UDP - HAY QUE COMPROBAR QUE EXISTA UNA FILA UDP QUE NO TODOS LOS PUERTOS LA TRAEN- FALTA HACER
-            rows.insert_value((port_bd, 'udp', port_tcp[4], port_tcp[6], port_tcp[0]))
-            self._db_.insert_row('ports',rows)
+            if len(grep_port[0]) != 0:
+                port_tcp = grep_port[0].split('\t')
+                print "TCP ", port_tcp
+                rows.insert_value((port_bd, 'tcp', port_tcp[4], port_tcp[6], port_tcp[0]))
+
+            #UDP
+            if len(grep_port) > 1:
+                port_udp = grep_port[1].split('\t')
+                print "UDP ", port_udp
+                rows.insert_value((port_bd, 'udp', port_tcp[4], port_tcp[6], port_tcp[0]))
+
+
+            if rows.get_length() > 0:
+                self._db_.insert_row('ports',rows)
 
         return eval(str(port_bd))
 

@@ -5,16 +5,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -25,16 +19,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -45,16 +33,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -65,16 +47,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -85,16 +61,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -105,16 +75,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -125,16 +89,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -145,16 +103,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -165,16 +117,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -185,16 +131,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
+PORT-BD 58801
 QUERY select count(*) from ports where ID_PORT = '58801'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
@@ -205,16 +145,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
+PORT-BD 54724
 QUERY select count(*) from ports where ID_PORT = '54724'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
@@ -225,16 +159,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
+PORT-BD 54724
 QUERY select count(*) from ports where ID_PORT = '54724'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
@@ -245,16 +173,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
+PORT-BD 54724
 QUERY select count(*) from ports where ID_PORT = '54724'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
@@ -265,16 +187,10 @@ Valores introducidos en la tabla ips
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -
 Valores introducidos en la tabla ips
+PORT-BD 54724
 QUERY select count(*) from ports where ID_PORT = '54724'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
+PORT-BD 22
 QUERY select count(*) from ports where ID_PORT = '22'
-TCP: 
-['http', '', '80/tcp', '', 'www', '', '# WorldWideWeb HTTP']
-UDP: 
-['http', '', '80/udp', '', '', '', '# HyperText Transfer Protocol']
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 -

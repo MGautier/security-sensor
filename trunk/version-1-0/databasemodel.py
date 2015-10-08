@@ -31,9 +31,9 @@ class DatabaseModel(object):
             Tag VARCHAR(255))''')
 
             self.cursor.execute('''create table if not exists ports
-            (ID_PORT INTEGER PRIMARY KEY, Protocol VARCHAR(10),
+            (ID_PORT INTEGER, Protocol VARCHAR(10),
             Service VARCHAR(60), Description VARCHAR(100),
-            Tag VARCHAR(25))''')
+            Tag VARCHAR(25), PRIMARY KEY (ID_PORT, Protocol))''')
 
             self.cursor.execute('''create table if not exists sources
             (ID_sources VARCHAR(70) PRIMARY KEY, Description TEXT,
