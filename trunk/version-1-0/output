@@ -9,17 +9,9 @@ QUERY select count(*) from ports where ID_PORT = '58801'
 QUERY select count(*) from ports where ID_PORT = '22'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-INFO_1 lo
-INFO_2 0
-INFO_3 52
-INFO_4 0x00
-INFO_5 0x00
-INFO_6 64
-INFO_7 35184 DF
-INFO_8 256
-INFO_9 0x00 ACK
-INFO_10 0
-Insert_value: El tamaño es superior al número de columnas
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
 -
 Valores introducidos en la tabla events
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
@@ -32,15 +24,190 @@ QUERY select count(*) from ports where ID_PORT = '58801'
 QUERY select count(*) from ports where ID_PORT = '22'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
-Traceback (most recent call last):
-  File "controller.py", line 14, in <module>
-    lista = test.join()
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 316, in join
-    self.process()
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 282, in process
-    self.get_log_values(self.result[self.i])
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 110, in get_log_values
-    insert_db["Info_Proc"] = self.get_id_process(line)
-  File "/home/debian-moises/Documentos/securityproject/trunk/version-1-0/source.py", line 129, in get_id_process
-    info_2 = (((re.compile('OUT' + '=\S+')).search(str_values)).group(0)).split('OUT' + '=')[1].strip("',")
-AttributeError: 'NoneType' object has no attribute 'group'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '58801'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+QUERY select ID_IP from ips where Hostname = '192.168.1.218'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '54724'
+-
+Valores introducidos en la tabla ports
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '54724'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '54724'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla ips
+QUERY select count(*) from ports where ID_PORT = '54724'
+QUERY select count(*) from ports where ID_PORT = '22'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events

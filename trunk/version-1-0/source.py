@@ -108,6 +108,7 @@ class Firewall(Source):
         insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
         insert_db["Info_Proc"] = self.get_id_process(line)
+        insert_db["Info_Source"] = '-'
         insert_db["TAG"] = self.get_tag(line)
 
         rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
@@ -121,37 +122,45 @@ class Firewall(Source):
 
     def get_id_process(self, values):
 
-        rows = RowsDatabase(self._db_.num_columns_table('ports'))
+        rows = RowsDatabase(self._db_.num_columns_table('process'))
         str_values = str(values)
         string = " ".join(values)
+        info_dict = {}
+        info_list = ['IN', 'OUT', 'LEN', 'TOS', 'PREC', 'TTL', 'WINDOW']
+        for it in info_list:
+            check_value = ((re.compile(it + '=\S+')).search(str_values))
+
+            if check_value:
+                info_dict[""+it+""] = (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',")
+            else:
+                info_dict[""+it+""] = '-'
+
+        if ((re.compile('URGP' + '=\S+')).search(str_values)):
+            info_dict["URGP"] = ((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
+        else:
+            info_dict["URGP"] = '-'
+
+        if (re.compile('ID=(.*) PROTO')).search(string):
+            info_dict["ID"] = (re.compile('ID=(.*) PROTO')).search(string).group(1)
+        else:
+            info_dict["ID"] = '-'
+
+        if (re.compile('RES=(.*) URGP')).search(string):
+            info_dict["RES"] = (re.compile('RES=(.*) URGP')).search(string).group(1)
+        else:
+            info_dict["RES"] = '-'
+
         
-        info_1 = (((re.compile('IN' + '=\S+')).search(str_values)).group(0)).split('IN' + '=')[1].strip("',")
-        info_2 = (((re.compile('OUT' + '=\S+')).search(str_values)).group(0)).split('OUT' + '=')[1].strip("',")
-        info_3 = (((re.compile('LEN' + '=\S+')).search(str_values)).group(0)).split('LEN' + '=')[1].strip("',")
-        info_4 = (((re.compile('TOS' + '=\S+')).search(str_values)).group(0)).split('TOS' + '=')[1].strip("',")
-        info_5 = (((re.compile('PREC' + '=\S+')).search(str_values)).group(0)).split('PREC' + '=')[1].strip("',")
-        info_6 = (((re.compile('TTL' + '=\S+')).search(str_values)).group(0)).split('TTL' + '=')[1].strip("',")
-        info_7 = (re.compile('ID=(.*) PROTO')).search(string).group(1)
-        info_8 = (((re.compile('WINDOW' + '=\S+')).search(str_values)).group(0)).split('WINDOW' + '=')[1].strip("',")
-        info_9 = (re.compile('RES=(.*) URGP')).search(string).group(1)
-        info_10 = ((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',")).split('\\n\']')[0]
+        rows.insert_value((None, info_dict["IN"], info_dict["OUT"], info_dict["LEN"], info_dict["TOS"], info_dict["PREC"], info_dict["TTL"], info_dict["ID"], info_dict["WINDOW"], info_dict["RES"], info_dict["URGP"]))
 
-        print "INFO_1", info_1
-        print "INFO_2", info_2
-        print "INFO_3", info_3
-        print "INFO_4", info_4
-        print "INFO_5", info_5
-        print "INFO_6", info_6
-        print "INFO_7", info_7
-        print "INFO_8", info_8
-        print "INFO_9", info_9
-        print "INFO_10", info_10
+        self._db_.insert_row('process',rows)
+
+        # Si se vuelve a ejecutar cogerá los ids nuevos y no los ya
+        # almacenados en la bd.
         
-        rows.insert_value((None, info_1, info_2, info_3, info_4, info_5, info_6, info_7, info_8, info_9, info_10))
+        id_query = self._db_.query("select ID_process from process where ID_process = (select max(ID_process) from process)")
 
-        #self._db_.insert_row('process',rows)
-
-        return 1
+        return id_query[0][0]
 
     def get_tag(self, values):
 
@@ -264,6 +273,12 @@ class Firewall(Source):
 
         return hostname
 
+    def input_source(self, description):
+        """
+        Método
+        """
+        
+
 
     def process(self):
         """
@@ -272,16 +287,12 @@ class Firewall(Source):
         """
         self._db_ = DatabaseModel(self.db)
 
+        self.input_source("description")
+
         #Ahora toca introducir los campos extraidos de log para iptables
         for self.i in range(self.items_list()):
 
-            #self.dictionary = {}
-            #self.dictionary = self.get_log_values(self.result[self.i])
             self.get_log_values(self.result[self.i])
-            #print "LLAVES", self.dictionary.keys()
-            #print "VALORSITOS", self.dictionary.values()
-            #print type(eval(str(1)))
-            #self._db_.insert_row('events',self.dictionary)
 
 
         self._db_.close_db()

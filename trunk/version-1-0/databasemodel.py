@@ -52,7 +52,8 @@ class DatabaseModel(object):
             S_IP VARCHAR(60), D_IP VARCHAR(60), S_PORT INTEGER,
             D_PORT INTEGER, Protocol CHARACTER(20), S_MAC VARCHAR(17),
             D_MAC VARCHAR(17), S_IP_ID INTEGER, D_IP_ID INTEGER,
-            Info_RAW TEXT, Info_Proc INTEGER, TAG VARCHAR(255)
+            Info_RAW TEXT, Info_Proc INTEGER, Info_Source INTEGER,
+            TAG VARCHAR(255)
             )''')
 
             print "Base de datos '%s' abierta/creada con éxito" % db_name
@@ -176,6 +177,7 @@ class DatabaseModel(object):
             print "Valores introducidos en la tabla %s" % table_name
         except db.Error, e:
             print "insert_row :-> %s" % e.args
+
 
     def query(self, query_string):
         """Método que nos permite realizar querys directamente a la
