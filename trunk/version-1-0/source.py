@@ -69,11 +69,11 @@ class Firewall(Source):
 
         self.line = []
 
-        self.log_file = open(self.path_source, 'r')
-        #for self.line in Pygtail(self.path_source):
+        #self.log_file = open(self.path_source, 'r')
+        for self.line in Pygtail(self.path_source):
             #sys.stdout.write(self.line)
 
-        for self.line in self.log_file:
+        #for self.line in self.log_file:
             if(self.line.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
                 self.result.append(re.split("\W? ", self.line))
 
