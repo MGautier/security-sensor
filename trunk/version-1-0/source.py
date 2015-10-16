@@ -171,10 +171,9 @@ class Firewall(Source):
         rows = RowsDatabase(self._db_.num_columns_table('process'))
         str_values = str(values)
         string = " ".join(values)
-        print "TAG_LOG ", self.tag_log
         info_dict = {}
-        info_list = ['IN', 'OUT', 'LEN', 'TOS', 'PREC', 'TTL', 'WINDOW']
-        for it in info_list:
+        
+        for it in self.tag_log:
             check_value = ((re.compile(it + '=\S+')).search(str_values))
 
             if check_value:
@@ -197,8 +196,29 @@ class Firewall(Source):
         else:
             info_dict["RES"] = '-'
 
+        # Hago el diccionario anterior para controlar las distintas
+        # tags que nos da el log de iptables
         
-        rows.insert_value((None, info_dict["IN"], info_dict["OUT"], info_dict["LEN"], info_dict["TOS"], info_dict["PREC"], info_dict["TTL"], info_dict["ID"], info_dict["WINDOW"], info_dict["RES"], info_dict["URGP"]))
+        info_process = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        info_process.insert(info_process.pop(0),None)
+        count = 0
+        more_info_string = ""
+        for it in info_dict.values():
+            if count <= 9:
+                count += 1
+                info_process.insert(info_process.pop(count),it)
+            else:
+                more_info_string += ""+it+" -- "
+                count += 1
+
+        if count > 10:
+            info_process.insert(info_process.pop(11),more_info_string)
+
+        for it in info_process:
+            if isinstance( it, int):
+                info_process.insert(info_process.pop(it),'-')
+
+        rows.insert_value(tuple(info_process))
 
         self._db_.insert_row('process',rows)
 

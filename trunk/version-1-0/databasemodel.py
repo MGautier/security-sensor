@@ -45,7 +45,8 @@ class DatabaseModel(object):
             (ID_process INTEGER PRIMARY KEY ASC, Info_1 VARCHAR(255),
             Info_2 VARCHAR(255), Info_3 VARCHAR(255), Info_4 VARCHAR(255),
             Info_5 VARCHAR(255), Info_6 VARCHAR(255), Info_7 VARCHAR(255),
-            Info_8 VARCHAR(255), Info_9 VARCHAR(255), Info_10 VARCHAR(255))''')
+            Info_8 VARCHAR(255), Info_9 VARCHAR(255), Info_10 VARCHAR(255),
+            More_Info VARCHAR(255))''')
 
             self.cursor.execute('''create table if not exists events
             (ID_events INTEGER PRIMARY KEY ASC, Timestamp VARCHAR(60),
