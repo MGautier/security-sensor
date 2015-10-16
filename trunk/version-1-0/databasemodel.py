@@ -5,6 +5,7 @@ import sqlite3 as db
 import sys
 from columnsdatabase import ColumnsDatabase
 from rowsdatabase import RowsDatabase
+from datetime import datetime
 
 
 class DatabaseModel(object):
@@ -56,7 +57,8 @@ class DatabaseModel(object):
             TAG VARCHAR(255)
             )''')
 
-            print "Base de datos '%s' abierta/creada con éxito" % db_name
+            actual_time = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+            print "["+actual_time+"] Base de datos '%s' abierta/creada con éxito" % db_name
 
     def create_table(self, table_name, table_columns):
         """

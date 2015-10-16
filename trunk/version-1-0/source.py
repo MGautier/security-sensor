@@ -58,6 +58,7 @@ class Firewall(Source):
         self.model_source = source['M']
         self.path_source = source['P']
         self.db = db_name
+        self.tag_log = []
 
         self.result = []
 
@@ -69,11 +70,11 @@ class Firewall(Source):
 
         self.line = []
 
-        #self.log_file = open(self.path_source, 'r')
-        for self.line in Pygtail(self.path_source):
+        self.log_file = open(self.path_source, 'r')
+        #for self.line in Pygtail(self.path_source):
             #sys.stdout.write(self.line)
+        for self.line in self.log_file:
 
-        #for self.line in self.log_file:
             if(self.line.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
                 self.result.append(re.split("\W? ", self.line))
 
@@ -94,22 +95,67 @@ class Firewall(Source):
         #print "Ahora: ", ahora
         #print "Despues: ", despues
         #print ahora > despues
-        
-        insert_db["S_IP"] = self.get_ip('SRC',str(line))
-        insert_db["D_IP"] = self.get_ip('DST',str(line))
-        insert_db["S_PORT"] =  self.get_port('SPT',str(line))
-        insert_db["D_PORT"] =  self.get_port('DPT',str(line))
-        insert_db["Protocol"] =  self.regexp('PROTO',str(line))
-        insert_db["S_MAC"] =  self.regexp('MAC',str(line))
-        insert_db["D_MAC"] =  self.regexp('MAC',str(line))
+
+        self.tag_log = []
+        tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
+        tag_split = tag_str.split(',')
+
+        for iter in tag_split:
+            if len(iter.split('=')) == 2:
+                self.tag_log.append((iter.split('='))[0].strip('\' '))
+
+        if self.tag_log.index('SRC') > 0:
+            insert_db["S_IP"] = self.get_ip('SRC',str(line))
+            self.tag_log.remove('SRC')
+        else:
+            insert_db["S_IP"] = '-'
+            
+        if self.tag_log.index('DST') > 0:
+            insert_db["D_IP"] = self.get_ip('DST',str(line))
+            self.tag_log.remove('DST')
+        else:
+            insert_db["D_IP"] = '-'
+
+        if self.tag_log.index('SPT') > 0:
+            insert_db["S_PORT"] =  self.get_port('SPT',str(line))
+            self.tag_log.remove('SPT')
+        else:
+            insert_db["S_PORT"] =  '-'
+
+        if self.tag_log.index('DPT') > 0:
+            insert_db["D_PORT"] =  self.get_port('DPT',str(line))
+            self.tag_log.remove('DPT')
+        else:
+            insert_db["D_PORT"] = '-'
+
+        if self.tag_log.index('PROTO') > 0:
+            insert_db["Protocol"] =  self.regexp('PROTO',str(line))
+            self.tag_log.remove('PROTO')
+        else:
+            insert_db["Protocol"] =  '-'
+
+        if self.tag_log.index('MAC') > 0:
+            insert_db["S_MAC"] =  self.regexp('MAC',str(line))
+        else:
+            insert_db["S_MAC"] =  '-'
+    
+
+        if self.tag_log.index('MAC') > 0:
+            insert_db["D_MAC"] =  self.regexp('MAC',str(line))
+            self.tag_log.remove('MAC')
+        else:
+            insert_db["D_MAC"] =  '-'
+
+
         insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
         insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
 
         insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+        insert_db["TAG"] = self.get_tag(line)
         #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
         insert_db["Info_Proc"] = self.get_id_process(line)
         insert_db["Info_Source"] = '-'
-        insert_db["TAG"] = self.get_tag(line)
+
 
         rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
 
@@ -125,28 +171,29 @@ class Firewall(Source):
         rows = RowsDatabase(self._db_.num_columns_table('process'))
         str_values = str(values)
         string = " ".join(values)
+        print "TAG_LOG ", self.tag_log
         info_dict = {}
         info_list = ['IN', 'OUT', 'LEN', 'TOS', 'PREC', 'TTL', 'WINDOW']
         for it in info_list:
             check_value = ((re.compile(it + '=\S+')).search(str_values))
 
             if check_value:
-                info_dict[""+it+""] = (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',")
+                info_dict[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',")
             else:
                 info_dict[""+it+""] = '-'
 
         if ((re.compile('URGP' + '=\S+')).search(str_values)):
-            info_dict["URGP"] = ((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
+            info_dict["URGP"] = "URGP="+((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
         else:
             info_dict["URGP"] = '-'
 
         if (re.compile('ID=(.*) PROTO')).search(string):
-            info_dict["ID"] = (re.compile('ID=(.*) PROTO')).search(string).group(1)
+            info_dict["ID"] = "ID="+(re.compile('ID=(.*) PROTO')).search(string).group(1)
         else:
             info_dict["ID"] = '-'
 
         if (re.compile('RES=(.*) URGP')).search(string):
-            info_dict["RES"] = (re.compile('RES=(.*) URGP')).search(string).group(1)
+            info_dict["RES"] = "RES="+(re.compile('RES=(.*) URGP')).search(string).group(1)
         else:
             info_dict["RES"] = '-'
 
@@ -165,8 +212,8 @@ class Firewall(Source):
     def get_tag(self, values):
 
         self.string = " ".join(values)
-
-        return (re.compile('MSG=(.*) IN')).search(self.string).group(1)
+        self.tag_log.remove('IPTMSG')
+        return (re.compile('IPTMSG=(.*) IN')).search(self.string).group(1)
 
     def get_port(self, source, values):
 
