@@ -1,4 +1,4 @@
-[2015 Oct 16 - 22:35:31.789263] Base de datos 'proyecto_bd' abierta/creada con éxito
+[2015 Oct 18 - 20:55:45.616673] Base de datos 'proyecto_bd' abierta/creada con éxito
 QUERY select ID_IP from ips where Hostname = '192.168.1.218'
 -
 Valores introducidos en la tabla ips
@@ -212,6 +212,32 @@ QUERY select count(*) from ports where ID_PORT = '54724'
 QUERY select count(*) from ports where ID_PORT = '22'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
 QUERY select ID_IP from ips where Hostname = '172.20.211.36'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+-
+Valores introducidos en la tabla process
+QUERY select ID_process from process where ID_process = (select max(ID_process) from process)
+-
+Valores introducidos en la tabla events
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+-
+Valores introducidos en la tabla ips
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
+QUERY select ID_IP from ips where Hostname = '127.0.0.1'
 -
 Valores introducidos en la tabla process
 QUERY select ID_process from process where ID_process = (select max(ID_process) from process)

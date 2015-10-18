@@ -104,48 +104,49 @@ class Firewall(Source):
             if len(iter.split('=')) == 2:
                 self.tag_log.append((iter.split('='))[0].strip('\' '))
 
-        if self.tag_log.index('SRC') > 0:
-            insert_db["S_IP"] = self.get_ip('SRC',str(line))
-            self.tag_log.remove('SRC')
+        if (re.compile('SRC')).search(tag_str):
+            if self.tag_log.index('SRC') > 0:
+                insert_db["S_IP"] = self.get_ip('SRC',str(line))
+                self.tag_log.remove('SRC')
         else:
             insert_db["S_IP"] = '-'
-            
-        if self.tag_log.index('DST') > 0:
-            insert_db["D_IP"] = self.get_ip('DST',str(line))
-            self.tag_log.remove('DST')
+
+        if (re.compile('DST')).search(tag_str):
+            if self.tag_log.index('DST') > 0:
+                insert_db["D_IP"] = self.get_ip('DST',str(line))
+                self.tag_log.remove('DST')
         else:
             insert_db["D_IP"] = '-'
 
-        if self.tag_log.index('SPT') > 0:
-            insert_db["S_PORT"] =  self.get_port('SPT',str(line))
-            self.tag_log.remove('SPT')
+        if (re.compile('SPT')).search(tag_str):
+            if self.tag_log.index('SPT') > 0:
+                insert_db["S_PORT"] =  self.get_port('SPT',str(line))
+                self.tag_log.remove('SPT')
         else:
             insert_db["S_PORT"] =  '-'
 
-        if self.tag_log.index('DPT') > 0:
-            insert_db["D_PORT"] =  self.get_port('DPT',str(line))
-            self.tag_log.remove('DPT')
+        if (re.compile('DPT')).search(tag_str):
+            if self.tag_log.index('DPT') > 0:
+                insert_db["D_PORT"] =  self.get_port('DPT',str(line))
+                self.tag_log.remove('DPT')
         else:
             insert_db["D_PORT"] = '-'
 
-        if self.tag_log.index('PROTO') > 0:
-            insert_db["Protocol"] =  self.regexp('PROTO',str(line))
-            self.tag_log.remove('PROTO')
+        if (re.compile('PROTO')).search(tag_str):
+            if self.tag_log.index('PROTO') > 0:
+                insert_db["Protocol"] =  self.regexp('PROTO',str(line))
+                self.tag_log.remove('PROTO')
         else:
             insert_db["Protocol"] =  '-'
 
-        if self.tag_log.index('MAC') > 0:
-            insert_db["S_MAC"] =  self.regexp('MAC',str(line))
+        if (re.compile('MAC')).search(tag_str):
+            if self.tag_log.index('MAC') > 0:
+                insert_db["S_MAC"] =  self.regexp('MAC',str(line))
+                insert_db["D_MAC"] =  self.regexp('MAC',str(line))
+                self.tag_log.remove('MAC')
         else:
-            insert_db["S_MAC"] =  '-'
-    
-
-        if self.tag_log.index('MAC') > 0:
-            insert_db["D_MAC"] =  self.regexp('MAC',str(line))
-            self.tag_log.remove('MAC')
-        else:
-            insert_db["D_MAC"] =  '-'
-
+            insert_db["S_MAC"] = '-'
+            insert_db["D_MAC"] = '-'
 
         insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
         insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
@@ -177,24 +178,19 @@ class Firewall(Source):
             check_value = ((re.compile(it + '=\S+')).search(str_values))
 
             if check_value:
-                info_dict[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',")
+                info_dict[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
             else:
                 info_dict[""+it+""] = '-'
 
+
         if ((re.compile('URGP' + '=\S+')).search(str_values)):
             info_dict["URGP"] = "URGP="+((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
-        else:
-            info_dict["URGP"] = '-'
 
         if (re.compile('ID=(.*) PROTO')).search(string):
             info_dict["ID"] = "ID="+(re.compile('ID=(.*) PROTO')).search(string).group(1)
-        else:
-            info_dict["ID"] = '-'
 
         if (re.compile('RES=(.*) URGP')).search(string):
             info_dict["RES"] = "RES="+(re.compile('RES=(.*) URGP')).search(string).group(1)
-        else:
-            info_dict["RES"] = '-'
 
         # Hago el diccionario anterior para controlar las distintas
         # tags que nos da el log de iptables
@@ -213,6 +209,7 @@ class Firewall(Source):
 
         if count > 10:
             info_process.insert(info_process.pop(11),more_info_string)
+
 
         for it in info_process:
             if isinstance( it, int):
