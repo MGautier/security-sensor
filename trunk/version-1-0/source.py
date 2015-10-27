@@ -84,97 +84,113 @@ class Firewall(Source):
     def get_log_values(self, line):
 
         insert_db = {} #Diccionario con los valores del log iptables
-        rows = RowsDatabase(self._db_.num_columns_table('events'))
+
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
-
         insert_db["Timestamp"] = self.day_log + " " + str(line[2])
-        insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+        if(self.check_date_bd(insert_db["Timestamp"])):
+            
+            
+            rows = RowsDatabase(self._db_.num_columns_table('events'))
+        
+            insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
-        #ahora = datetime.strptime(''.join(self.insert_db["Timestamp"]), "%Y %b %d %H:%M:%S")
-        #despues = datetime.now()
-        #print "Ahora: ", ahora
-        #print "Despues: ", despues
-        #print ahora > despues
+            #ahora = datetime.strptime(''.join(self.insert_db["Timestamp"]), "%Y %b %d %H:%M:%S")
+            #despues = datetime.now()
+            #print "Ahora: ", ahora
+            #print "Despues: ", despues
+            #print ahora > despues
 
-        self.tag_log = []
-        tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
-        tag_split = tag_str.split(',')
+            self.tag_log = []
+            tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
+            tag_split = tag_str.split(',')
 
-        for iter in tag_split:
-            if len(iter.split('=')) == 2:
-                self.tag_log.append((iter.split('='))[0].strip('\' '))
+            for iter in tag_split:
+                if len(iter.split('=')) == 2:
+                    self.tag_log.append((iter.split('='))[0].strip('\' '))
 
-        if (re.compile('SRC')).search(tag_str):
-            if self.tag_log.index('SRC') > 0:
-                insert_db["S_IP"] = self.get_ip('SRC',str(line))
-                self.tag_log.remove('SRC')
-        else:
-            insert_db["S_IP"] = '-'
+            if (re.compile('SRC')).search(tag_str):
+                if self.tag_log.index('SRC') > 0:
+                    insert_db["S_IP"] = self.get_ip('SRC',str(line))
+                    self.tag_log.remove('SRC')
+            else:
+                insert_db["S_IP"] = '-'
 
-        if (re.compile('DST')).search(tag_str):
-            if self.tag_log.index('DST') > 0:
-                insert_db["D_IP"] = self.get_ip('DST',str(line))
-                self.tag_log.remove('DST')
-        else:
-            insert_db["D_IP"] = '-'
+            if (re.compile('DST')).search(tag_str):
+                if self.tag_log.index('DST') > 0:
+                    insert_db["D_IP"] = self.get_ip('DST',str(line))
+                    self.tag_log.remove('DST')
+            else:
+                insert_db["D_IP"] = '-'
 
-        if (re.compile('SPT')).search(tag_str):
-            if self.tag_log.index('SPT') > 0:
-                insert_db["S_PORT"] =  self.get_port('SPT',str(line))
-                self.tag_log.remove('SPT')
-        else:
-            insert_db["S_PORT"] =  '-'
+            if (re.compile('SPT')).search(tag_str):
+                if self.tag_log.index('SPT') > 0:
+                    insert_db["S_PORT"] =  self.get_port('SPT',str(line))
+                    self.tag_log.remove('SPT')
+            else:
+                insert_db["S_PORT"] =  '-'
 
-        if (re.compile('DPT')).search(tag_str):
-            if self.tag_log.index('DPT') > 0:
-                insert_db["D_PORT"] =  self.get_port('DPT',str(line))
-                self.tag_log.remove('DPT')
-        else:
-            insert_db["D_PORT"] = '-'
+            if (re.compile('DPT')).search(tag_str):
+                if self.tag_log.index('DPT') > 0:
+                    insert_db["D_PORT"] =  self.get_port('DPT',str(line))
+                    self.tag_log.remove('DPT')
+            else:
+                insert_db["D_PORT"] = '-'
 
-        if (re.compile('PROTO')).search(tag_str):
-            if self.tag_log.index('PROTO') > 0:
-                insert_db["Protocol"] =  self.regexp('PROTO',str(line))
-                self.tag_log.remove('PROTO')
-        else:
-            insert_db["Protocol"] =  '-'
+            if (re.compile('PROTO')).search(tag_str):
+                if self.tag_log.index('PROTO') > 0:
+                    insert_db["Protocol"] =  self.regexp('PROTO',str(line))
+                    self.tag_log.remove('PROTO')
+            else:
+                insert_db["Protocol"] =  '-'
 
-        if (re.compile('MAC')).search(tag_str):
-            if self.tag_log.index('MAC') > 0:
-                insert_db["S_MAC"] =  self.regexp('MAC',str(line))
-                insert_db["D_MAC"] =  self.regexp('MAC',str(line))
-                self.tag_log.remove('MAC')
-        else:
-            insert_db["S_MAC"] = '-'
-            insert_db["D_MAC"] = '-'
+            if (re.compile('MAC')).search(tag_str):
+                if self.tag_log.index('MAC') > 0:
+                    insert_db["S_MAC"] =  self.regexp('MAC',str(line))
+                    insert_db["D_MAC"] =  self.regexp('MAC',str(line))
+                    self.tag_log.remove('MAC')
+            else:
+                insert_db["S_MAC"] = '-'
+                insert_db["D_MAC"] = '-'
 
-        try:
-            insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
-        except Exception as ex:
-            print "S_IP_ID Exception -> ", ex
-            insert_db["S_IP_ID"] = '-'
+            try:
+                insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
+            except Exception as ex:
+                print "S_IP_ID Exception -> ", ex
+                insert_db["S_IP_ID"] = '-'
 
-        try:
-            insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
-        except Exception as ex:
-            print "D_IP_ID Exception -> ", ex
-            insert_db["D_IP_ID"] = '-'
+            try:
+                insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
+            except Exception as ex:
+                print "D_IP_ID Exception -> ", ex
+                insert_db["D_IP_ID"] = '-'
 
-        insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
-        insert_db["TAG"] = self.get_tag(line)
-        #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-        insert_db["Info_Proc"] = self.get_id_process(line)
-        insert_db["Info_Source"] = '-'
+            insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+            insert_db["TAG"] = self.get_tag(line)
+            #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
+            insert_db["Info_Proc"] = self.get_id_process(line)
+            insert_db["Info_Source"] = '-'
 
 
-        rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
+            rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
 
-        self._db_.insert_row('events',rows)
+            self._db_.insert_row('events',rows)
         
 
     def regexp(self, source, values):
 
         return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+    def check_date_bd(self, values):
+
+        log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
+        #bd_date = datetime.strptime(''.join(self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")), "%Y %b %d %H:%M:%S")
+
+        print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
+        print "LOG-DATE: ", log_date
+        #print "BD-DATE: ", bd_date
+        #print log_date > bd_date
+        return True
+        #return log_date > bd_date
 
     def get_id_process(self, values):
 
