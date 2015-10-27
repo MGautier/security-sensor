@@ -148,8 +148,17 @@ class Firewall(Source):
             insert_db["S_MAC"] = '-'
             insert_db["D_MAC"] = '-'
 
-        insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
-        insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
+        try:
+            insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
+        except Exception as ex:
+            print "S_IP_ID Exception -> ", ex
+            insert_db["S_IP_ID"] = '-'
+
+        try:
+            insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
+        except Exception as ex:
+            print "D_IP_ID Exception -> ", ex
+            insert_db["D_IP_ID"] = '-'
 
         insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
         insert_db["TAG"] = self.get_tag(line)
