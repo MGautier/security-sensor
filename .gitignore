@@ -1,0 +1,11 @@
+# Python class
+*.pyc
+*.pyo
+
+# Pygtail offset
+
+*.offset
+
+# Others
+
+*~
