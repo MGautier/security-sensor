@@ -47,7 +47,7 @@ class Firewall(Source):
         while True:
 			for self.line in Pygtail(self.path_source):
 				print "Procesando linea --> " + str(self.line) #sys.stdout.write(self.line)
-				self.get_log_values(re.split("\W? ", self.line))
+				self.processLine(self.line)
 
 
         self._db_.close_db()
@@ -61,8 +61,10 @@ class Firewall(Source):
         #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
 
-    def get_log_values(self, line):
+    def processLine(self, line):
 
+
+        line = re.split("\W? ", self.line)
         insert_db = {} #Diccionario con los valores del log iptables
 
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
