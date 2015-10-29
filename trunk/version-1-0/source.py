@@ -22,15 +22,6 @@ class Source(threading.Thread):
         """
         pass
 
-    def join(self):
-        """
-        Sobrecarga del método join de la clase Thread.
-        Al ser el que engloba los resultados del hilo, a través
-        de él devolvemos los valores que necesitamos procesar
-        en el controlador.
-        """
-        pass
-
     def process(self):
         pass
 
