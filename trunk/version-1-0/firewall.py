@@ -21,18 +21,18 @@ class Firewall(Source):
 
 
         line = re.split("\W? ", line)
-        insert_db = {} #Diccionario con los valores del log iptables
+        register = {} #Diccionario con los valores del log iptables
 
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
-        insert_db["Timestamp"] = self.day_log + " " + str(line[2])
-        if(self.check_date_bd(insert_db["Timestamp"])):
+        register["Timestamp"] = self.day_log + " " + str(line[2])
+        if(self.check_date_bd(register["Timestamp"])):
             
             
             rows = RowsDatabase(self._db_.num_columns_table('events'))
         
-            insert_db["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+            register["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
-            #ahora = datetime.strptime(''.join(self.insert_db["Timestamp"]), "%Y %b %d %H:%M:%S")
+            #ahora = datetime.strptime(''.join(self.register["Timestamp"]), "%Y %b %d %H:%M:%S")
             #despues = datetime.now()
             #print "Ahora: ", ahora
             #print "Despues: ", despues
@@ -48,68 +48,68 @@ class Firewall(Source):
 
             if (re.compile('SRC')).search(tag_str):
                 if self.tag_log.index('SRC') > 0:
-                    insert_db["S_IP"] = self.get_ip('SRC',str(line))
+                    register["S_IP"] = self.get_ip('SRC',str(line))
                     self.tag_log.remove('SRC')
             else:
-                insert_db["S_IP"] = '-'
+                register["S_IP"] = '-'
 
             if (re.compile('DST')).search(tag_str):
                 if self.tag_log.index('DST') > 0:
-                    insert_db["D_IP"] = self.get_ip('DST',str(line))
+                    register["D_IP"] = self.get_ip('DST',str(line))
                     self.tag_log.remove('DST')
             else:
-                insert_db["D_IP"] = '-'
+                register["D_IP"] = '-'
 
             if (re.compile('SPT')).search(tag_str):
                 if self.tag_log.index('SPT') > 0:
-                    insert_db["S_PORT"] =  self.get_port('SPT',str(line))
+                    register["S_PORT"] =  self.get_port('SPT',str(line))
                     self.tag_log.remove('SPT')
             else:
-                insert_db["S_PORT"] =  '-'
+                register["S_PORT"] =  '-'
 
             if (re.compile('DPT')).search(tag_str):
                 if self.tag_log.index('DPT') > 0:
-                    insert_db["D_PORT"] =  self.get_port('DPT',str(line))
+                    register["D_PORT"] =  self.get_port('DPT',str(line))
                     self.tag_log.remove('DPT')
             else:
-                insert_db["D_PORT"] = '-'
+                register["D_PORT"] = '-'
 
             if (re.compile('PROTO')).search(tag_str):
                 if self.tag_log.index('PROTO') > 0:
-                    insert_db["Protocol"] =  self.regexp('PROTO',str(line))
+                    register["Protocol"] =  self.regexp('PROTO',str(line))
                     self.tag_log.remove('PROTO')
             else:
-                insert_db["Protocol"] =  '-'
+                register["Protocol"] =  '-'
 
             if (re.compile('MAC')).search(tag_str):
                 if self.tag_log.index('MAC') > 0:
-                    insert_db["S_MAC"] =  self.regexp('MAC',str(line))
-                    insert_db["D_MAC"] =  self.regexp('MAC',str(line))
+                    register["S_MAC"] =  self.regexp('MAC',str(line))
+                    register["D_MAC"] =  self.regexp('MAC',str(line))
                     self.tag_log.remove('MAC')
             else:
-                insert_db["S_MAC"] = '-'
-                insert_db["D_MAC"] = '-'
+                register["S_MAC"] = '-'
+                register["D_MAC"] = '-'
 
             try:
-                insert_db["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["S_IP"])+"'")[0][0]
+                register["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["S_IP"])+"'")[0][0]
             except Exception as ex:
                 print "S_IP_ID Exception -> ", ex
-                insert_db["S_IP_ID"] = '-'
+                register["S_IP_ID"] = '-'
 
             try:
-                insert_db["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(insert_db["D_IP"])+"'")[0][0]
+                register["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["D_IP"])+"'")[0][0]
             except Exception as ex:
                 print "D_IP_ID Exception -> ", ex
-                insert_db["D_IP_ID"] = '-'
+                register["D_IP_ID"] = '-'
 
-            insert_db["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
-            insert_db["TAG"] = self.get_tag(line)
+            register["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+            register["TAG"] = self.get_tag(line)
             #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-            insert_db["Info_Proc"] = self.get_id_process(line)
-            insert_db["Info_Source"] = '-'
+            register["Info_Proc"] = self.get_id_process(line)
+            register["Info_Source"] = '-'
 
 
-            rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
+            rows.insert_value((None,register["Timestamp"],register["Timestamp_insert"],register["S_IP"],register["D_IP"],register["S_PORT"],register["D_PORT"],register["Protocol"],register["S_MAC"],register["D_MAC"],register["S_IP_ID"],register["D_IP_ID"],register["Info_RAW"],register["Info_Proc"],register["TAG"]))
 
             self._db_.insert_row('events',rows)
             print "---> Fin de procesado de linea"
