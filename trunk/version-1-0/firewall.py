@@ -38,7 +38,7 @@ class Firewall(Source):
         """
         self._db_ = DatabaseModel(self.db)
 
-        #self.input_source("description")
+        #self.input_source("description") #Sirve esto para algo???
 
 
         self.line = []
@@ -361,21 +361,4 @@ class Firewall(Source):
 
 
         self._db_.close_db()
-
-    def items_list(self):
-        """
-        Método que nos devuelve el número de items que tiene
-        la lista, que no, el número de elementos de los que
-        se compone cada una de ellas."""
-
-        self.count = 0
-
-        # No se hace distinción si la lista contiene una linea
-        # vacía o no. Esa distinción se hará a la hora de extraer
-        # la información de cada item.
-
-        for self.aux in self.result:
-            self.count += 1
-
-        return self.count
 
