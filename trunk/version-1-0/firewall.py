@@ -341,24 +341,3 @@ class Firewall(Source):
 
 
         return hostname
-
-        
-
-
-    def process(self):
-        """
-        Método que procesa los datos obtenidos y los
-        introduce en la base de datos correspondiente.
-        """
-        self._db_ = DatabaseModel(self.db)
-
-        self.input_source("description")
-
-        #Ahora toca introducir los campos extraidos de log para iptables
-        for self.i in range(self.items_list()):
-
-            self.get_log_values(self.result[self.i])
-
-
-        self._db_.close_db()
-
