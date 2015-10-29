@@ -31,34 +31,20 @@ class Source(threading.Thread):
         """
         Sobrecarga de metodo run de la clase Thread.
         """
-        print "Inicio"
+
         self._db_ = DatabaseModel(self.db_name)
 
-        #self.input_source("description") #Sirve esto para algo???
+        line = []
 
-
-        self.line = []
-
-        self.log_file = open(self.path_source, 'r')
         while True:
-			for self.line in Pygtail(self.path_source):
-				print "Procesando linea --> " + str(self.line) #sys.stdout.write(self.line)
-				self.processLine(self.line)
+			for line in Pygtail(self.path_source):
+				print "Procesando linea --> " + str(line)
+				self.processLine(line)
 
 
         self._db_.close_db()
 
-        
-        #for self.line in self.log_file:
-
-        #    if(self.line.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
-        #        self.result.append(re.split("\W? ", self.line))
-
-        #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
-
-    def process(self):
-        pass
 
     def processLine(self):
         pass
