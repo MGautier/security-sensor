@@ -42,6 +42,19 @@ class Firewall(Source):
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
 
+#			etiquetas = ['SRC',  'DST']
+#			db_column = ['S_IP', 'S_IP']
+#
+#			for etiqueta in etiquetas:
+#				if (re.compile(etiqueta)).search(tag_str):
+#					if self.tag_log.index('SRC') > 0:
+#						register["S_IP"] = self.get_ip('SRC',str(line))
+#						self.tag_log.remove('SRC')
+#				else:
+#					register["S_IP"] = '-'
+					
+
+
             for iter in tag_split:
                 if len(iter.split('=')) == 2:
                     self.tag_log.append((iter.split('='))[0].strip('\' '))
@@ -112,6 +125,8 @@ class Firewall(Source):
             rows.insert_value((None,register["Timestamp"],register["Timestamp_insert"],register["S_IP"],register["D_IP"],register["S_PORT"],register["D_PORT"],register["Protocol"],register["S_MAC"],register["D_MAC"],register["S_IP_ID"],register["D_IP_ID"],register["Info_RAW"],register["Info_Proc"],register["TAG"]))
 
             self._db_.insert_row('events',rows)
+            
+            print "---> Insertado registro: " + str(register)
             print "---> Fin de procesado de linea"
 
     def regexp(self, source, values):
