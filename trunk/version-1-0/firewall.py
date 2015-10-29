@@ -36,16 +36,27 @@ class Firewall(Source):
         """
         Sobrecarga de metodo run de la clase Thread.
         """
+        self._db_ = DatabaseModel(self.db)
+
+        #self.input_source("description")
+
 
         self.line = []
 
         self.log_file = open(self.path_source, 'r')
-        #for self.line in Pygtail(self.path_source):
-            #sys.stdout.write(self.line)
-        for self.line in self.log_file:
+        while True:
+			for self.line in Pygtail(self.path_source):
+				print "Procesando linea --> " + str(self.line) #sys.stdout.write(self.line)
+				self.get_log_values(re.split("\W? ", self.line))
 
-            if(self.line.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
-                self.result.append(re.split("\W? ", self.line))
+
+        self._db_.close_db()
+
+        
+        #for self.line in self.log_file:
+
+        #    if(self.line.__len__() > 1): # Si es menor o igual que 1 la linea del log está vacía
+        #        self.result.append(re.split("\W? ", self.line))
 
         #print "en ejecución con parámetros %s y %s" % (self.args, self._source_)
         return
@@ -143,7 +154,7 @@ class Firewall(Source):
             rows.insert_value((None,insert_db["Timestamp"],insert_db["Timestamp_insert"],insert_db["S_IP"],insert_db["D_IP"],insert_db["S_PORT"],insert_db["D_PORT"],insert_db["Protocol"],insert_db["S_MAC"],insert_db["D_MAC"],insert_db["S_IP_ID"],insert_db["D_IP_ID"],insert_db["Info_RAW"],insert_db["Info_Proc"],insert_db["TAG"]))
 
             self._db_.insert_row('events',rows)
-        
+            print "---> Fin de procesado de linea"
 
     def regexp(self, source, values):
 
@@ -151,15 +162,15 @@ class Firewall(Source):
 
     def check_date_bd(self, values):
 
-        log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
+		log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
         #bd_date = datetime.strptime(''.join(self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")), "%Y %b %d %H:%M:%S")
 
-        print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
-        print "LOG-DATE: ", log_date
-        #print "BD-DATE: ", bd_date
-        #print log_date > bd_date
-        return True
-        #return log_date > bd_date
+		print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
+		print "LOG-DATE: ", log_date
+		#print "BD-DATE: ", bd_date
+		#print log_date > bd_date
+		return True
+		#return log_date > bd_date
 
     def get_id_process(self, values):
 
@@ -331,10 +342,6 @@ class Firewall(Source):
 
         return hostname
 
-    def input_source(self, description):
-        """
-        Método
-        """
         
 
 
@@ -372,13 +379,3 @@ class Firewall(Source):
 
         return self.count
 
-    def join(self):
-        """
-        Sobrecarga del método join de la clase Thread.
-        Al ser el que engloba los resultados del hilo, a través
-        de él devolvemos los valores que necesitamos procesar
-        en el controlador.
-        """
-        super(Source, self).join()
-        self.process()
-        return self.result
