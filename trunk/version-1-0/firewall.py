@@ -42,57 +42,23 @@ class Firewall(Source):
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
 
-#			etiquetas = ['SRC',  'DST']
-#			db_column = ['S_IP', 'S_IP']
-#
-#			for etiqueta in etiquetas:
-#				if (re.compile(etiqueta)).search(tag_str):
-#					if self.tag_log.index('SRC') > 0:
-#						register["S_IP"] = self.get_ip('SRC',str(line))
-#						self.tag_log.remove('SRC')
-#				else:
-#					register["S_IP"] = '-'
-					
-
+            etiquetas = ['SRC',  'DST', 'SPT', 'DPT', 'PROTO']
+            db_column = ['S_IP', 'D_IP', 'S_PORT', 'D_PORT', 'Protocol']
 
             for iter in tag_split:
                 if len(iter.split('=')) == 2:
                     self.tag_log.append((iter.split('='))[0].strip('\' '))
 
-            if (re.compile('SRC')).search(tag_str):
-                if self.tag_log.index('SRC') > 0:
-                    register["S_IP"] = self.get_ip('SRC',str(line))
-                    self.tag_log.remove('SRC')
-            else:
-                register["S_IP"] = '-'
 
-            if (re.compile('DST')).search(tag_str):
-                if self.tag_log.index('DST') > 0:
-                    register["D_IP"] = self.get_ip('DST',str(line))
-                    self.tag_log.remove('DST')
-            else:
-                register["D_IP"] = '-'
+            for etiqueta in etiquetas:
+                if (re.compile(etiqueta)).search(tag_str):
+                    if self.tag_log.index(etiqueta) > 0:
+                        register[db_column.pop(0)] = self.get_ip(etiqueta,str(line))
+                        self.tag_log.remove('SRC')
+                else:
+                    register[db_column.pop(0)] = '-'
+					
 
-            if (re.compile('SPT')).search(tag_str):
-                if self.tag_log.index('SPT') > 0:
-                    register["S_PORT"] =  self.get_port('SPT',str(line))
-                    self.tag_log.remove('SPT')
-            else:
-                register["S_PORT"] =  '-'
-
-            if (re.compile('DPT')).search(tag_str):
-                if self.tag_log.index('DPT') > 0:
-                    register["D_PORT"] =  self.get_port('DPT',str(line))
-                    self.tag_log.remove('DPT')
-            else:
-                register["D_PORT"] = '-'
-
-            if (re.compile('PROTO')).search(tag_str):
-                if self.tag_log.index('PROTO') > 0:
-                    register["Protocol"] =  self.regexp('PROTO',str(line))
-                    self.tag_log.remove('PROTO')
-            else:
-                register["Protocol"] =  '-'
 
             if (re.compile('MAC')).search(tag_str):
                 if self.tag_log.index('MAC') > 0:
