@@ -10,8 +10,8 @@ import time
 from source import Source
 from datetime import date
 from datetime import datetime
-from pygtail import Pygtail
-from databasemodel import DatabaseModel
+
+
 from rowsdatabase import RowsDatabase
 
 
@@ -20,20 +20,12 @@ class Firewall(Source):
     def __init__(self, db_name=None, group=None, target=None, name=None,
                  args=(), source=None, verbose=None):
         
-        Source.__init__(self, db_name=None, group=None, target=None, name=None,
-                        args=(), source=None, verbose=None)
-        self.args = args
-        self._source_ = source
+        Source.__init__(self, db_name, group, target, name,
+                        args, source, verbose)
 
-        self.tag_log = []
 
         #self.result = []
 
-
-    def run(self):
-        """
-        Sobrecarga de metodo run de la clase Thread.
-        """
 
 
     def processLine(self, line):

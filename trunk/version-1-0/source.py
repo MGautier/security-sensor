@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import threading
+from databasemodel import DatabaseModel
+from pygtail import Pygtail
 
 
 class Source(threading.Thread):
@@ -14,7 +16,11 @@ class Source(threading.Thread):
         """
         threading.Thread.__init__(self, group=group, target=target, name=name, verbose=verbose)
 
-		self.db_name = db_name
+        self.args = args
+        self._source_ = source
+        self.tag_log = []
+
+        self.db_name = db_name
         self.type_source = source['T']
         self.model_source = source['M']
         self.path_source = source['P']
@@ -25,6 +31,7 @@ class Source(threading.Thread):
         """
         Sobrecarga de metodo run de la clase Thread.
         """
+        print "Inicio"
         self._db_ = DatabaseModel(self.db_name)
 
         #self.input_source("description") #Sirve esto para algo???
