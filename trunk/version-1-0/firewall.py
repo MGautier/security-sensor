@@ -17,21 +17,10 @@ from rowsdatabase import RowsDatabase
 
 class Firewall(Source):
 
-    def __init__(self, db_name=None, group=None, target=None, name=None,
-                 args=(), source=None, verbose=None):
-        
-        Source.__init__(self, db_name, group, target, name,
-                        args, source, verbose)
-
-
-        #self.result = []
-
-
-
     def processLine(self, line):
 
 
-        line = re.split("\W? ", self.line)
+        line = re.split("\W? ", line)
         insert_db = {} #Diccionario con los valores del log iptables
 
         self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
