@@ -50,11 +50,11 @@ class DatabaseModel(object):
 
             self.cursor.execute('''create table if not exists events
             (ID_events INTEGER PRIMARY KEY ASC, Timestamp VARCHAR(60),
-            Timestamp_insert VARCHAR(60),
-            S_IP VARCHAR(60), D_IP VARCHAR(60), S_PORT INTEGER,
-            D_PORT INTEGER, Protocol CHARACTER(20), S_MAC VARCHAR(17),
-            D_MAC VARCHAR(17), S_IP_ID INTEGER, D_IP_ID INTEGER,
-            Info_RAW TEXT, Info_Proc INTEGER, Info_Source INTEGER,
+            Timestamp_Insert_DB VARCHAR(60),
+            Source_IP VARCHAR(60), Dest_IP VARCHAR(60), Source_PORT INTEGER,
+            Dest_PORT INTEGER, Protocol CHARACTER(20), Source_MAC VARCHAR(17),
+            Dest_MAC VARCHAR(17), ID_IP_Source INTEGER, ID_IP_Dest INTEGER,
+            RAW_Info TEXT, Additional_Info INTEGER, ID_Source_Log INTEGER,
             TAG VARCHAR(255)
             )''')
 
