@@ -30,7 +30,7 @@ class Firewall(Source):
             
             rows = RowsDatabase(self._db_.num_columns_table('events'))
         
-            register["Timestamp_insert"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+            register["Timestamp_Insert_DB"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
             #ahora = datetime.strptime(''.join(self.register["Timestamp"]), "%Y %b %d %H:%M:%S")
             #despues = datetime.now()
@@ -43,7 +43,7 @@ class Firewall(Source):
             tag_split = tag_str.split(',')
 
             etiquetas = ['SRC',  'DST', 'SPT', 'DPT', 'PROTO']
-            db_column = ['S_IP', 'D_IP', 'S_PORT', 'D_PORT', 'Protocol']
+            db_column = ['Source_IP', 'Dest_IP', 'Source_PORT', 'Dest_PORT', 'Protocol']
 
             for iter in tag_split:
                 if len(iter.split('=')) == 2:
@@ -62,33 +62,33 @@ class Firewall(Source):
 
             if (re.compile('MAC')).search(tag_str):
                 if self.tag_log.index('MAC') > 0:
-                    register["S_MAC"] =  self.regexp('MAC',str(line))
-                    register["D_MAC"] =  self.regexp('MAC',str(line))
+                    register["Source_MAC"] =  self.regexp('MAC',str(line))
+                    register["Dest_MAC"] =  self.regexp('MAC',str(line))
                     self.tag_log.remove('MAC')
             else:
-                register["S_MAC"] = '-'
-                register["D_MAC"] = '-'
+                register["Source_MAC"] = '-'
+                register["Dest_MAC"] = '-'
 
             try:
-                register["S_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["S_IP"])+"'")[0][0]
+                register["ID_IP_Source"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["Source_IP"])+"'")[0][0]
             except Exception as ex:
-                print "S_IP_ID Exception -> ", ex
-                register["S_IP_ID"] = '-'
+                print "ID_IP_Source Exception -> ", ex
+                register["ID_IP_Source"] = '-'
 
             try:
-                register["D_IP_ID"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["D_IP"])+"'")[0][0]
+                register["ID_IP_Dest"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["Dest_IP"])+"'")[0][0]
             except Exception as ex:
-                print "D_IP_ID Exception -> ", ex
-                register["D_IP_ID"] = '-'
+                print "ID_IP_Dest Exception -> ", ex
+                register["ID_IP_Dest"] = '-'
 
-            register["Info_RAW"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+            register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
             register["TAG"] = self.get_tag(line)
             #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-            register["Info_Proc"] = self.get_id_process(line)
-            register["Info_Source"] = '-'
+            register["Additional_Info"] = self.get_id_process(line)
+            register["ID_Source_Log"] = '-'
 
 
-            rows.insert_value((None,register["Timestamp"],register["Timestamp_insert"],register["S_IP"],register["D_IP"],register["S_PORT"],register["D_PORT"],register["Protocol"],register["S_MAC"],register["D_MAC"],register["S_IP_ID"],register["D_IP_ID"],register["Info_RAW"],register["Info_Proc"],register["TAG"]))
+            rows.insert_value((None,register["Timestamp"],register["Timestamp_Insert_DB"],register["Source_IP"],register["Dest_IP"],register["Source_PORT"],register["Dest_PORT"],register["Protocol"],register["Source_MAC"],register["Dest_MAC"],register["ID_IP_Source"],register["ID_IP_Dest"],register["RAW_Info"],register["Additional_Info"],register["TAG"]))
 
             self._db_.insert_row('events',rows)
             
