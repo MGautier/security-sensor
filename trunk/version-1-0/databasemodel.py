@@ -177,7 +177,7 @@ class DatabaseModel(object):
             self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
 
             self.database.commit()
-            print "Valores introducidos en la tabla %s" % table_name
+            
         except db.Error, e:
             print "insert_row :-> %s" % e.args
 
@@ -188,7 +188,7 @@ class DatabaseModel(object):
         para usar selecciones que nos permitan obtener información
         directa antes de introducir nueva (comprobaciones atómicas).
         """
-        print "QUERY", query_string
+        
         return_values = []
         try:
             self.cursor = self.database.cursor()

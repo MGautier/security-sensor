@@ -166,7 +166,7 @@ class Iptables(Source):
         # Si se vuelve a ejecutar cogerá los ids nuevos y no los ya
         # almacenados en la bd.
         
-        id_query = self._db_.query("select ID_Info from process where ID_Info = (select max(ID_Info) from process)")
+        id_query = self._db_.query("select ID_Info from additional_info where ID_Info = (select max(ID_Info) from additional_info)")
 
         return id_query[0][0]
 
