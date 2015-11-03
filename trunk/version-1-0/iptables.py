@@ -15,7 +15,7 @@ from datetime import datetime
 from rowsdatabase import RowsDatabase
 
 
-class Firewall(Source):
+class Iptables(Source):
 
     def processLine(self, line):
 
@@ -54,7 +54,7 @@ class Firewall(Source):
                 if (re.compile(etiqueta)).search(tag_str):
                     if self.tag_log.index(etiqueta) > 0:
                         register[db_column.pop(0)] = self.get_ip(etiqueta,str(line))
-                        self.tag_log.remove('SRC')
+                        self.tag_log.remove(etiqueta)
                 else:
                     register[db_column.pop(0)] = '-'
 					
