@@ -28,7 +28,7 @@ class DatabaseModel(object):
             self.cursor.execute('''pragma foreign_keys=ON''')
 
             self.cursor.execute('''create table if not exists ips
-            (ID_IP INTEGER PRIMARY KEY, Hostname VARCHAR(60),
+            (ID INTEGER PRIMARY KEY, IP VARCHAR(60), Hostname VARCHAR(60),
             Tag VARCHAR(255))''')
 
             self.cursor.execute('''create table if not exists ports

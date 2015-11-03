@@ -70,13 +70,13 @@ class Firewall(Source):
                 register["Dest_MAC"] = '-'
 
             try:
-                register["ID_IP_Source"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["Source_IP"])+"'")[0][0]
+                register["ID_IP_Source"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Source_IP"])+"'")[0][0]
             except Exception as ex:
                 print "ID_IP_Source Exception -> ", ex
                 register["ID_IP_Source"] = '-'
 
             try:
-                register["ID_IP_Dest"] = self._db_.query("select ID_IP from ips where Hostname = '"+"".join(register["Dest_IP"])+"'")[0][0]
+                register["ID_IP_Dest"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Dest_IP"])+"'")[0][0]
             except Exception as ex:
                 print "ID_IP_Dest Exception -> ", ex
                 register["ID_IP_Dest"] = '-'
@@ -265,7 +265,7 @@ class Firewall(Source):
         
         #self.rows.insert_value((self.ip_result, self.hostname, ))
         
-        id_ip = self._db_.query("select ID_IP from ips where Hostname = '"+hostname+"'")
+        id_ip = self._db_.query("select ID from ips where IP = '"+hostname+"'")
 
         #Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si la hay introduzco en el mismo id el valor, y sino
