@@ -84,7 +84,7 @@ class Firewall(Source):
             register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
             register["TAG"] = self.get_tag(line)
             #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
-            register["Additional_Info"] = self.get_id_process(line)
+            register["Additional_Info"] = self.get_id_additional_info(line)
             register["ID_Source_Log"] = '-'
 
 
@@ -111,9 +111,9 @@ class Firewall(Source):
 		return True
 		#return log_date > bd_date
 
-    def get_id_process(self, values):
+    def get_id_additional_info(self, values):
 
-        rows = RowsDatabase(self._db_.num_columns_table('process'))
+        rows = RowsDatabase(self._db_.num_columns_table('additional_info'))
         str_values = str(values)
         string = " ".join(values)
         info_dict = {}
@@ -161,12 +161,12 @@ class Firewall(Source):
 
         rows.insert_value(tuple(info_process))
 
-        self._db_.insert_row('process',rows)
+        self._db_.insert_row('additional_info',rows)
 
         # Si se vuelve a ejecutar cogerá los ids nuevos y no los ya
         # almacenados en la bd.
         
-        id_query = self._db_.query("select ID_process from process where ID_process = (select max(ID_process) from process)")
+        id_query = self._db_.query("select ID_Info from process where ID_Info = (select max(ID_Info) from process)")
 
         return id_query[0][0]
 
