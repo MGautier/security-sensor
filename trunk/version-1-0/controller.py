@@ -4,6 +4,9 @@
 from iptables import Iptables
 from datetime import date
 
+# Author: Moisés Gautier Gómez
+# Proyecto fin de carrera - Ing. en Informática
+# Universidad de Granada
 
 # Creamos un objeto del tipo Source y operamos con él
 

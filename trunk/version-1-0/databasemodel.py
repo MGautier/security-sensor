@@ -7,6 +7,10 @@ from columnsdatabase import ColumnsDatabase
 from rowsdatabase import RowsDatabase
 from datetime import datetime
 
+# Author: Moisés Gautier Gómez
+# Proyecto fin de carrera - Ing. en Informática
+# Universidad de Granada
+
 
 class DatabaseModel(object):
     """
@@ -66,7 +70,8 @@ class DatabaseModel(object):
         Crea una tabla en la base de datos instanciada por el objeto de clase.
         Además, también añade las columnas necesarias en su creación.
         """
-        self.create_query = table_columns.list_columns()
+
+        create_query = table_columns.list_columns()
 
         try:
             self.cursor = self.database.cursor()
@@ -122,33 +127,34 @@ class DatabaseModel(object):
         Método que permite listar todas las tablas de la base de datos.
         """
 
-        self.list = []
+        list = []
         try:
             self.cursor = self.database.cursor()
             self.cursor.execute("select name from sqlite_master where type = 'table'")
 
-            for self.iter in self.cursor.fetchall():
-                self.aux_string = "" + str(self.iter)
-                self.list.append((self.aux_string.replace("(u'", "")).replace("',)", ""))
+            for iter in self.cursor.fetchall():
+                string = "" + str(self.iter)
+                list.append((self.string.replace("(u'", "")).replace("',)", ""))
 
-            return self.list
+            return list
         except db.Error, e:
             print "list_tables :-> %s" % e.args
-        return self.list
+        return list
 
     def info_tables(self, table_name):
         """
         Método que nos permite visualizar la información de la tabla que queramos
         """
-        self.info = []
+        info = []
         try:
             self.cursor = self.database.cursor()
             self.cursor.execute("pragma table_info('%s')" % table_name)
-            self.info = [(self.record[1], self.record[2]) for self.record in self.cursor.fetchall()]
-            return self.info
+            info = [(record[1], record[2]) for record in self.cursor.fetchall()]
+            
         except db.Error, e:
             print "info_tables :-> %s" % e.args
-            return self.info
+            
+        return info
 
     def insert_row(self, table_name, values):
         """
@@ -156,25 +162,28 @@ class DatabaseModel(object):
         Ejemplo: INSERT INTO table_name VALUES(values)
         """
 
-        self.rows_value = self.check_columns_insert(table_name,values.get_rows())
+        rows_value = self.check_columns_insert(table_name,values.get_rows())
 
-        self.size_table = self.num_columns_table(table_name)
-        self.size_insert = ""
+        size_table = self.num_columns_table(table_name) #Numero de columnas de la tabla
+        size_insert = ""
+
+        #Numero de valores a introducir en una fila para el comando executemany
+        # de la api de sqlite en python
         
 
         try:
             self.cursor = self.database.cursor()
-            while self.size_table > 0:
-                if self.size_table - 1 != 0:
-                    self.size_insert += "?, "
+            while size_table > 0:
+                if size_table - 1 != 0:
+                    size_insert += "?, "
                 else:
-                    self.size_insert += "?"
+                    size_insert += "?"
 
-                self.size_table -= 1
+                size_table -= 1
 
-            print "-"
             
-            self.cursor.executemany(("insert or replace into " + table_name + " values("+ self.size_insert +" )"),  self.rows_value)
+            
+            self.cursor.executemany(("insert or replace into " + table_name + " values("+ size_insert +" )"),  rows_value)
 
             self.database.commit()
             
@@ -249,25 +258,25 @@ class DatabaseModel(object):
         de valores a introducir en la fila de la tabla. Si hay discordancia,
         introduce valores empty ' '
         """
-        self.list_checked = []
-        self.aux_checked = []
+        list_checked = []
+        aux_list_checked = []
 
         # Si el numero de columnas es mayor al numero de valores
         # que vamos a introducir, introducimos valores empty ' '
         # por cada columna que falta
 
-        for self.iterator in values:
+        for iterator in values:
 
-            self.aux_checked = self.iterator
+            aux_list_checked = iterator
 
-            if self.aux_checked.__len__() < self.num_columns_table(table_name):
+            if aux_list_checked.__len__() < self.num_columns_table(table_name):
 
-                while self.aux_checked.__len__() < self.num_columns_table(table_name):
-                    self.aux_checked += ('',)
+                while aux_list_checked.__len__() < self.num_columns_table(table_name):
+                    aux_list_checked += ('',)
 
-            self.list_checked.append(self.aux_checked)
+            list_checked.append(aux_list_checked)
 
-        return self.list_checked
+        return list_checked
 
     def close_db(self):
         """
@@ -275,6 +284,3 @@ class DatabaseModel(object):
         """
         self.database.close()
 
-
-#bd_pfc = DatabaseModel('proyecto_bd')
-#bd_pfc.close_db()

@@ -5,6 +5,9 @@ import threading
 from databasemodel import DatabaseModel
 from pygtail import Pygtail
 
+# Author: Moisés Gautier Gómez
+# Proyecto fin de carrera - Ing. en Informática
+# Universidad de Granada
 
 class Source(threading.Thread):
 
@@ -37,9 +40,9 @@ class Source(threading.Thread):
         line = []
 
         while True:
-			for line in Pygtail(self.path_source):
-				print "Procesando linea --> " + str(line)
-				self.processLine(line)
+            for line in Pygtail(self.path_source):
+                print "Procesando línea --> " + str(line)
+                self.processLine(line)
 
 
         self._db_.close_db()
@@ -47,5 +50,9 @@ class Source(threading.Thread):
         return
 
     def processLine(self):
+        """
+        Método que heredan las clases hijo que se encarga del procesado
+        de la información de las sources
+        """
         pass
 

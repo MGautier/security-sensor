@@ -10,12 +10,20 @@ import time
 from source import Source
 from datetime import date
 from datetime import datetime
-
-
 from rowsdatabase import RowsDatabase
+
+# Author: Moisés Gautier Gómez
+# Proyecto fin de carrera - Ing. en Informática
+# Universidad de Granada
+
 
 
 class Iptables(Source):
+
+    """
+    Clase hija que hereda de Source para el procesamiento de información
+    procedente de iptables.
+    """
 
     def processLine(self, line):
 
@@ -23,20 +31,14 @@ class Iptables(Source):
         line = re.split("\W? ", line)
         register = {} #Diccionario con los valores del log iptables
 
-        self.day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
-        register["Timestamp"] = self.day_log + " " + str(line[2])
+        day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
+        register["Timestamp"] = day_log + " " + str(line[2])
         if(self.check_date_bd(register["Timestamp"])):
             
             
             rows = RowsDatabase(self._db_.num_columns_table('events'))
         
             register["Timestamp_Insert_DB"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
-
-            #ahora = datetime.strptime(''.join(self.register["Timestamp"]), "%Y %b %d %H:%M:%S")
-            #despues = datetime.now()
-            #print "Ahora: ", ahora
-            #print "Despues: ", despues
-            #print ahora > despues
 
             self.tag_log = []
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
@@ -82,8 +84,7 @@ class Iptables(Source):
                 register["ID_IP_Dest"] = '-'
 
             register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
-            register["TAG"] = self.get_tag(line)
-            #Introducir los datos en una fila de la tabla Process y pasar el id a dicha entrada
+            register["TAG"] = self.get_message(line)
             register["Additional_Info"] = self.get_id_additional_info(line)
             register["ID_Source_Log"] = '-'
 
@@ -101,80 +102,80 @@ class Iptables(Source):
 
     def check_date_bd(self, values):
 
-		log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
+        log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
         #bd_date = datetime.strptime(''.join(self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")), "%Y %b %d %H:%M:%S")
 
-		print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
-		print "LOG-DATE: ", log_date
-		#print "BD-DATE: ", bd_date
-		#print log_date > bd_date
-		return True
-		#return log_date > bd_date
+        print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
+        print "LOG-DATE: ", log_date
+        #print "BD-DATE: ", bd_date
+        #print log_date > bd_date
+        return True
+    
 
     def get_id_additional_info(self, values):
 
         rows = RowsDatabase(self._db_.num_columns_table('additional_info'))
         str_values = str(values)
         string = " ".join(values)
-        info_dict = {}
+        _register = {}
         
         for it in self.tag_log:
             check_value = ((re.compile(it + '=\S+')).search(str_values))
 
             if check_value:
-                info_dict[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
+                _register[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
             else:
-                info_dict[""+it+""] = '-'
+                _register[""+it+""] = '-'
 
 
         if ((re.compile('URGP' + '=\S+')).search(str_values)):
-            info_dict["URGP"] = "URGP="+((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
+            _register["URGP"] = "URGP="+((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
 
         if (re.compile('ID=(.*) PROTO')).search(string):
-            info_dict["ID"] = "ID="+(re.compile('ID=(.*) PROTO')).search(string).group(1)
+            _register["ID"] = "ID="+(re.compile('ID=(.*) PROTO')).search(string).group(1)
 
         if (re.compile('RES=(.*) URGP')).search(string):
-            info_dict["RES"] = "RES="+(re.compile('RES=(.*) URGP')).search(string).group(1)
+            _register["RES"] = "RES="+(re.compile('RES=(.*) URGP')).search(string).group(1)
 
         # Hago el diccionario anterior para controlar las distintas
         # tags que nos da el log de iptables
         
-        info_process = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        info_process.insert(info_process.pop(0),None)
+        add_info_fields = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        add_info_fields.insert(add_info_fields.pop(0),None)
         count = 0
-        more_info_string = ""
-        for it in info_dict.values():
+        string = ""
+        for it in _register.values():
             if count <= 9:
                 count += 1
-                info_process.insert(info_process.pop(count),it)
+                add_info_fields.insert(add_info_fields.pop(count),it)
             else:
-                more_info_string += ""+it+" -- "
+                string += ""+it+" -- "
                 count += 1
 
         if count > 10:
-            info_process.insert(info_process.pop(11),more_info_string)
+            add_info_fields.insert(add_info_fields.pop(11),string)
 
 
-        for it in info_process:
+        for it in add_info_fields:
             if isinstance( it, int):
-                info_process.insert(info_process.pop(it),'-')
+                add_info_fields.insert(add_info_fields.pop(it),'-')
 
         rows.insert_value(tuple(info_process))
 
         self._db_.insert_row('additional_info',rows)
 
-        # Si se vuelve a ejecutar cogerá los ids nuevos y no los ya
-        # almacenados en la bd.
+        # Seleccionamos el último id de la tabla additional_info para insertar los nuevos datos
+        # en orden
         
         id_query = self._db_.query("select ID_Info from additional_info where ID_Info = (select max(ID_Info) from additional_info)")
 
         return id_query[0][0]
 
-    def get_tag(self, values):
+    def get_message(self, values):
 
-        self.string = " ".join(values)
+        string = " ".join(values)
         self.tag_log.remove('IPTMSG')
-        return (re.compile('IPTMSG=(.*) IN')).search(self.string).group(1)
+        return (re.compile('IPTMSG=(.*) IN')).search(string).group(1)
 
     def get_port(self, source, values):
 
@@ -215,7 +216,6 @@ class Iptables(Source):
 
                 if port_number == port_bd :
 
-                    print "PORT 1 ", port_1
                     rows.insert_value((port_bd, port_protocol, port_service, port_description, port_1[0]))
 
             #UDP
@@ -242,7 +242,6 @@ class Iptables(Source):
                         
                     if port_number == port_bd :
 
-                        print "PORT 2 ", port_2
                         rows.insert_value((port_bd, port_protocol, port_service, port_description, port_2[0]))
 
 

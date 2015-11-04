@@ -1,8 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Author: Moisés Gautier Gómez
+# Proyecto fin de carrera - Ing. en Informática
+# Universidad de Granada
+
 
 class RowsDatabase(object):
+
+    """
+    Clase que nos sirve para preparar secuencias de datos en una fila
+    para una tabla de nuestra base de datos
+    """
 
     def __init__(self, num_columns):
         """

@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Author: Moisés Gautier Gómez
+# Proyecto fin de carrera - Ing. en Informática
+# Universidad de Granada
+
+
 class ColumnsDatabase(object):
     """
     Clase que nos facilita la recolección de información para las columnas
@@ -33,7 +38,7 @@ class ColumnsDatabase(object):
     def delete_column(self, name_column):
         """Método que permite eliminar la columna previamente introducida"""
         try:
-            self.index = self.name_column.index(name_column)
+            index = self.name_column.index(name_column)
             self.name_column.remove(name_column)
             self.type_column.pop(self.index)
             print "Delete column", name_column, "..."
@@ -58,17 +63,17 @@ class ColumnsDatabase(object):
         Método consultor con el contenido de las columnas
         introducidas en formato cadena (para insertar en la query)
         """
-        self.listing = ""
-        if self.count() > 0:
-            for self.element in self.name_column:
-                self.index = self.name_column.index(self.element)
-                if self.index + 1 < self.count():
-                    self.listing += "" + self.name_column[self.index] + " " + self.type_column[self.index] + ", "
+        listing = ""
+        if count() > 0:
+            for element in self.name_column:
+                index = self.name_column.index(element)
+                if index + 1 < count():
+                    listing += "" + self.name_column[index] + " " + self.type_column[index] + ", "
                 else:
-                    self.listing += "" + self.name_column[self.index] + " " + self.type_column[self.index]
-            return self.listing
+                    listing += "" + self.name_column[index] + " " + self.type_column[index]
+            return listing
         else:
-            return self.listing
+            return listing
 
 
     def count(self):
@@ -77,18 +82,3 @@ class ColumnsDatabase(object):
             return len(self.name_column)
         else:
             return 0
-
-#col = ColumnsDatabase()
-
-#col.insert_column('col1','varchar(80)')
-#col.insert_column('col2','text')
-#col.insert_column('col3','integer')
-#col.list_columns()
-#col.delete_column('col1')
-#col.delete_column('col4')
-
-#print col.name_column_list()
-
-#print col.type_column_list()
-
-#print col.list_columns()
