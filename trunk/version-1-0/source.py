@@ -40,11 +40,17 @@ class Source(threading.Thread):
         line = []
 
         while True:
-            for line in Pygtail(self.path_source):
-                print "Procesando línea --> " + str(line)
-                self.processLine(line)
 
-
+            print "Pulsa intro para comenzar el análisis"
+            print "Escribe exit para abortar el programa\n"
+            exit = raw_input('')
+            if(exit != "exit"):
+                for line in Pygtail(self.path_source):
+                    print "Procesando línea --> " + str(line)
+                    self.processLine(line)
+            else:
+                break
+        
         self._db_.close_db()
 
         return
@@ -55,4 +61,3 @@ class Source(threading.Thread):
         de la información de las sources
         """
         pass
-

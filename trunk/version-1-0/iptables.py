@@ -103,7 +103,13 @@ class Iptables(Source):
     def check_date_bd(self, values):
 
         log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
-        #bd_date = datetime.strptime(''.join(self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")), "%Y %b %d %H:%M:%S")
+        bd_date = (self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)"))
+        if (bd_date):
+            print "BD-DATE", str(bd_date)
+        else:
+            print "false"
+        
+        
 
         print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
         print "LOG-DATE: ", log_date
@@ -252,7 +258,8 @@ class Iptables(Source):
 
     def get_ip(self, source, values):
 
-        hostname = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        hostname = '-'
         #print "HOST: ", hostname
         rows = RowsDatabase(self._db_.num_columns_table('ips'))
         aliaslist = "TAG"
@@ -271,9 +278,9 @@ class Iptables(Source):
         # se inserta un nuevo registro de ip en la tabla.
         
         if id_ip:
-            rows.insert_value((id_ip[0][0], hostname, aliaslist))
+            rows.insert_value((id_ip[0][0], ip, hostname, aliaslist))
         else:
-            rows.insert_value((None, hostname, aliaslist))
+            rows.insert_value((None, ip, hostname, aliaslist))
         
         self._db_.insert_row('ips',rows)
 
