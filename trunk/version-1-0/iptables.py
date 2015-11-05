@@ -160,7 +160,7 @@ class Iptables(Source):
             if isinstance( it, int):
                 add_info_fields.insert(add_info_fields.pop(it),'-')
 
-        rows.insert_value(tuple(info_process))
+        rows.insert_value(tuple(add_info_fields))
 
         self._db_.insert_row('additional_info',rows)
 
