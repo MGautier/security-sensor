@@ -28,13 +28,30 @@ class Iptables(Source):
     def read_config_file(self):
         config_file = open('./conf/iptables_conf.conf', 'r')
 
-        for line in config_file:
-            li = line.strip()
+        self.info_config_file = {}
+        for linea in config_file:
+            li = linea.strip()
+            regexp = re.split("\W? ", li)
             if not li.startswith("#"):
                 #Lineas que NO comiencen con el símbolo '#'
-                if not re.split("\W? ", li)[0] == '' :
+                if not regexp[0] == '' :
                     #Lineas que NO contengan nada
-                    print re.split("\W? ", li)
+                    key = regexp[0] #Almaceno la key del registro
+                    regexp.remove('') #Elimino el espacio en blanco de la lista
+
+                    if len(regexp) == 2:
+                        self.info_config_file[""+key+""] = (regexp[1]).strip('\' ')
+                    elif len(regexp) > 2:
+                        regexp.remove(key)
+                        #Elimino la key de la lista para concatenar como string
+                        #los siguientes elementos de la misma
+                        string = ""
+                        for expresion in regexp:
+                            string += expresion+" "
+
+                        self.info_config_file[""+key+""] = string
+
+        config_file.close()
 
     def processLine(self, line):
 
@@ -56,8 +73,13 @@ class Iptables(Source):
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
 
-            etiquetas = ['SRC',  'DST', 'SPT', 'DPT', 'PROTO']
-            db_column = ['Source_IP', 'Dest_IP', 'Source_PORT', 'Dest_PORT', 'Protocol']
+
+            db_column = ['Source_IP', 'Dest_IP', 'Source_PORT', 'Dest_PORT', 'Protocol', 'Source_MAC', 'Dest_MAC']
+
+            # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
+            # de configuracion a traves del registro info_config_file
+            
+            etiquetas = [self.info_config_file["Source_IP"],  self.info_config_file["Dest_IP"], self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"], self.info_config_file["Protocol"], self.info_config_file["Source_MAC"], self.info_config_file["Dest_MAC"]]
 
             for iter in tag_split:
                 if len(iter.split('=')) == 2:
@@ -65,23 +87,29 @@ class Iptables(Source):
 
 
             for etiqueta in etiquetas:
+                print "ETIQUETA ", etiqueta
+                print "TAG_STR ", tag_str
                 if (re.compile(etiqueta)).search(tag_str):
+                    print "goku"
                     if self.tag_log.index(etiqueta) > 0:
-                        register[db_column.pop(0)] = self.get_ip(etiqueta,str(line))
+                        db_column_name = db_column[0]
+                        print "HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", db_column_name
+                        register[db_column.pop(0)] = self.regexp(db_column_name,etiqueta,str(line))
                         self.tag_log.remove(etiqueta)
                 else:
+                    print "ADIOOOOOOOOOOS", etiqueta
                     register[db_column.pop(0)] = '-'
 					
 
 
-            if (re.compile('MAC')).search(tag_str):
-                if self.tag_log.index('MAC') > 0:
-                    register["Source_MAC"] =  self.regexp('MAC',str(line))
-                    register["Dest_MAC"] =  self.regexp('MAC',str(line))
-                    self.tag_log.remove('MAC')
-            else:
-                register["Source_MAC"] = '-'
-                register["Dest_MAC"] = '-'
+            #if (re.compile('MAC')).search(tag_str):
+            #    if self.tag_log.index('MAC') > 0:
+            #        register["Source_MAC"] =  self.regexp('MAC',str(line))
+            #        register["Dest_MAC"] =  self.regexp('MAC',str(line))
+            #        self.tag_log.remove('MAC')
+            #else:
+            #    register["Source_MAC"] = '-'
+            #    register["Dest_MAC"] = '-'
 
             try:
                 register["ID_IP_Source"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Source_IP"])+"'")[0][0]
@@ -108,8 +136,13 @@ class Iptables(Source):
             print "---> Insertado registro: " + str(register)
             print "---> Fin de procesado de linea"
 
-    def regexp(self, source, values):
+    def regexp(self, db_column_name, source, values):
 
+        type(db_column_name)
+        print "COLUMNA ", db_column_name
+        print "SOURCE ", source
+            
+            
         return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def check_date_bd(self, values):
@@ -297,4 +330,4 @@ class Iptables(Source):
         self._db_.insert_row('ips',rows)
 
 
-        return hostname
+        return ip
