@@ -25,17 +25,23 @@ class Iptables(Source):
     procedente de iptables.
     """
 
-    def __init__(self):
-        self.config_file = open('./conf/iptables_conf.conf', 'r')
+    def read_config_file(self):
+        config_file = open('./conf/iptables_conf.conf', 'r')
 
-        for line in self.config_file:
-            print line
+        for line in config_file:
+            li = line.strip()
+            if not li.startswith("#"):
+                #Lineas que NO comiencen con el símbolo '#'
+                if not re.split("\W? ", li)[0] == '' :
+                    #Lineas que NO contengan nada
+                    print re.split("\W? ", li)
 
     def processLine(self, line):
 
 
         line = re.split("\W? ", line)
         register = {} #Diccionario con los valores del log iptables
+        self.read_config_file()
 
         day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
         register["Timestamp"] = day_log + " " + str(line[2])
