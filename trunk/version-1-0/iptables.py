@@ -25,6 +25,12 @@ class Iptables(Source):
     procedente de iptables.
     """
 
+    def __init__(self):
+        self.config_file = open('./conf/iptables_conf.conf', 'r')
+
+        for line in self.config_file:
+            print line
+
     def processLine(self, line):
 
 
