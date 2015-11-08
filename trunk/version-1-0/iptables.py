@@ -67,6 +67,7 @@ class Iptables(Source):
 
 
         line = re.split("\W? ", line)
+
         register = {} #Diccionario con los valores del log iptables
         self.read_config_file()
 
@@ -139,8 +140,8 @@ class Iptables(Source):
 
             self._db_.insert_row('events',rows)
             
-            print "---> Insertado registro: " + str(register)
-            print "---> Fin de procesado de linea"
+            print "---> Insertado registro: " + str(register) + "\n"
+            print "---> Fin de procesado de linea \n"
 
     def regexp(self, db_column_name, source, values):
         
@@ -157,14 +158,16 @@ class Iptables(Source):
         log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
         query_bd_date = self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
 
-        if not query_bd_date:
-            return True
-        else:
-            bd_date = datetime.strptime((str(query_bd_date)).split('\'')[1], "%Y %b %d %H:%M:%S")
-            if log_date <= bd_date:
-                return True
-            else:
-                return False
+        #if not query_bd_date:
+        #    return True
+        #else:
+        #    bd_date = datetime.strptime((str(query_bd_date)).split('\'')[1], "%Y %b %d %H:%M:%S")
+        #    if log_date <= bd_date:
+        #        return True
+        #    else:
+        #        return False
+
+        return True
 
     def get_id_additional_info(self, values):
 
@@ -172,10 +175,26 @@ class Iptables(Source):
         str_values = str(values)
         string = " ".join(values)
         _register = {}
+
+        ##########################################################################################################################################################
+        # for keys in self.info_config_file.keys():                                                                                                              #
+        #                                                                                                                                                        #
+        #     if "Info" in keys:                                                                                                                                 #
+        #         print "INFO KEYS ", keys                                                                                                                       #
+        #         value = self.info_config_file[""+keys+""]                                                                                                      #
+        #         print "INFO VALUES ", value                                                                                                                    #
+        #         check_value = ((re.compile(value + '=\S+')).search(str_values))                                                                                #
+        #                                                                                                                                                        #
+        #         if check_value:                                                                                                                                #
+        #             _register[""+value+""] = value + "="+ (((re.compile(value + '=\S+')).search(str_values)).group(0)).split(value + '=')[1].strip("',\\n\']") #
+        #         else:                                                                                                                                          #
+        #             _register[""+value+""] = '-'                                                                                                               #
+        ##########################################################################################################################################################
+
         
         for it in self.tag_log:
             check_value = ((re.compile(it + '=\S+')).search(str_values))
-
+        
             if check_value:
                 _register[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
             else:
@@ -192,16 +211,26 @@ class Iptables(Source):
             _register["RES"] = "RES="+(re.compile('RES=(.*) URGP')).search(string).group(1)
 
         # Hago el diccionario anterior para controlar las distintas
-        # tags que nos da el log de iptables
+        # tags que nos da el log de iptables / archivo de configuracion
         
         add_info_fields = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         add_info_fields.insert(add_info_fields.pop(0),None)
         count = 0
         string = ""
-        for it in _register.values():
+        _register_bd = []
+        
+        
+        for it in _register.keys:
             if count <= 9:
                 count += 1
-                add_info_fields.insert(add_info_fields.pop(count),it)
+                if it in self.info_config_file.values():
+                    field = _register[""+self.info_config_file["Info_"+str(count)]+""]
+                    print "FIELD ", field
+                    add_info_fields.insert(add_info_fields.pop(count),field)
+                else:
+                    print "IT ", it
+                    add_info_fields.insert(add_info_fields.pop(count),'-')
+                    string += ""+it+" --"
             else:
                 string += ""+it+" -- "
                 count += 1
@@ -214,6 +243,7 @@ class Iptables(Source):
             if isinstance( it, int):
                 add_info_fields.insert(add_info_fields.pop(it),'-')
 
+        print "_REGISTER ", add_info_fields
         rows.insert_value(tuple(add_info_fields))
 
         self._db_.insert_row('additional_info',rows)
@@ -320,7 +350,7 @@ class Iptables(Source):
         
         #self.rows.insert_value((self.ip_result, self.hostname, ))
         
-        id_ip = self._db_.query("select ID from ips where IP = '"+hostname+"'")
+        id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
 
         #Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si la hay introduzco en el mismo id el valor, y sino
