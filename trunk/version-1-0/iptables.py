@@ -62,6 +62,7 @@ class Iptables(Source):
 
         day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
         register["Timestamp"] = day_log + " " + str(line[2])
+
         if(self.check_date_bd(register["Timestamp"])):
             
             
@@ -79,7 +80,7 @@ class Iptables(Source):
             # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
             # de configuracion a traves del registro info_config_file
             
-            etiquetas = [self.info_config_file["Source_IP"],  self.info_config_file["Dest_IP"], self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"], self.info_config_file["Protocol"], self.info_config_file["Source_MAC"], self.info_config_file["Dest_MAC"]]
+            etiquetas = [self.info_config_file["Source_IP"],  self.info_config_file["Dest_IP"], self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"], self.info_config_file["Protocol"]]
 
             for iter in tag_split:
                 if len(iter.split('=')) == 2:
@@ -99,14 +100,14 @@ class Iptables(Source):
 					
 
 
-            #if (re.compile('MAC')).search(tag_str):
-            #    if self.tag_log.index('MAC') > 0:
-            #        register["Source_MAC"] =  self.regexp('MAC',str(line))
-            #        register["Dest_MAC"] =  self.regexp('MAC',str(line))
-            #        self.tag_log.remove('MAC')
-            #else:
-            #    register["Source_MAC"] = '-'
-            #    register["Dest_MAC"] = '-'
+            if (re.compile('MAC')).search(tag_str):
+                if self.tag_log.index('MAC') > 0:
+                    register["Source_MAC"] =  self.regexp("Source_MAC",'MAC',str(line))
+                    register["Dest_MAC"] =  self.regexp("Dest_MAC",'MAC',str(line))
+                    self.tag_log.remove('MAC')
+            else:
+                register["Source_MAC"] = '-'
+                register["Dest_MAC"] = '-'
 
             try:
                 register["ID_IP_Source"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Source_IP"])+"'")[0][0]
@@ -135,12 +136,12 @@ class Iptables(Source):
 
     def regexp(self, db_column_name, source, values):
 
-        type(db_column_name)
-        print "COLUMNA ", db_column_name
-        print "SOURCE ", source
-            
-            
-        return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        if "IP" in db_column_name:
+            return self.get_ip(source,values)
+        elif "PORT" in db_column_name:
+            return self.get_port(source,values)
+        else:
+            return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def check_date_bd(self, values):
 
