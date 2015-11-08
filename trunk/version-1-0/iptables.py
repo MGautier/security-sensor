@@ -90,14 +90,11 @@ class Iptables(Source):
                 print "ETIQUETA ", etiqueta
                 print "TAG_STR ", tag_str
                 if (re.compile(etiqueta)).search(tag_str):
-                    print "goku"
                     if self.tag_log.index(etiqueta) > 0:
                         db_column_name = db_column[0]
-                        print "HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", db_column_name
                         register[db_column.pop(0)] = self.regexp(db_column_name,etiqueta,str(line))
                         self.tag_log.remove(etiqueta)
                 else:
-                    print "ADIOOOOOOOOOOS", etiqueta
                     register[db_column.pop(0)] = '-'
 					
 
