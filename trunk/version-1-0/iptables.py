@@ -26,6 +26,12 @@ class Iptables(Source):
     """
 
     def read_config_file(self):
+        """
+        Método modificador de la clase que abre y lee el contenido del archivo
+        de configuracion para el software iptables. El contenido del archivo se
+        almacena internamente en los atributos de la clase.
+        """
+        
         config_file = open('./conf/iptables_conf.conf', 'r')
 
         self.info_config_file = {}
@@ -54,6 +60,10 @@ class Iptables(Source):
         config_file.close()
 
     def processLine(self, line):
+        """
+        Método modificador que procesa e introduce en un bd la informacion
+        relevante del filtrado de paquetes, en este caso, de iptables.
+        """
 
 
         line = re.split("\W? ", line)
@@ -88,8 +98,6 @@ class Iptables(Source):
 
 
             for etiqueta in etiquetas:
-                print "ETIQUETA ", etiqueta
-                print "TAG_STR ", tag_str
                 if (re.compile(etiqueta)).search(tag_str):
                     if self.tag_log.index(etiqueta) > 0:
                         db_column_name = db_column[0]
@@ -135,6 +143,7 @@ class Iptables(Source):
             print "---> Fin de procesado de linea"
 
     def regexp(self, db_column_name, source, values):
+        
 
         if "IP" in db_column_name:
             return self.get_ip(source,values)
@@ -146,20 +155,16 @@ class Iptables(Source):
     def check_date_bd(self, values):
 
         log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
-        bd_date = (self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)"))
-        if (bd_date):
-            print "BD-DATE", str(bd_date)
-        else:
-            print "false"
-        
-        
+        query_bd_date = self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
 
-        print "FECHA ", self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
-        print "LOG-DATE: ", log_date
-        #print "BD-DATE: ", bd_date
-        #print log_date > bd_date
-        return True
-    
+        if not query_bd_date:
+            return True
+        else:
+            bd_date = datetime.strptime((str(query_bd_date)).split('\'')[1], "%Y %b %d %H:%M:%S")
+            if log_date <= bd_date:
+                return True
+            else:
+                return False
 
     def get_id_additional_info(self, values):
 
@@ -223,8 +228,9 @@ class Iptables(Source):
     def get_message(self, values):
 
         string = " ".join(values)
-        self.tag_log.remove('IPTMSG')
-        return (re.compile('IPTMSG=(.*) IN')).search(string).group(1)
+        msg = self.info_config_file["Message"]
+        self.tag_log.remove(msg)
+        return (re.compile(''+msg+'=(.*) IN')).search(string).group(1)
 
     def get_port(self, source, values):
 
