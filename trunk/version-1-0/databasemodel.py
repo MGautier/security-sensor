@@ -41,7 +41,7 @@ class DatabaseModel(object):
             Tag VARCHAR(25), PRIMARY KEY (ID_PORT, Protocol))''')
 
             self.cursor.execute('''create table if not exists log_sources
-            (ID_Log_Sources VARCHAR(70) PRIMARY KEY, Description TEXT,
+            (ID_Log_Sources INTEGER PRIMARY KEY ASC, Description TEXT,
             Type VARCHAR(100), Model VARCHAR(255), Active TINYINT,
             Software_class VARCHAR(50), Path VARCHAR(20))''')
 
@@ -58,7 +58,7 @@ class DatabaseModel(object):
             Source_IP VARCHAR(60), Dest_IP VARCHAR(60), Source_PORT INTEGER,
             Dest_PORT INTEGER, Protocol CHARACTER(20), Source_MAC VARCHAR(17),
             Dest_MAC VARCHAR(17), ID_IP_Source INTEGER, ID_IP_Dest INTEGER,
-            RAW_Info TEXT, Additional_Info INTEGER, ID_Source_Log INTEGER,
+            RAW_Info TEXT, Additional_Info INTEGER, ID_Log_Source INTEGER,
             TAG VARCHAR(255)
             )''')
 
