@@ -133,7 +133,7 @@ class Iptables(Source):
             register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
             register["TAG"] = self.get_message(line)
             register["Additional_Info"] = self.get_id_additional_info(line)
-            register["ID_Source_Log"] = self.get_id_source_log()
+            register["ID_Log_Source"] = self.get_id_source_log()
 
 
             rows.insert_value((None,register["Timestamp"],register["Timestamp_Insert_DB"],register["Source_IP"],register["Dest_IP"],register["Source_PORT"],register["Dest_PORT"],register["Protocol"],register["Source_MAC"],register["Dest_MAC"],register["ID_IP_Source"],register["ID_IP_Dest"],register["RAW_Info"],register["Additional_Info"],register["TAG"]))

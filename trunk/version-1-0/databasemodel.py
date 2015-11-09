@@ -43,7 +43,11 @@ class DatabaseModel(object):
             self.cursor.execute('''create table if not exists log_sources
             (ID_Log_Sources INTEGER PRIMARY KEY ASC, Description TEXT,
             Type VARCHAR(100), Model VARCHAR(255), Active TINYINT,
-            Software_class VARCHAR(50), Path VARCHAR(20))''')
+            Software_class VARCHAR(50), Path VARCHAR(20),
+            Info_1 VARCHAR(25), Info_2 VARCHAR(25), Info_3 VARCHAR(25),
+            Info_4 VARCHAR(25), Info_5 VARCHAR(25), Info_6 VARCHAR(25),
+            Info_7 VARCHAR(25), Info_8 VARCHAR(25), Info_9 VARCHAR(25),
+            Info_10 VARCHAR(25), More_Info VARCHAR(255))''')
 
             self.cursor.execute('''create table if not exists additional_info
             (ID_Info INTEGER PRIMARY KEY ASC, Info_1 VARCHAR(255),
