@@ -154,12 +154,20 @@ class Iptables(Source):
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def get_id_source_log(self):
+        
+    def set_source_log(self):
 
         rows = RowsDatabase(self._db_.num_columns_table('log_sources'))
         _register = {}
-        print "INFO-TABLES ", self._db_.columns_name_tables('log_sources')
-        _register["Description"] = self.info_config_file["Description"]
+        
+        for it in self._db_.columns_name_tables('log_sources'):
+            if not ("ID" in it) | ("More_Info" in it):
+                _register[""+it+""] = self.info_config_file[""+it+""]
 
+        
+        rows.insert_value((None,_register["Description"],_register["Type"],_register["Model"],_register["Active"],_register["Software_class"],_register["Path"], _register["Info_1"], _register["Info_2"], _register["Info_3"], _register["Info_4"], _register["Info_5"], _register["Info_6"], _register["Info_7"], _register["Info_8"], _register["Info_9"], _register["Info_10"]))
+        self._db_.insert_row('log_sources',rows)
+        
         return 1
         
         

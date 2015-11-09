@@ -47,7 +47,7 @@ class DatabaseModel(object):
             Info_1 VARCHAR(25), Info_2 VARCHAR(25), Info_3 VARCHAR(25),
             Info_4 VARCHAR(25), Info_5 VARCHAR(25), Info_6 VARCHAR(25),
             Info_7 VARCHAR(25), Info_8 VARCHAR(25), Info_9 VARCHAR(25),
-            Info_10 VARCHAR(25), More_Info VARCHAR(255))''')
+            Info_10 VARCHAR(25)''')
 
             self.cursor.execute('''create table if not exists additional_info
             (ID_Info INTEGER PRIMARY KEY ASC, Info_1 VARCHAR(255),
