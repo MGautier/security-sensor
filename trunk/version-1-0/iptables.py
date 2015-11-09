@@ -218,23 +218,29 @@ class Iptables(Source):
         count = 0
         string = ""
         _register_bd = []
-        
-        
-        for it in _register.keys:
-            if count <= 9:
-                count += 1
-                if it in self.info_config_file.values():
-                    field = _register[""+self.info_config_file["Info_"+str(count)]+""]
-                    print "FIELD ", field
-                    add_info_fields.insert(add_info_fields.pop(count),field)
-                else:
-                    print "IT ", it
-                    add_info_fields.insert(add_info_fields.pop(count),'-')
-                    string += ""+it+" --"
-            else:
-                string += ""+it+" -- "
-                count += 1
 
+        _exit = True
+        
+        while _exit:
+            count += 1
+            field = self.info_config_file["Info_"+str(count)]
+            if field in _register.keys():
+                add_info_fields.insert(add_info_fields.pop(count),_register[""+field+""])
+            else:
+                add_info_fields.insert(add_info_fields.pop(count),'-')
+
+            if count == 10:
+                _exit = False
+                
+        for key in _register.keys():
+            if not key in self.info_config_file.values():
+                # Antes he almacenado por orden todos los Info_X, y ahora en More_Info
+                # introduzco los que no coinciden con lo especificado en el archivo
+                # de configuracion
+                value = _register[""+key+""]
+                string += ""+value+" -- "
+                count += 1
+        
         if count > 10:
             add_info_fields.insert(add_info_fields.pop(11),string)
 
@@ -243,7 +249,7 @@ class Iptables(Source):
             if isinstance( it, int):
                 add_info_fields.insert(add_info_fields.pop(it),'-')
 
-        print "_REGISTER ", add_info_fields
+
         rows.insert_value(tuple(add_info_fields))
 
         self._db_.insert_row('additional_info',rows)
