@@ -160,6 +160,18 @@ class DatabaseModel(object):
             
         return info
 
+    def columns_name_tables(self, table_name):
+        """
+        Método que nos permite visualizar en forma de lista los nombres de las
+        columnas de una tabla.
+        """
+        info = []
+
+        for it in self.info_tables(table_name):
+            info.append(it[0])
+        
+        return info
+
     def insert_row(self, table_name, values):
         """
         Método para introducir valores en nuestra tabla de la base de datos.

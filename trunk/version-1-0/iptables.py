@@ -154,6 +154,15 @@ class Iptables(Source):
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def get_id_source_log(self):
+
+        rows = RowsDatabase(self._db_.num_columns_table('log_sources'))
+        _register = {}
+        print "INFO-TABLES ", self._db_.columns_name_tables('log_sources')
+        _register["Description"] = self.info_config_file["Description"]
+
+        return 1
+        
+        
         
 
     def check_date_bd(self, values):
