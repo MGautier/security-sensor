@@ -176,22 +176,7 @@ class Iptables(Source):
         string = " ".join(values)
         _register = {}
 
-        ##########################################################################################################################################################
-        # for keys in self.info_config_file.keys():                                                                                                              #
-        #                                                                                                                                                        #
-        #     if "Info" in keys:                                                                                                                                 #
-        #         print "INFO KEYS ", keys                                                                                                                       #
-        #         value = self.info_config_file[""+keys+""]                                                                                                      #
-        #         print "INFO VALUES ", value                                                                                                                    #
-        #         check_value = ((re.compile(value + '=\S+')).search(str_values))                                                                                #
-        #                                                                                                                                                        #
-        #         if check_value:                                                                                                                                #
-        #             _register[""+value+""] = value + "="+ (((re.compile(value + '=\S+')).search(str_values)).group(0)).split(value + '=')[1].strip("',\\n\']") #
-        #         else:                                                                                                                                          #
-        #             _register[""+value+""] = '-'                                                                                                               #
-        ##########################################################################################################################################################
 
-        
         for it in self.tag_log:
             check_value = ((re.compile(it + '=\S+')).search(str_values))
         
@@ -217,8 +202,6 @@ class Iptables(Source):
         add_info_fields.insert(add_info_fields.pop(0),None)
         count = 0
         string = ""
-        _register_bd = []
-
         _exit = True
         
         while _exit:
