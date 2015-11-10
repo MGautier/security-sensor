@@ -58,6 +58,7 @@ class Iptables(Source):
                         self.info_config_file[""+key+""] = string
 
         config_file.close()
+        self.set_log_source()
 
     def processLine(self, line):
         """
@@ -133,7 +134,13 @@ class Iptables(Source):
             register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
             register["TAG"] = self.get_message(line)
             register["Additional_Info"] = self.get_id_additional_info(line)
-            register["ID_Log_Source"] = self.get_id_source_log()
+
+            try:
+                register["ID_Log_Source"] = self._db_.query("select ID_Log_Sources from log_sources where Type = 'Iptables'")[0][0]
+            except Exception as ex:
+                print "ID_Log_Source Exception -> ", ex
+                register["ID_Log_Source"] = '-'
+           
 
 
             rows.insert_value((None,register["Timestamp"],register["Timestamp_Insert_DB"],register["Source_IP"],register["Dest_IP"],register["Source_PORT"],register["Dest_PORT"],register["Protocol"],register["Source_MAC"],register["Dest_MAC"],register["ID_IP_Source"],register["ID_IP_Dest"],register["RAW_Info"],register["Additional_Info"],register["TAG"]))
@@ -153,25 +160,21 @@ class Iptables(Source):
         else:
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
-    def get_id_source_log(self):
-        
-    def set_source_log(self):
+    def set_log_source(self):
 
         rows = RowsDatabase(self._db_.num_columns_table('log_sources'))
         _register = {}
-        
-        for it in self._db_.columns_name_tables('log_sources'):
-            if not ("ID" in it) | ("More_Info" in it):
-                _register[""+it+""] = self.info_config_file[""+it+""]
+        _query_bd = self._db_.query("select ID_Log_Sources from log_sources where Type ='Iptables'")
+        if not _query_bd:
 
-        
-        rows.insert_value((None,_register["Description"],_register["Type"],_register["Model"],_register["Active"],_register["Software_class"],_register["Path"], _register["Info_1"], _register["Info_2"], _register["Info_3"], _register["Info_4"], _register["Info_5"], _register["Info_6"], _register["Info_7"], _register["Info_8"], _register["Info_9"], _register["Info_10"]))
-        self._db_.insert_row('log_sources',rows)
-        
-        return 1
-        
-        
-        
+            for it in self._db_.columns_name_tables('log_sources'):
+                if not ("ID" in it) | ("More_Info" in it):
+                    _register[""+it+""] = self.info_config_file[""+it+""]
+
+            rows.insert_value((None,_register["Description"],_register["Type"],_register["Model"],_register["Active"],_register["Software_class"],_register["Path"], _register["Info_1"], _register["Info_2"], _register["Info_3"], _register["Info_4"], _register["Info_5"], _register["Info_6"], _register["Info_7"], _register["Info_8"], _register["Info_9"], _register["Info_10"]))
+
+            self._db_.insert_row('log_sources',rows)
+
 
     def check_date_bd(self, values):
 
