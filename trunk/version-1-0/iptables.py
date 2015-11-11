@@ -151,7 +151,10 @@ class Iptables(Source):
             print "---> Fin de procesado de linea \n"
 
     def regexp(self, db_column_name, source, values):
-        
+        """
+        Método que nos permite usar expresiones regulares para
+        filtrar los contenidos de la línea log de iptables.
+        """
 
         if "IP" in db_column_name:
             return self.get_ip(source,values)
@@ -161,6 +164,10 @@ class Iptables(Source):
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
     def set_log_source(self):
+        """
+        Método que establece el contenido de la tabla log_sources una
+        vez ha comenzado el procesamiento del log de iptables.
+        """
 
         rows = RowsDatabase(self._db_.num_columns_table('log_sources'))
         _register = {}
@@ -177,6 +184,10 @@ class Iptables(Source):
 
 
     def check_date_bd(self, values):
+        """
+        Método para comprobar si los timestamp son consecutivos entre
+        la bd y los timestamp obtenidos del log. [No se usa]
+        """
 
         log_date = datetime.strptime(''.join(values), "%Y %b %d %H:%M:%S")
         query_bd_date = self._db_.query("select Timestamp from events where ID_events = (select max(ID_events) from events)")
@@ -193,6 +204,10 @@ class Iptables(Source):
         return True
 
     def get_id_additional_info(self, values):
+        """
+        Método que procesa la información necesaria para almacenarla
+        en la tabla additional_info desde el log.
+        """
 
         rows = RowsDatabase(self._db_.num_columns_table('additional_info'))
         str_values = str(values)
@@ -268,6 +283,10 @@ class Iptables(Source):
         return id_query[0][0]
 
     def get_message(self, values):
+        """
+        Método que permite almacenar el mensaje asignado a la línea de log
+        de iptables.
+        """
 
         string = " ".join(values)
         msg = self.info_config_file["Message"]
@@ -275,6 +294,10 @@ class Iptables(Source):
         return (re.compile(''+msg+'=(.*) IN')).search(string).group(1)
 
     def get_port(self, source, values):
+        """
+        Método que permite extraer información de los puertos con los que iptables
+        está trabajando desde el sistema (si es que hay información asociada a ellos)
+        """
 
         port_bd = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
@@ -348,6 +371,9 @@ class Iptables(Source):
         return eval(str(port_bd))
 
     def get_ip(self, source, values):
+        """
+        Método que permite extraer información de la ip del log desde el propio sistema
+        o obteniendola de la red."""
 
         ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
         hostname = '-'
