@@ -394,6 +394,8 @@ class Iptables(Source):
 
             try:
                 address_dns = reversename.from_address(str(ip))
+                # Incluyo las siguientes lineas para dotar de menor tiempo
+                # de procesamiento de resolucion de dns
                 resolver = dns.resolver.Resolver()
                 resolver.timeout = 1
                 resolver.lifetime = 1
