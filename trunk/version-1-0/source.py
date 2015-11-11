@@ -46,8 +46,9 @@ class Source(threading.Thread):
             exit = raw_input('')
             if(exit != "exit"):
                 for line in Pygtail(self.path_source):
-                    print "\n Procesando línea --> " + str(line)
-                    self.processLine(line)
+                    if len(line) > 1:
+                        print "\n Procesando línea --> " + str(line)
+                        self.processLine(line)
             else:
                 break
         

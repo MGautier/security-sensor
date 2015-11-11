@@ -67,12 +67,11 @@ class Iptables(Source):
         relevante del filtrado de paquetes, en este caso, de iptables.
         """
 
-
         line = re.split("\W? ", line)
 
         register = {} #Diccionario con los valores del log iptables
         self.read_config_file()
-
+    
         day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
         register["Timestamp"] = day_log + " " + str(line[2])
 
