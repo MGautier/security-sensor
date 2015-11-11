@@ -11,6 +11,7 @@ from source import Source
 from datetime import date
 from datetime import datetime
 from rowsdatabase import RowsDatabase
+from dns import resolver, reversename
 
 # Author: Moisés Gautier Gómez
 # Proyecto fin de carrera - Ing. en Informática
@@ -376,30 +377,31 @@ class Iptables(Source):
         o obteniendola de la red."""
 
         ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-        hostname = '-'
-        #print "HOST: ", hostname
-        rows = RowsDatabase(self._db_.num_columns_table('ips'))
-        aliaslist = "TAG"
-        #self.ipaddrlist = ""
-        #try:
-        #    self.hostname, self.aliaslist, self.ipaddrlist = socket.gethostbyaddr(self.ip_result)
-        #except socket.error as msg:
-        #    print msg
-        
-        #self.rows.insert_value((self.ip_result, self.hostname, ))
-        
         id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
 
         #Aquí lo que hago es comprobar si existe una ip similar en la
-        # tabla. Si la hay introduzco en el mismo id el valor, y sino
-        # se inserta un nuevo registro de ip en la tabla.
-        
-        if id_ip:
-            rows.insert_value((id_ip[0][0], ip, hostname, aliaslist))
-        else:
-            rows.insert_value((None, ip, hostname, aliaslist))
-        
-        self._db_.insert_row('ips',rows)
+        # tabla. Si no existe se inserta un nuevo registro de ip en la tabla.
+        if not id_ip:
+            
+            hostname = '-'
+            rows = RowsDatabase(self._db_.num_columns_table('ips'))
+            aliaslist = '-'
+            ipaddrlist = ""
+            try:
+                hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ip)
+            except socket.error as msg:
+                print "Get_ip -> ", msg
+
+            try:
+                address_dns = reversename.from_address(str(ip))
+                if hostname == '-':
+                    for rdata in resolver.query(address_dns, "PTR"):
+                        hostname = rdata
+            except Exception as ex:
+                print " "
+
+            rows.insert_value((None, ip, hostname, '-'))
+            self._db_.insert_row('ips',rows)
 
 
         return ip
