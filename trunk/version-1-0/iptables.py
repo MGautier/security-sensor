@@ -394,6 +394,9 @@ class Iptables(Source):
 
             try:
                 address_dns = reversename.from_address(str(ip))
+                resolver = dns.resolver.Resolver()
+                resolver.timeout = 1
+                resolver.lifetime = 1
                 if hostname == '-':
                     for rdata in resolver.query(address_dns, "PTR"):
                         hostname = rdata
