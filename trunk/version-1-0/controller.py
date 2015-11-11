@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from iptables import Iptables
+from glances import Glances
 from datetime import date
 
 # Author: Moisés Gautier Gómez
@@ -10,7 +11,10 @@ from datetime import date
 
 # Creamos un objeto del tipo Source y operamos con él
 
-test = Iptables('proyecto_bd', args=(1,), source={'T' : 'Firewall', 'M' 
-: 'iptables', 'P' : './iptables.log'})
-test.start()
+#test = Iptables('proyecto_bd', args=(1,), source={'T' : 'Firewall', 'M' : 'iptables', 'P' : './iptables.log'})
+#test.start()
+
+test_2 = Glances('bd_project', args=(1,), source={'T' : 'Watchdog', 'M' : 'glances', 'P' : './glances.csv'})
+test_2.start()
+
 
