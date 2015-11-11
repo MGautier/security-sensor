@@ -71,85 +71,86 @@ class Iptables(Source):
 
         register = {} #Diccionario con los valores del log iptables
         self.read_config_file()
-    
-        day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
-        register["Timestamp"] = day_log + " " + str(line[2])
+        try:
+            day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
+            register["Timestamp"] = day_log + " " + str(line[2])
 
-        if(self.check_date_bd(register["Timestamp"])):
+            if(self.check_date_bd(register["Timestamp"])):
             
-            
-            rows = RowsDatabase(self._db_.num_columns_table('events'))
+                rows = RowsDatabase(self._db_.num_columns_table('events'))
         
-            register["Timestamp_Insert_DB"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+                register["Timestamp_Insert_DB"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
-            self.tag_log = []
-            tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
-            tag_split = tag_str.split(',')
+                self.tag_log = []
+                tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
+                tag_split = tag_str.split(',')
 
 
-            db_column = ['Source_IP', 'Dest_IP', 'Source_PORT', 'Dest_PORT', 'Protocol', 'Source_MAC', 'Dest_MAC']
+                db_column = ['Source_IP', 'Dest_IP', 'Source_PORT', 'Dest_PORT', 'Protocol', 'Source_MAC', 'Dest_MAC']
 
-            # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
-            # de configuracion a traves del registro info_config_file
+                # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
+                # de configuracion a traves del registro info_config_file
             
-            etiquetas = [self.info_config_file["Source_IP"],  self.info_config_file["Dest_IP"], self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"], self.info_config_file["Protocol"]]
+                etiquetas = [self.info_config_file["Source_IP"],  self.info_config_file["Dest_IP"], self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"], self.info_config_file["Protocol"]]
 
-            for iter in tag_split:
-                if len(iter.split('=')) == 2:
-                    self.tag_log.append((iter.split('='))[0].strip('\' '))
+                for iter in tag_split:
+                    if len(iter.split('=')) == 2:
+                        self.tag_log.append((iter.split('='))[0].strip('\' '))
 
 
-            for etiqueta in etiquetas:
-                if (re.compile(etiqueta)).search(tag_str):
-                    if self.tag_log.index(etiqueta) > 0:
-                        db_column_name = db_column[0]
-                        register[db_column.pop(0)] = self.regexp(db_column_name,etiqueta,str(line))
-                        self.tag_log.remove(etiqueta)
-                else:
-                    register[db_column.pop(0)] = '-'
+                for etiqueta in etiquetas:
+                    if (re.compile(etiqueta)).search(tag_str):
+                        if self.tag_log.index(etiqueta) > 0:
+                            db_column_name = db_column[0]
+                            register[db_column.pop(0)] = self.regexp(db_column_name,etiqueta,str(line))
+                            self.tag_log.remove(etiqueta)
+                    else:
+                        register[db_column.pop(0)] = '-'
 					
 
 
-            if (re.compile('MAC')).search(tag_str):
-                if self.tag_log.index('MAC') > 0:
-                    register["Source_MAC"] =  self.regexp("Source_MAC",'MAC',str(line))
-                    register["Dest_MAC"] =  self.regexp("Dest_MAC",'MAC',str(line))
-                    self.tag_log.remove('MAC')
-            else:
-                register["Source_MAC"] = '-'
-                register["Dest_MAC"] = '-'
+                if (re.compile('MAC')).search(tag_str):
+                    if self.tag_log.index('MAC') > 0:
+                        register["Source_MAC"] =  self.regexp("Source_MAC",'MAC',str(line))
+                        register["Dest_MAC"] =  self.regexp("Dest_MAC",'MAC',str(line))
+                        self.tag_log.remove('MAC')
+                else:
+                    register["Source_MAC"] = '-'
+                    register["Dest_MAC"] = '-'
 
-            try:
-                register["ID_IP_Source"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Source_IP"])+"'")[0][0]
-            except Exception as ex:
-                print "ID_IP_Source Exception -> ", ex
-                register["ID_IP_Source"] = '-'
+                try:
+                    register["ID_IP_Source"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Source_IP"])+"'")[0][0]
+                except Exception as ex:
+                    print "ID_IP_Source Exception -> ", ex
+                    register["ID_IP_Source"] = '-'
 
-            try:
-                register["ID_IP_Dest"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Dest_IP"])+"'")[0][0]
-            except Exception as ex:
-                print "ID_IP_Dest Exception -> ", ex
-                register["ID_IP_Dest"] = '-'
+                try:
+                    register["ID_IP_Dest"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Dest_IP"])+"'")[0][0]
+                except Exception as ex:
+                    print "ID_IP_Dest Exception -> ", ex
+                    register["ID_IP_Dest"] = '-'
 
-            register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
-            register["TAG"] = self.get_message(line)
-            register["Additional_Info"] = self.get_id_additional_info(line)
+                register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+                register["TAG"] = self.get_message(line)
+                register["Additional_Info"] = self.get_id_additional_info(line)
 
-            try:
-                register["ID_Log_Source"] = self._db_.query("select ID_Log_Sources from log_sources where Type = 'Iptables'")[0][0]
-            except Exception as ex:
-                print "ID_Log_Source Exception -> ", ex
-                register["ID_Log_Source"] = '-'
+                try:
+                    register["ID_Log_Source"] = self._db_.query("select ID_Log_Sources from log_sources where Type = 'Iptables'")[0][0]
+                except Exception as ex:
+                    print "ID_Log_Source Exception -> ", ex
+                    register["ID_Log_Source"] = '-'
            
 
 
-            rows.insert_value((None,register["Timestamp"],register["Timestamp_Insert_DB"],register["Source_IP"],register["Dest_IP"],register["Source_PORT"],register["Dest_PORT"],register["Protocol"],register["Source_MAC"],register["Dest_MAC"],register["ID_IP_Source"],register["ID_IP_Dest"],register["RAW_Info"],register["Additional_Info"],register["TAG"]))
+                rows.insert_value((None,register["Timestamp"],register["Timestamp_Insert_DB"],register["Source_IP"],register["Dest_IP"],register["Source_PORT"],register["Dest_PORT"],register["Protocol"],register["Source_MAC"],register["Dest_MAC"],register["ID_IP_Source"],register["ID_IP_Dest"],register["RAW_Info"],register["Additional_Info"],register["TAG"]))
 
-            self._db_.insert_row('events',rows)
+                self._db_.insert_row('events',rows)
             
-            print "---> Insertado registro: " + str(register) + "\n"
-            print "---> Fin de procesado de linea \n"
-
+                print "---> Insertado registro: " + str(register) + "\n"
+                print "---> Fin de procesado de linea \n"
+        except Exception as ex:
+            print "ProcessLine -> ", ex
+            
     def regexp(self, db_column_name, source, values):
         """
         Método que nos permite usar expresiones regulares para
