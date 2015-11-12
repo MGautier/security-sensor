@@ -36,27 +36,11 @@ class Iptables(Source):
         config_file = open('./conf/iptables_conf.conf', 'r')
 
         self.info_config_file = {}
-        for linea in config_file:
-            li = linea.strip()
-            regexp = re.split("\W? ", li)
-            if not li.startswith("#"):
-                #Lineas que NO comiencen con el símbolo '#'
-                if not regexp[0] == '' :
-                    #Lineas que NO contengan nada
-                    key = regexp[0] #Almaceno la key del registro
-                    regexp.remove('') #Elimino el espacio en blanco de la lista
+        for linea in config_file.readlines():
 
-                    if len(regexp) == 2:
-                        self.info_config_file[""+key+""] = (regexp[1]).strip('\' ')
-                    elif len(regexp) > 2:
-                        regexp.remove(key)
-                        #Elimino la key de la lista para concatenar como string
-                        #los siguientes elementos de la misma
-                        string = ""
-                        for expresion in regexp:
-                            string += expresion+" "
-
-                        self.info_config_file[""+key+""] = string
+            pline = linea.strip().split('\t')
+            if pline[0] != '' and pline[0][0] != '#':
+                self.info_config_file[pline[0]] = pline[1]
 
         config_file.close()
         self.set_log_source()
