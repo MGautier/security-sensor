@@ -111,6 +111,8 @@ class Iptables(Source):
             self._db_.insert_row('packet_events_information',rows)
 
             id_packet_events = self._db_.query("select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
+
+            self.set_packet_additional_info(line, id_packet_events)
             row_events = RowsDatabase(self._db_.num_columns_table('events'))
 
             try:
@@ -295,18 +297,18 @@ class Iptables(Source):
                 if not ("ID" in it) | ("More_Info" in it):
                     _register[""+it+""] = self.info_config_file[""+it+""]
 
-            rows.insert_value((None,_register["Description"],_register["Type"],_register["Model"],_register["Active"],_register["Software_class"],_register["Path"], _register["Info_1"], _register["Info_2"], _register["Info_3"], _register["Info_4"], _register["Info_5"], _register["Info_6"], _register["Info_7"], _register["Info_8"], _register["Info_9"], _register["Info_10"]))
+            rows.insert_value((None,_register["Description"],_register["Type"],_register["Model"],_register["Active"],_register["Software_class"],_register["Path"]))
 
             self._db_.insert_row('log_sources',rows)
 
 
-    def get_id_additional_info(self, values):
+    def set_packet_additional_info(self, values, id_packet_event):
         """
         Método que procesa la información necesaria para almacenarla
-        en la tabla additional_info desde el log.
+        en la tabla packet_additional_info desde el log.
         """
 
-        rows = RowsDatabase(self._db_.num_columns_table('additional_info'))
+        rows = RowsDatabase(self._db_.num_columns_table('packet_additional_info'))
         str_values = str(values)
         string = " ".join(values)
         _register = {}
@@ -316,68 +318,31 @@ class Iptables(Source):
             check_value = ((re.compile(it + '=\S+')).search(str_values))
         
             if check_value:
-                _register[""+it+""] = it + "="+ (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
+                _register[""+it+""] = (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
             else:
                 _register[""+it+""] = '-'
 
 
         if ((re.compile('URGP' + '=\S+')).search(str_values)):
-            _register["URGP"] = "URGP="+((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
+            _register["URGP"] = ((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
 
         if (re.compile('ID=(.*) PROTO')).search(string):
-            _register["ID"] = "ID="+(re.compile('ID=(.*) PROTO')).search(string).group(1)
+            _register["ID"] = (re.compile('ID=(.*) PROTO')).search(string).group(1)
 
         if (re.compile('RES=(.*) URGP')).search(string):
-            _register["RES"] = "RES="+(re.compile('RES=(.*) URGP')).search(string).group(1)
+            _register["RES"] = (re.compile('RES=(.*) URGP')).search(string).group(1)
 
         # Hago el diccionario anterior para controlar las distintas
         # tags que nos da el log de iptables / archivo de configuracion
         
-        add_info_fields = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        add_info_fields.insert(add_info_fields.pop(0),None)
-        count = 0
-        string = ""
-        _exit = True
         
-        while _exit:
-            count += 1
-            field = self.info_config_file["Info_"+str(count)]
-            if field in _register.keys():
-                add_info_fields.insert(add_info_fields.pop(count),_register[""+field+""])
-            else:
-                add_info_fields.insert(add_info_fields.pop(count),'-')
-
-            if count == 10:
-                _exit = False
-                
-        for key in _register.keys():
-            if not key in self.info_config_file.values():
-                # Antes he almacenado por orden todos los Info_X, y ahora en More_Info
-                # introduzco los que no coinciden con lo especificado en el archivo
-                # de configuracion
-                value = _register[""+key+""]
-                string += ""+value+" -- "
-                count += 1
-        
-        if count > 10:
-            add_info_fields.insert(add_info_fields.pop(11),string)
+        for it in _register:
+            
+            rows.insert_value((id_packet_event[0][0], it, _register[it]))
 
 
-        for it in add_info_fields:
-            if isinstance( it, int):
-                add_info_fields.insert(add_info_fields.pop(it),'-')
+        self._db_.insert_row('packet_additional_info',rows)
 
-
-        rows.insert_value(tuple(add_info_fields))
-
-        self._db_.insert_row('additional_info',rows)
-
-        # Seleccionamos el último id de la tabla additional_info para insertar los nuevos datos
-        # en orden
-        
-        id_query = self._db_.query("select ID_Info from additional_info where ID_Info = (select max(ID_Info) from additional_info)")
-
-        return id_query[0][0]
 
     def get_message(self, values):
         """
