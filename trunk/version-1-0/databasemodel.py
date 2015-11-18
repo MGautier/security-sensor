@@ -182,8 +182,6 @@ class DatabaseModel(object):
         Ejemplo: INSERT INTO table_name VALUES(values)
         """
 
-        print "TABLE_NAME ", table_name
-        print "VALUES ", values.get_rows()
         rows_value = self.check_columns_insert(table_name,values.get_rows())
 
         size_table = self.num_columns_table(table_name) #Numero de columnas de la tabla
