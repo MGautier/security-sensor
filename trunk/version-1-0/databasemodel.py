@@ -35,6 +35,11 @@ class DatabaseModel(object):
             (ID INTEGER PRIMARY KEY, IP VARCHAR(60), Hostname VARCHAR(60),
             Tag VARCHAR(255))''')
 
+            self.cursor.execute('''create table if not exists events
+            (ID INTEGER PRIMARY KEY ASC, Timestamp VARCHAR(100),
+            Timestamp_Insertion VARCHAR(100), ID_Source INTEGER,
+            Comment TEXT''')
+
             self.cursor.execute('''create table if not exists ports
             (ID_PORT INTEGER, Protocol VARCHAR(10),
             Service VARCHAR(60), Description VARCHAR(100),
