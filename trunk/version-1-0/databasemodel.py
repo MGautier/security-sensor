@@ -38,7 +38,7 @@ class DatabaseModel(object):
             self.cursor.execute('''create table if not exists events
             (ID INTEGER PRIMARY KEY ASC, Timestamp VARCHAR(100),
             Timestamp_Insertion VARCHAR(100), ID_Source INTEGER,
-            Comment TEXT''')
+            Comment TEXT)''')
 
             self.cursor.execute('''create table if not exists ports
             (ID_PORT INTEGER, Protocol VARCHAR(10),
@@ -61,15 +61,14 @@ class DatabaseModel(object):
             Info_8 VARCHAR(255), Info_9 VARCHAR(255), Info_10 VARCHAR(255),
             More_Info VARCHAR(255))''')
 
-            self.cursor.execute('''create table if not exists events
-            (ID_events INTEGER PRIMARY KEY ASC, Timestamp VARCHAR(60),
-            Timestamp_Insert_DB VARCHAR(60),
-            Source_IP VARCHAR(60), Dest_IP VARCHAR(60), Source_PORT INTEGER,
-            Dest_PORT INTEGER, Protocol CHARACTER(20), Source_MAC VARCHAR(17),
-            Dest_MAC VARCHAR(17), ID_IP_Source INTEGER, ID_IP_Dest INTEGER,
-            RAW_Info TEXT, Additional_Info INTEGER, ID_Log_Source INTEGER,
-            TAG VARCHAR(255)
+            self.cursor.execute('''create table if not exists packet_events_information
+            (ID INTEGER PRIMARY KEY ASC, ID_IP_Source INTEGER, ID_IP_Dest INTEGER,
+            ID_Source_PORT INTEGER, ID_Dest_PORT INTEGER, Protocol CHARACTER(20),
+            ID_Source_MAC INTEGER, ID_Dest_MAC INTEGER, RAW_Info TEXT, TAG VARCHAR(255)
             )''')
+
+            self.cursor.execute('''create table if not exists macs
+            (ID INTEGER PRIMARY KEY ASC, MAC VARCHAR(17), TAG VARCHAR(255))''')
 
             actual_time = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
             print "["+actual_time+"] Base de datos '%s' abierta/creada con éxito" % db_name
@@ -183,6 +182,8 @@ class DatabaseModel(object):
         Ejemplo: INSERT INTO table_name VALUES(values)
         """
 
+        print "TABLE_NAME ", table_name
+        print "VALUES ", values.get_rows()
         rows_value = self.check_columns_insert(table_name,values.get_rows())
 
         size_table = self.num_columns_table(table_name) #Numero de columnas de la tabla

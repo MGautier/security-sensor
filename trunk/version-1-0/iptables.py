@@ -56,20 +56,20 @@ class Iptables(Source):
         register = {} #Diccionario con los valores del log iptables
 
         try:
-            day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
-            register["Timestamp"] = day_log + " " + str(line[2])
+
+            Timestamp = line[0] + ' ' + line[1] + ' ' + line[2]
+            Timestamp_Insertion = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+
+            rows = RowsDatabase(self._db_.num_columns_table('packet_events_information'))
 
 
-            rows = RowsDatabase(self._db_.num_columns_table('events'))
-
-            register["Timestamp_Insert_DB"] = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
             self.tag_log = []
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
 
 
-            db_column = ['Source_IP', 'Dest_IP', 'Source_PORT', 'Dest_PORT', 'Protocol', 'Source_MAC', 'Dest_MAC']
+            db_column = ['ID_Source_IP', 'ID_Dest_IP', 'ID_Source_PORT', 'ID_Dest_PORT', 'Protocol', 'ID_Source_MAC', 'ID_Dest_MAC']
 
             # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
             # de configuracion a traves del registro info_config_file
@@ -94,46 +94,40 @@ class Iptables(Source):
 
             if (re.compile('MAC')).search(tag_str):
                 if self.tag_log.index('MAC') > 0:
-                    register["Source_MAC"] =  self.regexp("Source_MAC",'MAC',str(line))
-                    register["Dest_MAC"] =  self.regexp("Dest_MAC",'MAC',str(line))
+                    register["ID_Source_MAC"] =  self.regexp("ID_Source_MAC",'MAC',str(line))
+                    register["ID_Dest_MAC"] =  self.regexp("ID_Dest_MAC",'MAC',str(line))
                     self.tag_log.remove('MAC')
             else:
-                register["Source_MAC"] = '-'
-                register["Dest_MAC"] = '-'
-
-            try:
-                register["ID_IP_Source"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Source_IP"])+"'")[0][0]
-            except Exception as ex:
-                print "ID_IP_Source Exception -> ", ex
-                register["ID_IP_Source"] = '-'
-
-            try:
-                register["ID_IP_Dest"] = self._db_.query("select ID from ips where IP = '"+"".join(register["Dest_IP"])+"'")[0][0]
-            except Exception as ex:
-                print "ID_IP_Dest Exception -> ", ex
-                register["ID_IP_Dest"] = '-'
+                register["ID_Source_MAC"] = '-'
+                register["ID_Dest_MAC"] = '-'
 
             register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
             register["TAG"] = self.get_message(line)
-            register["Additional_Info"] = self.get_id_additional_info(line)
+
+
+
+            rows.insert_value((None,register["ID_Source_IP"],register["ID_Dest_IP"],register["ID_Source_PORT"],register["ID_Dest_PORT"],register["Protocol"],register["ID_Source_MAC"],register["ID_Dest_MAC"],register["RAW_Info"],register["TAG"]))
+
+            self._db_.insert_row('packet_events_information',rows)
+
+            id_packet_events = self._db_.query("select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
+            row_events = RowsDatabase(self._db_.num_columns_table('events'))
 
             try:
-                register["ID_Log_Source"] = self._db_.query("select ID_Log_Sources from log_sources where Type = 'Iptables'")[0][0]
+                ID_Source = self._db_.query("select ID_Log_Sources from log_sources where Type = 'Iptables'")[0][0]
             except Exception as ex:
-                print "ID_Log_Source Exception -> ", ex
-                register["ID_Log_Source"] = '-'
-           
+                print "ID_Source Exception -> ", ex
+                ID_Source = '-'
 
-
-            rows.insert_value((None,register["Timestamp"],register["Timestamp_Insert_DB"],register["Source_IP"],register["Dest_IP"],register["Source_PORT"],register["Dest_PORT"],register["Protocol"],register["Source_MAC"],register["Dest_MAC"],register["ID_IP_Source"],register["ID_IP_Dest"],register["RAW_Info"],register["Additional_Info"],register["TAG"]))
-
-            self._db_.insert_row('events',rows)
+            Comment = 'Iptables'
+            row_events.insert_value((None, Timestamp, Timestamp_Insertion, ID_Source, Comment))
+            self._db_.insert_row('events',row_events)
             
             print "---> Insertado registro: " + str(register) + "\n"
             print "---> Fin de procesado de linea \n"
         except Exception as ex:
             print "ProcessLine -> ", ex
-            
+
     def regexp(self, db_column_name, source, values):
         """
         Método que nos permite usar expresiones regulares para
@@ -144,8 +138,147 @@ class Iptables(Source):
             return self.get_ip(source,values)
         elif "PORT" in db_column_name:
             return self.get_port(source,values)
+        elif "MAC" in db_column_name:
+            return self.get_mac(source,values)
         else:
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+    def get_ip(self, source, values):
+        """
+        Método que permite extraer información de la ip del log desde el propio sistema
+        o obteniendola de la red."""
+
+        ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
+
+        #Aquí lo que hago es comprobar si existe una ip similar en la
+        # tabla. Si no existe se inserta un nuevo registro de ip en la tabla.
+        if not id_ip:
+            
+            hostname = '-'
+            rows = RowsDatabase(self._db_.num_columns_table('ips'))
+            aliaslist = '-'
+            ipaddrlist = ""
+            try:
+                hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ip)
+            except socket.error as msg:
+                print "Get_ip -> ", msg
+
+            try:
+                address_dns = reversename.from_address(str(ip))
+                # Incluyo las siguientes lineas para dotar de menor tiempo
+                # de procesamiento de resolucion de dns
+                resolver = dns.resolver.Resolver()
+                resolver.timeout = 1
+                resolver.lifetime = 1
+                if hostname == '-':
+                    for rdata in resolver.query(address_dns, "PTR"):
+                        hostname = rdata
+            except Exception as ex:
+                print " "
+
+            rows.insert_value((None, ip, hostname, '-'))
+            self._db_.insert_row('ips',rows)
+            id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
+
+
+        return id_ip[0][0]
+
+    def get_port(self, source, values):
+        """
+        Método que permite extraer información de los puertos con los que iptables
+        está trabajando desde el sistema (si es que hay información asociada a ellos)
+        """
+
+        port_bd = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+        rows = RowsDatabase(self._db_.num_columns_table('ports'))
+
+        id_ports = self._db_.query("select count(*) from ports where ID_PORT = '"+port_bd+"'")
+
+        p = subprocess.Popen(["grep -w "+port_bd+" /etc/services"], stdout=subprocess.PIPE, shell=True)
+        (output, err) = p.communicate()
+        grep_port = (output.split('\n'))
+
+
+        if (id_ports[0][0] == 0):
+            
+
+            if len(grep_port[0]) == 0 :
+                rows.insert_value((port_bd, '-', '-', '-', '-'))
+            
+            #TCP
+            if len(grep_port[0]) != 0 :
+                port_1 = grep_port[0].split('\t')
+                port_number = (grep_port[0].split('\t'))[2].split('/')[0]
+                port_protocol = (grep_port[0].split('\t'))[2].split('/')[1]
+                if len((grep_port[0].split('# '))) > 1:
+                    port_description = (grep_port[0].split('# '))[1]
+                else:
+                    port_description = '-'
+
+                if len(port_1) > 3:
+                    if port_1[4] != '':
+                        port_service = port_1[4]
+                    else:
+                        port_service = '-'
+                else:
+                    port_service = '-'
+
+                if port_number == port_bd :
+
+                    rows.insert_value((port_bd, port_protocol, port_service, port_description, port_1[0]))
+
+            #UDP
+            if len(grep_port) > 1:
+                if len(grep_port[1]) != 0 :
+                    port_2 = grep_port[1].split('\t')
+                    
+                    port_number = (grep_port[1].split('\t'))[2].split('/')[0]
+                    port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
+                    
+
+                    if len((grep_port[1].split('# '))) > 1:
+                        port_description = (grep_port[1].split('# '))[1]
+                    else:
+                        port_description = '-'
+
+                    if len(port_2) > 3:
+                        if port_2[4] != '':
+                            port_service = port_2[4]
+                        else:
+                            port_service = '-'
+                    else:
+                        port_service = '-'
+                        
+                    if port_number == port_bd :
+
+                        rows.insert_value((port_bd, port_protocol, port_service, port_description, port_2[0]))
+
+
+            if rows.get_length() > 0:
+                self._db_.insert_row('ports',rows)
+
+        return eval(str(port_bd))
+
+    def get_mac(self, source, values):
+        """
+        Método que establece el contenido de la tabla macs
+        a través de la información proporcionada por iptables.
+        """
+
+        mac = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+
+        rows = RowsDatabase(self._db_.num_columns_table('macs'))
+
+        id_macs = self._db_.query("select ID from macs where MAC = '"+mac+"'")
+
+        if not id_macs:
+            rows.insert_value((None,mac,'-'))
+            self._db_.insert_row('macs',rows)
+            id_macs = self._db_.query("select ID from macs where MAC = '"+mac+"'")
+
+        return id_macs[0][0]
 
     def set_log_source(self):
         """
@@ -257,119 +390,3 @@ class Iptables(Source):
         self.tag_log.remove(msg)
         return (re.compile(''+msg+'=(.*) IN')).search(string).group(1)
 
-    def get_port(self, source, values):
-        """
-        Método que permite extraer información de los puertos con los que iptables
-        está trabajando desde el sistema (si es que hay información asociada a ellos)
-        """
-
-        port_bd = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-
-        rows = RowsDatabase(self._db_.num_columns_table('ports'))
-
-        id_ports = self._db_.query("select count(*) from ports where ID_PORT = '"+port_bd+"'")
-
-        p = subprocess.Popen(["grep -w "+port_bd+" /etc/services"], stdout=subprocess.PIPE, shell=True)
-        (output, err) = p.communicate()
-        grep_port = (output.split('\n'))
-
-
-        if (id_ports[0][0] == 0):
-            
-
-            if len(grep_port[0]) == 0 :
-                rows.insert_value((port_bd, '-', '-', '-', '-'))
-            
-            #TCP
-            if len(grep_port[0]) != 0 :
-                port_1 = grep_port[0].split('\t')
-                port_number = (grep_port[0].split('\t'))[2].split('/')[0]
-                port_protocol = (grep_port[0].split('\t'))[2].split('/')[1]
-                if len((grep_port[0].split('# '))) > 1:
-                    port_description = (grep_port[0].split('# '))[1]
-                else:
-                    port_description = '-'
-
-                if len(port_1) > 3:
-                    if port_1[4] != '':
-                        port_service = port_1[4]
-                    else:
-                        port_service = '-'
-                else:
-                    port_service = '-'
-
-                if port_number == port_bd :
-
-                    rows.insert_value((port_bd, port_protocol, port_service, port_description, port_1[0]))
-
-            #UDP
-            if len(grep_port) > 1:
-                if len(grep_port[1]) != 0 :
-                    port_2 = grep_port[1].split('\t')
-                    
-                    port_number = (grep_port[1].split('\t'))[2].split('/')[0]
-                    port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
-                    
-
-                    if len((grep_port[1].split('# '))) > 1:
-                        port_description = (grep_port[1].split('# '))[1]
-                    else:
-                        port_description = '-'
-
-                    if len(port_2) > 3:
-                        if port_2[4] != '':
-                            port_service = port_2[4]
-                        else:
-                            port_service = '-'
-                    else:
-                        port_service = '-'
-                        
-                    if port_number == port_bd :
-
-                        rows.insert_value((port_bd, port_protocol, port_service, port_description, port_2[0]))
-
-
-            if rows.get_length() > 0:
-                self._db_.insert_row('ports',rows)
-
-        return eval(str(port_bd))
-
-    def get_ip(self, source, values):
-        """
-        Método que permite extraer información de la ip del log desde el propio sistema
-        o obteniendola de la red."""
-
-        ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-        id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
-
-        #Aquí lo que hago es comprobar si existe una ip similar en la
-        # tabla. Si no existe se inserta un nuevo registro de ip en la tabla.
-        if not id_ip:
-            
-            hostname = '-'
-            rows = RowsDatabase(self._db_.num_columns_table('ips'))
-            aliaslist = '-'
-            ipaddrlist = ""
-            try:
-                hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ip)
-            except socket.error as msg:
-                print "Get_ip -> ", msg
-
-            try:
-                address_dns = reversename.from_address(str(ip))
-                # Incluyo las siguientes lineas para dotar de menor tiempo
-                # de procesamiento de resolucion de dns
-                resolver = dns.resolver.Resolver()
-                resolver.timeout = 1
-                resolver.lifetime = 1
-                if hostname == '-':
-                    for rdata in resolver.query(address_dns, "PTR"):
-                        hostname = rdata
-            except Exception as ex:
-                print " "
-
-            rows.insert_value((None, ip, hostname, '-'))
-            self._db_.insert_row('ips',rows)
-
-
-        return ip
