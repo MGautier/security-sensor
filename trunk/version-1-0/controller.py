@@ -11,10 +11,10 @@ from datetime import date
 
 # Creamos un objeto del tipo Source y operamos con él
 
-#test = Iptables('proyecto_bd', args=(1,), source={'T' : 'Firewall', 'M' : 'iptables', 'P' : './iptables.log'})
-#test.start()
+test = Iptables('proyecto_bd', args=(1,), source={'T' : 'Firewall', 'M' : 'iptables', 'P' : './iptables.log', 'C' : './conf/iptables_conf.conf'})
+test.start()
 
-test_2 = Glances('bd_project', args=(1,), source={'T' : 'Watchdog', 'M' : 'glances', 'P' : './glances.csv'})
-test_2.start()
+#test_2 = Glances('bd_project', args=(1,), source={'T' : 'Watchdog', 'M' : 'glances', 'P' : './glances.csv'})
+#test_2.start()
 
 

@@ -33,16 +33,17 @@ class Iptables(Source):
         almacena internamente en los atributos de la clase.
         """
         
-        config_file = open('./conf/iptables_conf.conf', 'r')
+        file = open(self.config_file, 'r')
 
         self.info_config_file = {}
-        for linea in config_file.readlines():
+        
+        for linea in file.readlines():
 
             pline = linea.strip().split('\t')
             if pline[0] != '' and pline[0][0] != '#':
                 self.info_config_file[pline[0]] = pline[1]
 
-        config_file.close()
+        file.close()
         self.set_log_source()
 
     def processLine(self, line):
@@ -52,9 +53,10 @@ class Iptables(Source):
         """
 
         line = re.split("\W? ", line)
+        self.read_config_file()
 
         register = {} #Diccionario con los valores del log iptables
-        self.read_config_file()
+
         try:
             day_log = "" + str(date.today().year) + " " + line[0] + " " + line[1] + ""
             register["Timestamp"] = day_log + " " + str(line[2])

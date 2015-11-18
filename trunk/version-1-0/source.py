@@ -21,12 +21,13 @@ class Source(threading.Thread):
 
         self.args = args
         self._source_ = source
-        self.tag_log = []
 
         self.db_name = db_name
         self.type_source = source['T']
         self.model_source = source['M']
         self.path_source = source['P']
+        self.config_file = source['C']
+
 
         return
 
@@ -36,7 +37,7 @@ class Source(threading.Thread):
         """
 
         self._db_ = DatabaseModel(self.db_name)
-
+        
         line = []
 
         while True:
