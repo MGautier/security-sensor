@@ -37,6 +37,7 @@ class Source(threading.Thread):
         """
 
         self._db_ = DatabaseModel(self.db_name)
+        self.read_config_file()
         
         line = []
 
@@ -57,6 +58,14 @@ class Source(threading.Thread):
 
         return
 
+    def read_config_file(self):
+        """
+        Método modificador de la clase que abre y lee el contenido del archivo
+        de configuracion para el software iptables. El contenido del archivo se
+        almacena internamente en los atributos de la clase.
+        """
+        pass
+    
     def processLine(self):
         """
         Método que heredan las clases hijo que se encarga del procesado

@@ -32,11 +32,10 @@ class Iptables(Source):
         de configuracion para el software iptables. El contenido del archivo se
         almacena internamente en los atributos de la clase.
         """
-        
-        file = open(self.config_file, 'r')
 
+        file = open(self.config_file, 'r')
         self.info_config_file = {}
-        
+
         for linea in file.readlines():
 
             pline = linea.strip().split('\t')
@@ -53,7 +52,6 @@ class Iptables(Source):
         """
 
         line = re.split("\W? ", line)
-        self.read_config_file()
 
         register = {} #Diccionario con los valores del log iptables
 
