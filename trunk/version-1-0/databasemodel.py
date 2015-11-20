@@ -62,8 +62,12 @@ class DatabaseModel(object):
             self.cursor.execute('''create table if not exists macs
             (ID INTEGER PRIMARY KEY ASC, MAC VARCHAR(17), TAG VARCHAR(255))''')
 
+            self.cursor.execute('''create table if not exists tags
+            (ID INTEGER PRIMARY KEY ASC, TAG VARCHAR(255), Description TEXT)''')
+
             actual_time = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
             print "["+actual_time+"] Base de datos '%s' abierta/creada con éxito" % db_name
+
 
     def create_table(self, table_name, table_columns):
         """

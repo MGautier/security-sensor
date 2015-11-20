@@ -39,10 +39,15 @@ class Iptables(Source):
         for linea in file.readlines():
 
             pline = linea.strip().split('\t')
+
             if pline[0] != '' and pline[0][0] != '#':
-                self.info_config_file[pline[0]] = pline[1]
+                if "TAG_" in pline[0]:
+                    self.info_config_file[pline[0]] = [pline[1],pline[2]]
+                else:
+                    self.info_config_file[pline[0]] = pline[1]
 
         file.close()
+        self.set_tags()
         self.set_log_source()
 
     def processLine(self, line):
@@ -282,6 +287,21 @@ class Iptables(Source):
 
         return id_macs[0][0]
 
+    def set_tags(self):
+        """
+        Método que establece el contenido de la tabla tags una vez
+        ha comenzado el procesamiento del log de iptables. Dicho contenido
+        lo extraemos del archivo de configuración.
+        """
+
+        rows = RowsDatabase(self._db_.num_columns_table('tags'))
+
+        for it in self.info_config_file:
+            if "TAG_" in it:
+               rows.insert_value((it.strip("TAG_"),self.info_config_file[it][0],self.info_config_file[it][1]))
+
+        self._db_.insert_row('tags', rows)
+        
     def set_log_source(self):
         """
         Método que establece el contenido de la tabla log_sources una
