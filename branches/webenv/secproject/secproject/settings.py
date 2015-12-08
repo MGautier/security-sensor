@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gunicorn',
-    'secapp',
 ]
 
 MIDDLEWARE_CLASSES = [
