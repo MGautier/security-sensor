@@ -64,13 +64,13 @@ class Macs(models.Model):
 
 
 class PacketEventsInformation(models.Model):
-    ID_IP_Source = models.ForeignKey(Ips, on_delete=models.CASCADE, related_name="ip_source")
-    ID_IP_Dest = models.ForeignKey(Ips, on_delete=models.CASCADE, related_name="ip_dest")
-    ID_Source_Port = models.ForeignKey(Ports, on_delete=models.CASCADE, related_name="port_source")
-    ID_Dest_Port = models.ForeignKey(Ports, on_delete=models.CASCADE, related_name="port_dest")
+    ID_IP_Source = models.ForeignKey(Ips, models.SET_NULL, blank=True, null=True, related_name="ip_source")
+    ID_IP_Dest = models.ForeignKey(Ips, models.SET_NULL, blank=True, null=True, related_name="ip_dest")
+    ID_Source_Port = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="port_source")
+    ID_Dest_Port = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="port_dest")
     Protocol = models.CharField(max_length=20, default='-')
-    ID_Source_MAC = models.ForeignKey(Macs, on_delete=models.CASCADE, related_name="mac_source")
-    ID_Dest_MAC = models.ForeignKey(Macs, on_delete=models.CASCADE, related_name="mac_dest")
+    ID_Source_MAC = models.ForeignKey(Macs, models.SET_NULL, blank=True, null=True, related_name="mac_source")
+    ID_Dest_MAC = models.ForeignKey(Macs, models.SET_NULL, blank=True, null=True, related_name="mac_dest")
     RAW_Info = models.TextField(default='-')
     TAG = models.CharField(max_length=255, default='-')
     id = models.OneToOneField(Events, on_delete=models.CASCADE, primary_key=True)
@@ -80,7 +80,7 @@ class PacketEventsInformation(models.Model):
 
 
 class PacketAdditionalInfo(models.Model):
-    ID_Tag = models.ForeignKey(Tags, on_delete=models.CASCADE, related_name="id_tag")
+    ID_Tag = models.ForeignKey(Tags, models.SET_NULL, blank=True, null=True, related_name="id_tag")
     ID_Packet_Events = models.ForeignKey(PacketEventsInformation, on_delete=models.CASCADE,
                                          related_name="id_packet_events")
     Value = models.CharField(max_length=255, default='-')
