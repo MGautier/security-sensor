@@ -6,9 +6,9 @@ from django.db import models
 
 
 class Ips(models.Model):
-    Ip = models.CharField(max_length=60)
-    Hostname = models.CharField(max_length=60)
-    Tag = models.CharField(max_length=255)
+    Ip = models.CharField(max_length=60, default='-')
+    Hostname = models.CharField(max_length=60, default='-')
+    Tag = models.CharField(max_length=255, default='-')
 
     def __str__(self):
         return '%s' % self.Ip
@@ -16,19 +16,19 @@ class Ips(models.Model):
 
 class LogSources(models.Model):
     Description = models.TextField()
-    Type = models.CharField(max_length=100)
-    Model = models.CharField(max_length=255)
+    Type = models.CharField(max_length=100, default='-')
+    Model = models.CharField(max_length=255, default='-')
     Active = models.SmallIntegerField()
-    Software_Class = models.CharField(max_length=50)
-    Path = models.CharField(max_length=20)
+    Software_Class = models.CharField(max_length=50, default='-')
+    Path = models.CharField(max_length=20, default='-')
 
     def __str__(self):
         return '%s %s ' % (self.Type, self.Description)
 
 
 class Events(models.Model):
-    Timestamp = models.CharField(max_length=100)
-    Timestamp_Insertion = models.CharField(max_length=100)
+    Timestamp = models.DateTimeField('Log process date')
+    Timestamp_Insertion = models.DateTimeField('Insertion bd date')
     ID_Source = models.ForeignKey(LogSources, on_delete=models.CASCADE)
     Comment = models.TextField()
 
@@ -38,10 +38,10 @@ class Events(models.Model):
 
 class Ports(models.Model):
     id_port = models.IntegerField(primary_key=True)
-    Protocol = models.CharField(max_length=10)
-    Service = models.CharField(max_length=60)
-    Description = models.CharField(max_length=100)
-    Tag = models.CharField(max_length=25)
+    Protocol = models.CharField(max_length=10, default='-')
+    Service = models.CharField(max_length=60, default='-')
+    Description = models.CharField(max_length=100, default='-')
+    Tag = models.CharField(max_length=25, default='-')
 
     def __str__(self):
         return '%s %s' % (self.id_port, self.Protocol)
@@ -49,23 +49,15 @@ class Ports(models.Model):
 
 class Tags(models.Model):
     Description = models.TextField()
-    Tag = models.CharField(max_length=255)
+    Tag = models.CharField(max_length=255, default='-')
 
     def __str__(self):
         return '%s' % self.Tag
 
 
-class PacketAdditionalInfo(models.Model):
-    ID_Tag = models.ForeignKey(Tags, on_delete=models.CASCADE)
-    Value = models.CharField(max_length=255)
-
-    def __str__(self):
-        return '%s %s ' % (self.ID_Tag, self.Value)
-
-
 class Macs(models.Model):
-    MAC = models.CharField(max_length=17)
-    TAG = models.CharField(max_length=255)
+    MAC = models.CharField(max_length=17, default='-')
+    TAG = models.CharField(max_length=255, default='-')
 
     def __str__(self):
         return '%s' % self.MAC
@@ -76,13 +68,22 @@ class PacketEventsInformation(models.Model):
     ID_IP_Dest = models.ForeignKey(Ips, on_delete=models.CASCADE, related_name="ip_dest")
     ID_Source_Port = models.ForeignKey(Ports, on_delete=models.CASCADE, related_name="port_source")
     ID_Dest_Port = models.ForeignKey(Ports, on_delete=models.CASCADE, related_name="port_dest")
-    Protocol = models.CharField(max_length=20)
+    Protocol = models.CharField(max_length=20, default='-')
     ID_Source_MAC = models.ForeignKey(Macs, on_delete=models.CASCADE, related_name="mac_source")
     ID_Dest_MAC = models.ForeignKey(Macs, on_delete=models.CASCADE, related_name="mac_dest")
-    RAW_Info = models.TextField()
-    TAG = models.ForeignKey(Tags, on_delete=models.CASCADE, related_name="tags")
+    RAW_Info = models.TextField(default='-')
+    TAG = models.CharField(max_length=255, default='-')
+    id = models.OneToOneField(Events, on_delete=models.CASCADE, primary_key=True)
 
     def __str__(self):
         return '%s' % self.id
 
 
+class PacketAdditionalInfo(models.Model):
+    ID_Tag = models.ForeignKey(Tags, on_delete=models.CASCADE, related_name="id_tag")
+    ID_Packet_Events = models.ForeignKey(PacketEventsInformation, on_delete=models.CASCADE,
+                                         related_name="id_packet_events")
+    Value = models.CharField(max_length=255, default='-')
+
+    def __str__(self):
+        return '%s %s ' % (self.ID_Tag, self.Value)
