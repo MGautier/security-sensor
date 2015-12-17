@@ -19,6 +19,10 @@ def index(request):
     # return HttpResponse(template.render(context))
 
     context = {'latest_source_list': latest_source_list}
+    if request.GET.get('run-btn'):
+        hello = int(request.GET.get('textbox'))
+        context.update({'hello': hello})
+
     return render(request, 'secapp/index.html', context)
 
 

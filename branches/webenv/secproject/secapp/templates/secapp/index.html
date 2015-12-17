@@ -14,5 +14,12 @@
 {% else %}
 <p> No sources are available.</p>
 {% endif %}
+<form action="." method="get">
+    <input type="text" value="8" name="textbox" size="1"/>
+    <input type="submit" class="btn" value="Run" name="run-btn">
+</form>
+{% if hello %}
+<p>{{ hello }}</p>
+{% endif %}
 </body>
 </html>
