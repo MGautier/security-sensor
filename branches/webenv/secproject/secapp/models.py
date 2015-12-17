@@ -33,7 +33,7 @@ class Events(models.Model):
     Comment = models.TextField()
 
     def __str__(self):
-        return '%s %s' % (self.Timestamp, self.ID_Source)
+        return '%s %s %s' % (self.Timestamp, self.ID_Source, self.Comment)
 
 
 class Ports(models.Model):
