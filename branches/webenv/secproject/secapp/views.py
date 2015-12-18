@@ -18,6 +18,7 @@ def index(request):
     # output = ', '.join([lg.Description for lg in latest_source_list])
     # return HttpResponse(template.render(context))
 
+    print "HOLA"
     context = {'latest_source_list': latest_source_list}
     if request.GET.get('run-btn'):
         hello = int(request.GET.get('textbox'))
