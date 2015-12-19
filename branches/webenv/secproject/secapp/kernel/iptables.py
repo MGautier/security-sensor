@@ -13,18 +13,21 @@ from datetime import datetime
 from rowsdatabase import RowsDatabase
 from dns import resolver, reversename
 
+
 # Author: Moisés Gautier Gómez
 # Proyecto fin de carrera - Ing. en Informática
 # Universidad de Granada
 
-
-
 class Iptables(Source):
-
     """
     Clase hija que hereda de Source para el procesamiento de información
     procedente de iptables.
     """
+
+    def __init__(self, group=None, target=None, name=None,
+                 args=(), source=None, verbose=None):
+        super(Iptables, self).__init__(group=None, target=None, name=None, args=(), source=None, verbose=None)
+        self.info_config_file = {}
 
     def read_config_file(self):
         """
@@ -33,32 +36,32 @@ class Iptables(Source):
         almacena internamente en los atributos de la clase.
         """
 
-        file = open(self.config_file, 'r')
-        self.info_config_file = {}
+        config_file = open(self.config_file, 'r')
 
         for linea in file.readlines():
 
-            pline = linea.strip().split('\t')
+            line_process = linea.strip().split('\t')
 
-            if pline[0] != '' and pline[0][0] != '#':
-                if "TAG_" in pline[0]:
-                    self.info_config_file[pline[0]] = [pline[1],pline[2]]
+            if line_process[0] != '' and line_process[0][0] != '#':
+                if "TAG_" in line_process[0]:
+                    self.info_config_file[line_process[0]] = [line_process[1], line_process[2]]
                 else:
-                    self.info_config_file[pline[0]] = pline[1]
+                    self.info_config_file[line_process[0]] = line_process[1]
 
-        file.close()
+        config_file.close()
         self.set_tags()
         self.set_log_source()
 
-    def processLine(self, line):
+    def process_line(self, line):
         """
         Método modificador que procesa e introduce en un bd la informacion
         relevante del filtrado de paquetes, en este caso, de iptables.
+        :param line:
         """
 
         line = re.split("\W? ", line)
 
-        register = {} #Diccionario con los valores del log iptables
+        register = {}  # Diccionario con los valores del log iptables
 
         try:
 
@@ -67,55 +70,53 @@ class Iptables(Source):
 
             rows = RowsDatabase(self._db_.num_columns_table('packet_events_information'))
 
-
-
             self.tag_log = []
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
 
-
-            db_column = ['ID_Source_IP', 'ID_Dest_IP', 'ID_Source_PORT', 'ID_Dest_PORT', 'Protocol', 'ID_Source_MAC', 'ID_Dest_MAC']
+            db_column = ['ID_Source_IP', 'ID_Dest_IP', 'ID_Source_PORT', 'ID_Dest_PORT', 'Protocol', 'ID_Source_MAC',
+                         'ID_Dest_MAC']
 
             # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
             # de configuracion a traves del registro info_config_file
-            
-            etiquetas = [self.info_config_file["Source_IP"],  self.info_config_file["Dest_IP"], self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"], self.info_config_file["Protocol"]]
+
+            etiquetas = [self.info_config_file["Source_IP"], self.info_config_file["Dest_IP"],
+                         self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"],
+                         self.info_config_file["Protocol"]]
 
             for iter in tag_split:
                 if len(iter.split('=')) == 2:
                     self.tag_log.append((iter.split('='))[0].strip('\' '))
 
-
             for etiqueta in etiquetas:
                 if (re.compile(etiqueta)).search(tag_str):
                     if self.tag_log.index(etiqueta) > 0:
                         db_column_name = db_column[0]
-                        register[db_column.pop(0)] = self.regexp(db_column_name,etiqueta,str(line))
+                        register[db_column.pop(0)] = self.regexp(db_column_name, etiqueta, str(line))
                         self.tag_log.remove(etiqueta)
                 else:
                     register[db_column.pop(0)] = '-'
-					
-
 
             if (re.compile('MAC')).search(tag_str):
                 if self.tag_log.index('MAC') > 0:
-                    register["ID_Source_MAC"] =  self.regexp("ID_Source_MAC",'MAC',str(line))
-                    register["ID_Dest_MAC"] =  self.regexp("ID_Dest_MAC",'MAC',str(line))
+                    register["ID_Source_MAC"] = self.regexp("ID_Source_MAC", 'MAC', str(line))
+                    register["ID_Dest_MAC"] = self.regexp("ID_Dest_MAC", 'MAC', str(line))
                     self.tag_log.remove('MAC')
             else:
                 register["ID_Source_MAC"] = '-'
                 register["ID_Dest_MAC"] = '-'
 
-            register["RAW_Info"] = re.sub('\[','',re.sub('\n',''," ".join(line)))
+            register["RAW_Info"] = re.sub('\[', '', re.sub('\n', '', " ".join(line)))
             register["TAG"] = self.get_message(line)
 
+            rows.insert_value((None, register["ID_Source_IP"], register["ID_Dest_IP"], register["ID_Source_PORT"],
+                               register["ID_Dest_PORT"], register["Protocol"], register["ID_Source_MAC"],
+                               register["ID_Dest_MAC"], register["RAW_Info"], register["TAG"]))
 
+            self._db_.insert_row('packet_events_information', rows)
 
-            rows.insert_value((None,register["ID_Source_IP"],register["ID_Dest_IP"],register["ID_Source_PORT"],register["ID_Dest_PORT"],register["Protocol"],register["ID_Source_MAC"],register["ID_Dest_MAC"],register["RAW_Info"],register["TAG"]))
-
-            self._db_.insert_row('packet_events_information',rows)
-
-            id_packet_events = self._db_.query("select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
+            id_packet_events = self._db_.query(
+                "select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
 
             self.set_packet_additional_info(line, id_packet_events)
             row_events = RowsDatabase(self._db_.num_columns_table('events'))
@@ -128,8 +129,8 @@ class Iptables(Source):
 
             Comment = 'Iptables'
             row_events.insert_value((None, Timestamp, Timestamp_Insertion, ID_Source, Comment))
-            self._db_.insert_row('events',row_events)
-            
+            self._db_.insert_row('events', row_events)
+
             print "---> Insertado registro: " + str(register) + "\n"
             print "---> Fin de procesado de linea \n"
         except Exception as ex:
@@ -142,11 +143,11 @@ class Iptables(Source):
         """
 
         if "IP" in db_column_name:
-            return self.get_ip(source,values)
+            return self.get_ip(source, values)
         elif "PORT" in db_column_name:
-            return self.get_port(source,values)
+            return self.get_port(source, values)
         elif "MAC" in db_column_name:
-            return self.get_mac(source,values)
+            return self.get_mac(source, values)
         else:
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
@@ -156,12 +157,12 @@ class Iptables(Source):
         o obteniendola de la red."""
 
         ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-        id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
+        id_ip = self._db_.query("select ID from ips where IP = '" + ip + "'")
 
-        #Aquí lo que hago es comprobar si existe una ip similar en la
+        # Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si no existe se inserta un nuevo registro de ip en la tabla.
         if not id_ip:
-            
+
             hostname = '-'
             rows = RowsDatabase(self._db_.num_columns_table('ips'))
             aliaslist = '-'
@@ -185,9 +186,8 @@ class Iptables(Source):
                 print " "
 
             rows.insert_value((None, ip, hostname, '-'))
-            self._db_.insert_row('ips',rows)
-            id_ip = self._db_.query("select ID from ips where IP = '"+ip+"'")
-
+            self._db_.insert_row('ips', rows)
+            id_ip = self._db_.query("select ID from ips where IP = '" + ip + "'")
 
         return id_ip[0][0]
 
@@ -201,21 +201,19 @@ class Iptables(Source):
 
         rows = RowsDatabase(self._db_.num_columns_table('ports'))
 
-        id_ports = self._db_.query("select count(*) from ports where ID_PORT = '"+port_bd+"'")
+        id_ports = self._db_.query("select count(*) from ports where ID_PORT = '" + port_bd + "'")
 
-        p = subprocess.Popen(["grep -w "+port_bd+" /etc/services"], stdout=subprocess.PIPE, shell=True)
+        p = subprocess.Popen(["grep -w " + port_bd + " /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         grep_port = (output.split('\n'))
 
-
         if (id_ports[0][0] == 0):
-            
 
-            if len(grep_port[0]) == 0 :
+            if len(grep_port[0]) == 0:
                 rows.insert_value((port_bd, '-', '-', '-', '-'))
-            
-            #TCP
-            if len(grep_port[0]) != 0 :
+
+            # TCP
+            if len(grep_port[0]) != 0:
                 port_1 = grep_port[0].split('\t')
                 port_number = (grep_port[0].split('\t'))[2].split('/')[0]
                 port_protocol = (grep_port[0].split('\t'))[2].split('/')[1]
@@ -232,18 +230,16 @@ class Iptables(Source):
                 else:
                     port_service = '-'
 
-                if port_number == port_bd :
-
+                if port_number == port_bd:
                     rows.insert_value((port_bd, port_protocol, port_service, port_description, port_1[0]))
 
-            #UDP
+            # UDP
             if len(grep_port) > 1:
-                if len(grep_port[1]) != 0 :
+                if len(grep_port[1]) != 0:
                     port_2 = grep_port[1].split('\t')
-                    
+
                     port_number = (grep_port[1].split('\t'))[2].split('/')[0]
                     port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
-                    
 
                     if len((grep_port[1].split('# '))) > 1:
                         port_description = (grep_port[1].split('# '))[1]
@@ -257,14 +253,12 @@ class Iptables(Source):
                             port_service = '-'
                     else:
                         port_service = '-'
-                        
-                    if port_number == port_bd :
 
+                    if port_number == port_bd:
                         rows.insert_value((port_bd, port_protocol, port_service, port_description, port_2[0]))
 
-
             if rows.get_length() > 0:
-                self._db_.insert_row('ports',rows)
+                self._db_.insert_row('ports', rows)
 
         return eval(str(port_bd))
 
@@ -278,12 +272,12 @@ class Iptables(Source):
 
         rows = RowsDatabase(self._db_.num_columns_table('macs'))
 
-        id_macs = self._db_.query("select ID from macs where MAC = '"+mac+"'")
+        id_macs = self._db_.query("select ID from macs where MAC = '" + mac + "'")
 
         if not id_macs:
-            rows.insert_value((None,mac,'-'))
-            self._db_.insert_row('macs',rows)
-            id_macs = self._db_.query("select ID from macs where MAC = '"+mac+"'")
+            rows.insert_value((None, mac, '-'))
+            self._db_.insert_row('macs', rows)
+            id_macs = self._db_.query("select ID from macs where MAC = '" + mac + "'")
 
         return id_macs[0][0]
 
@@ -298,10 +292,10 @@ class Iptables(Source):
 
         for it in self.info_config_file:
             if "TAG_" in it:
-               rows.insert_value((it.strip("TAG_"),self.info_config_file[it][0],self.info_config_file[it][1]))
+                rows.insert_value((it.strip("TAG_"), self.info_config_file[it][0], self.info_config_file[it][1]))
 
         self._db_.insert_row('tags', rows)
-        
+
     def set_log_source(self):
         """
         Método que establece el contenido de la tabla log_sources una
@@ -315,12 +309,12 @@ class Iptables(Source):
 
             for it in self._db_.columns_name_tables('log_sources'):
                 if not ("ID" in it) | ("More_Info" in it):
-                    _register[""+it+""] = self.info_config_file[""+it+""]
+                    _register["" + it + ""] = self.info_config_file["" + it + ""]
 
-            rows.insert_value((None,_register["Description"],_register["Type"],_register["Model"],_register["Active"],_register["Software_class"],_register["Path"]))
+            rows.insert_value((None, _register["Description"], _register["Type"], _register["Model"],
+                               _register["Active"], _register["Software_class"], _register["Path"]))
 
-            self._db_.insert_row('log_sources',rows)
-
+            self._db_.insert_row('log_sources', rows)
 
     def set_packet_additional_info(self, values, id_packet_event):
         """
@@ -333,18 +327,18 @@ class Iptables(Source):
         string = " ".join(values)
         _register = {}
 
-
         for it in self.tag_log:
             check_value = ((re.compile(it + '=\S+')).search(str_values))
-        
-            if check_value:
-                _register[""+it+""] = (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[1].strip("',\\n\']")
-            else:
-                _register[""+it+""] = '-'
 
+            if check_value:
+                _register["" + it + ""] = (((re.compile(it + '=\S+')).search(str_values)).group(0)).split(it + '=')[
+                    1].strip("',\\n\']")
+            else:
+                _register["" + it + ""] = '-'
 
         if ((re.compile('URGP' + '=\S+')).search(str_values)):
-            _register["URGP"] = ((((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
+            _register["URGP"] = (
+                (((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
 
         if (re.compile('ID=(.*) PROTO')).search(string):
             _register["ID"] = (re.compile('ID=(.*) PROTO')).search(string).group(1)
@@ -354,15 +348,12 @@ class Iptables(Source):
 
         # Hago el diccionario anterior para controlar las distintas
         # tags que nos da el log de iptables / archivo de configuracion
-        
-        
+
+
         for it in _register:
-            
             rows.insert_value((id_packet_event[0][0], it, _register[it]))
 
-
-        self._db_.insert_row('packet_additional_info',rows)
-
+        self._db_.insert_row('packet_additional_info', rows)
 
     def get_message(self, values):
         """
@@ -373,5 +364,4 @@ class Iptables(Source):
         string = " ".join(values)
         msg = self.info_config_file["Message"]
         self.tag_log.remove(msg)
-        return (re.compile(''+msg+'=(.*) IN')).search(string).group(1)
-
+        return (re.compile('' + msg + '=(.*) IN')).search(string).group(1)
