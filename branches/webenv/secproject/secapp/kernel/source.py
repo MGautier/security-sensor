@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import threading
-from databasemodel import DatabaseModel
 from pygtail import Pygtail
 
 
@@ -52,7 +51,8 @@ class Source(threading.Thread):
 
         return
 
-    def read_config_file(self):
+    @staticmethod
+    def read_config_file():
         """
         Método modificador de la clase que abre y lee el contenido del archivo
         de configuracion para el software iptables. El contenido del archivo se
@@ -60,7 +60,8 @@ class Source(threading.Thread):
         """
         pass
 
-    def process_line(self, line):
+    @staticmethod
+    def process_line(line):
         """
         Método que heredan las clases hijo que se encarga del procesado
         de la información de las sources

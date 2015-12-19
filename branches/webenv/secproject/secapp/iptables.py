@@ -7,18 +7,18 @@ import re
 import subprocess
 import socket
 import time
-from source import Source
 from datetime import date
 from datetime import datetime
-from rowsdatabase import RowsDatabase
+from kernel import rowsdatabase, source
 from dns import resolver, reversename
+from .models import Events, PacketEventsInformation
 
 
 # Author: Moisés Gautier Gómez
 # Proyecto fin de carrera - Ing. en Informática
 # Universidad de Granada
 
-class Iptables(Source):
+class Iptables(source):
     """
     Clase hija que hereda de Source para el procesamiento de información
     procedente de iptables.
@@ -27,6 +27,7 @@ class Iptables(Source):
     def __init__(self, group=None, target=None, name=None,
                  args=(), source=None, verbose=None):
         super(Iptables, self).__init__(group=None, target=None, name=None, args=(), source=None, verbose=None)
+        self.tag_log = []
         self.info_config_file = {}
 
     def read_config_file(self):
@@ -56,6 +57,7 @@ class Iptables(Source):
         """
         Método modificador que procesa e introduce en un bd la informacion
         relevante del filtrado de paquetes, en este caso, de iptables.
+        :type line: object string
         :param line:
         """
 
@@ -65,12 +67,16 @@ class Iptables(Source):
 
         try:
 
-            Timestamp = line[0] + ' ' + line[1] + ' ' + line[2]
-            Timestamp_Insertion = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
+            # timestamp tendrá cómo year el valor 1990 ya que el log no proporciona dicho valor y este lo toma
+            # por defecto del tiempo unix.
+            timestamp = datetime.strptime(line[0] + ' ' + line[1] + ' ' + line[2], "%b %d %H:%M:%S")
+            timestamp_insertion = datetime.now()
+            events = Events(
+                Timestamp=timestamp,
+                Timestamp_Insertion=timestamp_insertion,
 
-            rows = RowsDatabase(self._db_.num_columns_table('packet_events_information'))
+            )
 
-            self.tag_log = []
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
 
@@ -109,6 +115,18 @@ class Iptables(Source):
             register["RAW_Info"] = re.sub('\[', '', re.sub('\n', '', " ".join(line)))
             register["TAG"] = self.get_message(line)
 
+            packet_events_information = PacketEventsInformation(
+                ID_IP_Source=register["ID_Source_IP"],
+                ID_IP_Dest=register["ID_Dest_IP"],
+                ID_Source_Port=register["ID_Source_PORT"],
+                ID_Dest_Port=register["ID_Dest_PORT"],
+                Protocol=register["Protocol"],
+                ID_Source_MAC=register["ID_Source_MAC"],
+                ID_Dest_MAC=register["ID_Dest_MAC"],
+                RAW_Info=register["RAW_Info"],
+                TAG=register["TAG"],
+
+            )
             rows.insert_value((None, register["ID_Source_IP"], register["ID_Dest_IP"], register["ID_Source_PORT"],
                                register["ID_Dest_PORT"], register["Protocol"], register["ID_Source_MAC"],
                                register["ID_Dest_MAC"], register["RAW_Info"], register["TAG"]))
