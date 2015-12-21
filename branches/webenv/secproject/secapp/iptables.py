@@ -11,7 +11,8 @@ from datetime import date
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
-from .models import Events, PacketEventsInformation
+from .models import Events, PacketEventsInformation, LogSources
+from dateutil.parser import parse
 
 
 # Author: Moisés Gautier Gómez
@@ -29,6 +30,7 @@ class Iptables(source):
         super(Iptables, self).__init__(group=None, target=None, name=None, args=(), source=None, verbose=None)
         self.tag_log = []
         self.info_config_file = {}
+        self.log_sources = LogSources()
 
     def read_config_file(self):
         """
@@ -69,7 +71,7 @@ class Iptables(source):
 
             # timestamp tendrá cómo year el valor 1990 ya que el log no proporciona dicho valor y este lo toma
             # por defecto del tiempo unix.
-            timestamp = datetime.strptime(line[0] + ' ' + line[1] + ' ' + line[2], "%b %d %H:%M:%S")
+            timestamp = parse(line[0])
             timestamp_insertion = datetime.now()
             events = Events(
                 Timestamp=timestamp,
@@ -86,20 +88,20 @@ class Iptables(source):
             # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
             # de configuracion a traves del registro info_config_file
 
-            etiquetas = [self.info_config_file["Source_IP"], self.info_config_file["Dest_IP"],
+            labels = [self.info_config_file["Source_IP"], self.info_config_file["Dest_IP"],
                          self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"],
                          self.info_config_file["Protocol"]]
 
-            for iter in tag_split:
-                if len(iter.split('=')) == 2:
-                    self.tag_log.append((iter.split('='))[0].strip('\' '))
+            for it in tag_split:
+                if len(it.split('=')) == 2:
+                    self.tag_log.append((it.split('='))[0].strip('\' '))
 
-            for etiqueta in etiquetas:
-                if (re.compile(etiqueta)).search(tag_str):
-                    if self.tag_log.index(etiqueta) > 0:
+            for label in labels:
+                if (re.compile(label)).search(tag_str):
+                    if self.tag_log.index(label) > 0:
                         db_column_name = db_column[0]
-                        register[db_column.pop(0)] = self.regexp(db_column_name, etiqueta, str(line))
-                        self.tag_log.remove(etiqueta)
+                        register[db_column.pop(0)] = self.regexp(db_column_name, label, str(line))
+                        self.tag_log.remove(label)
                 else:
                     register[db_column.pop(0)] = '-'
 
@@ -115,6 +117,19 @@ class Iptables(source):
             register["RAW_Info"] = re.sub('\[', '', re.sub('\n', '', " ".join(line)))
             register["TAG"] = self.get_message(line)
 
+            # Creamos una instancia del modelo Events (LogSources ya tiene una instancia
+            # a traves del metodo set
+
+            events = Events(
+                Timestamp=timestamp,
+                Timestamp_Insertion=timestamp_insertion,
+                ID_Source=self.log_sources.id,
+                Comment='Iptables events',
+            )
+            events.save()
+
+            # Creamos una instancia del modelo PacketEventsInformation
+
             packet_events_information = PacketEventsInformation(
                 ID_IP_Source=register["ID_Source_IP"],
                 ID_IP_Dest=register["ID_Dest_IP"],
@@ -125,13 +140,10 @@ class Iptables(source):
                 ID_Dest_MAC=register["ID_Dest_MAC"],
                 RAW_Info=register["RAW_Info"],
                 TAG=register["TAG"],
-
+                id=events.id,
             )
-            rows.insert_value((None, register["ID_Source_IP"], register["ID_Dest_IP"], register["ID_Source_PORT"],
-                               register["ID_Dest_PORT"], register["Protocol"], register["ID_Source_MAC"],
-                               register["ID_Dest_MAC"], register["RAW_Info"], register["TAG"]))
+            packet_events_information.save()
 
-            self._db_.insert_row('packet_events_information', rows)
 
             id_packet_events = self._db_.query(
                 "select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
@@ -319,20 +331,40 @@ class Iptables(source):
         Método que establece el contenido de la tabla log_sources una
         vez ha comenzado el procesamiento del log de iptables.
         """
+        log_sources_objects = LogSources.objects.all()
+        validation = True
 
-        rows = RowsDatabase(self._db_.num_columns_table('log_sources'))
-        _register = {}
-        _query_bd = self._db_.query("select ID_Log_Sources from log_sources where Type ='Iptables'")
-        if not _query_bd:
+        # Caso 1: No existe objeto alguno en la bd
+        if not log_sources_objects:
+            self.log_sources = LogSources(
+                Description=self.info_config_file["Description"],
+                Type=self.info_config_file["Type"],
+                Model=self.info_config_file["Model"],
+                Active=self.info_config_file["Active"],
+                Software_class=self.info_config_file["Software_class"],
+                Path=self.info_config_file["Path"],
+            )
+            self.log_sources.save()
+        else:
+            # Caso 2: Comprobar que objetos hay ya en log_source para
+            # evitar duplicaciones compruebo la ruta o comando
+            # para la activacion del software
 
-            for it in self._db_.columns_name_tables('log_sources'):
-                if not ("ID" in it) | ("More_Info" in it):
-                    _register["" + it + ""] = self.info_config_file["" + it + ""]
+            for it in log_sources_objects:
+                if log_sources_objects.Path == self.info_config_file["Path"]:
+                    validation = False
 
-            rows.insert_value((None, _register["Description"], _register["Type"], _register["Model"],
-                               _register["Active"], _register["Software_class"], _register["Path"]))
+            if validation:
 
-            self._db_.insert_row('log_sources', rows)
+                self.log_sources = LogSources(
+                    Description=self.info_config_file["Description"],
+                    Type=self.info_config_file["Type"],
+                    Model=self.info_config_file["Model"],
+                    Active=self.info_config_file["Active"],
+                    Software_class=self.info_config_file["Software_class"],
+                    Path=self.info_config_file["Path"],
+                )
+                self.log_sources.save()
 
     def set_packet_additional_info(self, values, id_packet_event):
         """
