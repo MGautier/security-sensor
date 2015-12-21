@@ -3,6 +3,7 @@
 
 
 import sys
+import dns
 import re
 import subprocess
 import socket
@@ -11,7 +12,7 @@ from datetime import date
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
-from .models import Events, PacketEventsInformation, LogSources
+from .models import Events, PacketEventsInformation, LogSources, Ips
 from dateutil.parser import parse
 
 
@@ -89,8 +90,8 @@ class Iptables(source):
             # de configuracion a traves del registro info_config_file
 
             labels = [self.info_config_file["Source_IP"], self.info_config_file["Dest_IP"],
-                         self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"],
-                         self.info_config_file["Protocol"]]
+                      self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"],
+                      self.info_config_file["Protocol"]]
 
             for it in tag_split:
                 if len(it.split('=')) == 2:
@@ -144,7 +145,6 @@ class Iptables(source):
             )
             packet_events_information.save()
 
-
             id_packet_events = self._db_.query(
                 "select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
 
@@ -186,15 +186,19 @@ class Iptables(source):
         Método que permite extraer información de la ip del log desde el propio sistema
         o obteniendola de la red."""
 
+        ips_objects = Ips.objects.all()
         ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-        id_ip = self._db_.query("select ID from ips where IP = '" + ip + "'")
+        id_ip = 0
+
+        for it in ips_objects:
+            if it.Ip == ip:
+                id_ip = it.id
 
         # Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si no existe se inserta un nuevo registro de ip en la tabla.
         if not id_ip:
 
             hostname = '-'
-            rows = RowsDatabase(self._db_.num_columns_table('ips'))
             aliaslist = '-'
             ipaddrlist = ""
             try:
@@ -212,14 +216,19 @@ class Iptables(source):
                 if hostname == '-':
                     for rdata in resolver.query(address_dns, "PTR"):
                         hostname = rdata
+
+                ips = Ips(
+                    Ip=ip,
+                    Hostname=hostname,
+                    Tag='-',
+                )
+
+                ips.save()
+                id_ip = ips.id
             except Exception as ex:
                 print " "
 
-            rows.insert_value((None, ip, hostname, '-'))
-            self._db_.insert_row('ips', rows)
-            id_ip = self._db_.query("select ID from ips where IP = '" + ip + "'")
-
-        return id_ip[0][0]
+        return id_ip
 
     def get_port(self, source, values):
         """
@@ -351,11 +360,10 @@ class Iptables(source):
             # para la activacion del software
 
             for it in log_sources_objects:
-                if log_sources_objects.Path == self.info_config_file["Path"]:
+                if it.Path == self.info_config_file["Path"]:
                     validation = False
 
             if validation:
-
                 self.log_sources = LogSources(
                     Description=self.info_config_file["Description"],
                     Type=self.info_config_file["Type"],
