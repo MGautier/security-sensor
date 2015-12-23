@@ -12,7 +12,7 @@ from datetime import date
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
-from .models import Events, PacketEventsInformation, LogSources, Ips, Ports
+from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs
 from dateutil.parser import parse
 
 
@@ -230,10 +230,14 @@ class Iptables(source):
 
         return id_ip
 
-    def get_port(self, source, values):
+    @staticmethod
+    def get_port(source, values):
         """
         Método que permite extraer información de los puertos con los que iptables
         está trabajando desde el sistema (si es que hay información asociada a ellos)
+        :param source:
+        :param values:
+        :return:
         """
 
         ports = Ports.objects.all()
@@ -243,7 +247,7 @@ class Iptables(source):
             if it.id_port == port_regex:
                 id_ports = it.id_port
 
-        p = subprocess.Popen(["grep -w " + port_bd + " /etc/services"], stdout=subprocess.PIPE, shell=True)
+        p = subprocess.Popen(["grep -w " + port_regex + " /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         grep_port = (output.split('\n'))
 
@@ -324,20 +328,28 @@ class Iptables(source):
         """
         Método que establece el contenido de la tabla macs
         a través de la información proporcionada por iptables.
+        :param source:
+        :param values:
+        :return:
         """
 
+        macs = Macs.objects.all()
         mac = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
-        rows = RowsDatabase(self._db_.num_columns_table('macs'))
-
-        id_macs = self._db_.query("select ID from macs where MAC = '" + mac + "'")
+        id_macs = 0
+        for it in macs:
+            if it.MAC == mac:
+                id_macs = it.id
 
         if not id_macs:
-            rows.insert_value((None, mac, '-'))
-            self._db_.insert_row('macs', rows)
-            id_macs = self._db_.query("select ID from macs where MAC = '" + mac + "'")
+            new_mac = Macs(
+                MAC=mac,
+                TAG='-',
+            )
+            new_mac.save()
+            id_macs = new_mac.id
 
-        return id_macs[0][0]
+        return id_macs
 
     def set_tags(self):
         """
