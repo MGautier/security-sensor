@@ -12,7 +12,7 @@ from datetime import date
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
-from .models import Events, PacketEventsInformation, LogSources, Ips
+from .models import Events, PacketEventsInformation, LogSources, Ips, Ports
 from dateutil.parser import parse
 
 
@@ -226,7 +226,7 @@ class Iptables(source):
                 ips.save()
                 id_ip = ips.id
             except Exception as ex:
-                print " "
+                print "get_ip -> ", ex
 
         return id_ip
 
@@ -236,20 +236,28 @@ class Iptables(source):
         está trabajando desde el sistema (si es que hay información asociada a ellos)
         """
 
-        port_bd = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
-
-        rows = RowsDatabase(self._db_.num_columns_table('ports'))
-
-        id_ports = self._db_.query("select count(*) from ports where ID_PORT = '" + port_bd + "'")
+        ports = Ports.objects.all()
+        port_regex = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        id_ports = 0
+        for it in ports:
+            if it.id_port == port_regex:
+                id_ports = it.id_port
 
         p = subprocess.Popen(["grep -w " + port_bd + " /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         grep_port = (output.split('\n'))
 
-        if (id_ports[0][0] == 0):
+        if id_ports == 0:
 
             if len(grep_port[0]) == 0:
-                rows.insert_value((port_bd, '-', '-', '-', '-'))
+                new_port = Ports(
+                    id_port=port_regex,
+                    Protocol='-',
+                    Service='-',
+                    Description='-',
+                    Tag='-',
+                )
+                new_port.save()
 
             # TCP
             if len(grep_port[0]) != 0:
@@ -269,8 +277,15 @@ class Iptables(source):
                 else:
                     port_service = '-'
 
-                if port_number == port_bd:
-                    rows.insert_value((port_bd, port_protocol, port_service, port_description, port_1[0]))
+                if port_number == port_regex:
+                    new_port = Ports(
+                        id_port=port_regex,
+                        Protocol=port_protocol,
+                        Service=port_service,
+                        Description=port_description,
+                        Tag=port_1[0],
+                    )
+                    new_port.save()
 
             # UDP
             if len(grep_port) > 1:
@@ -293,13 +308,17 @@ class Iptables(source):
                     else:
                         port_service = '-'
 
-                    if port_number == port_bd:
-                        rows.insert_value((port_bd, port_protocol, port_service, port_description, port_2[0]))
+                    if port_number == port_regex:
+                        new_port = Ports(
+                            id_port=port_regex,
+                            Protocol=port_protocol,
+                            Service=port_service,
+                            Description=port_description,
+                            Tag=port_2[0],
+                        )
+                        new_port.save()
 
-            if rows.get_length() > 0:
-                self._db_.insert_row('ports', rows)
-
-        return eval(str(port_bd))
+        return eval(str(port_regex))
 
     def get_mac(self, source, values):
         """
