@@ -12,7 +12,7 @@ from datetime import date
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
-from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs
+from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags
 from dateutil.parser import parse
 
 
@@ -145,21 +145,9 @@ class Iptables(source):
             )
             packet_events_information.save()
 
-            id_packet_events = self._db_.query(
-                "select ID from packet_events_information where ID =(select max(ID) from packet_events_information)")
+            id_packet_events = packet_events_information.id
 
             self.set_packet_additional_info(line, id_packet_events)
-            row_events = RowsDatabase(self._db_.num_columns_table('events'))
-
-            try:
-                ID_Source = self._db_.query("select ID_Log_Sources from log_sources where Type = 'Iptables'")[0][0]
-            except Exception as ex:
-                print "ID_Source Exception -> ", ex
-                ID_Source = '-'
-
-            Comment = 'Iptables'
-            row_events.insert_value((None, Timestamp, Timestamp_Insertion, ID_Source, Comment))
-            self._db_.insert_row('events', row_events)
 
             print "---> Insertado registro: " + str(register) + "\n"
             print "---> Fin de procesado de linea \n"
@@ -170,6 +158,10 @@ class Iptables(source):
         """
         Método que nos permite usar expresiones regulares para
         filtrar los contenidos de la línea log de iptables.
+        :param source:
+        :param values:
+        :return:
+        :param db_column_name:
         """
 
         if "IP" in db_column_name:
@@ -181,10 +173,14 @@ class Iptables(source):
         else:
             return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
 
-    def get_ip(self, source, values):
+    @staticmethod
+    def get_ip(source, values):
         """
         Método que permite extraer información de la ip del log desde el propio sistema
-        o obteniendola de la red."""
+        o obteniendola de la red.
+        :param source:
+        :param values:
+        :return: """
 
         ips_objects = Ips.objects.all()
         ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
@@ -324,7 +320,8 @@ class Iptables(source):
 
         return eval(str(port_regex))
 
-    def get_mac(self, source, values):
+    @staticmethod
+    def get_mac(source, values):
         """
         Método que establece el contenido de la tabla macs
         a través de la información proporcionada por iptables.
@@ -358,13 +355,14 @@ class Iptables(source):
         lo extraemos del archivo de configuración.
         """
 
-        rows = RowsDatabase(self._db_.num_columns_table('tags'))
-
         for it in self.info_config_file:
             if "TAG_" in it:
-                rows.insert_value((it.strip("TAG_"), self.info_config_file[it][0], self.info_config_file[it][1]))
-
-        self._db_.insert_row('tags', rows)
+                tags = Tags(
+                    id=it.strip("TAG_"),
+                    Description=self.info_config_file[it][0],
+                    Tag=self.info_config_file[it][1]
+                )
+                tags.save()
 
     def set_log_source(self):
         """
@@ -409,9 +407,12 @@ class Iptables(source):
         """
         Método que procesa la información necesaria para almacenarla
         en la tabla packet_additional_info desde el log.
+        :param values:
+        :param id_packet_event:
         """
 
-        rows = RowsDatabase(self._db_.num_columns_table('packet_additional_info'))
+        tags_objects = Tags.objects.all()
+
         str_values = str(values)
         string = " ".join(values)
         _register = {}
@@ -425,7 +426,7 @@ class Iptables(source):
             else:
                 _register["" + it + ""] = '-'
 
-        if ((re.compile('URGP' + '=\S+')).search(str_values)):
+        if (re.compile('URGP' + '=\S+')).search(str_values):
             _register["URGP"] = (
                 (((re.compile('URGP' + '=\S+')).search(str_values)).group(0)).split('URGP' + '=')[1].strip("',\\n\']"))
 
@@ -438,16 +439,22 @@ class Iptables(source):
         # Hago el diccionario anterior para controlar las distintas
         # tags que nos da el log de iptables / archivo de configuracion
 
-
         for it in _register:
-            rows.insert_value((id_packet_event[0][0], it, _register[it]))
-
-        self._db_.insert_row('packet_additional_info', rows)
+            for it_tag in tags_objects:
+                if it_tag.Tag == it:
+                    packet_additional = PacketAdditionalInfo(
+                        ID_Tag=it_tag.id,
+                        ID_Packet_Events=id_packet_event,
+                        Value=_register[it],
+                    )
+                    packet_additional.save()
 
     def get_message(self, values):
         """
         Método que permite almacenar el mensaje asignado a la línea de log
         de iptables.
+        :param values:
+        :return:
         """
 
         string = " ".join(values)
