@@ -63,11 +63,6 @@ class Iptables(Source):
         try:
 
             Timestamp = line[0] + ' ' + line[1] + ' ' + line[2]
-            hora = (datetime.strptime(line[0], "%Y-%m-%dT%H:%M:%S.%f"))
-            print "TIMESTAMP ",Timestamp
-            print "LINE 0", line[0]
-            print "LINE 1", line[1]
-            print "LINE 2", line[2]
             Timestamp_Insertion = (datetime.now()).strftime("%Y %b %d - %H:%M:%S.%f")
 
             rows = RowsDatabase(self._db_.num_columns_table('packet_events_information'))
