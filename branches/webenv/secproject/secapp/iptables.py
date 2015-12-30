@@ -20,7 +20,7 @@ from dateutil.parser import parse
 # Proyecto fin de carrera - Ing. en Informática
 # Universidad de Granada
 
-class Iptables(source):
+class Iptables(source.Source):
     """
     Clase hija que hereda de Source para el procesamiento de información
     procedente de iptables.
@@ -28,7 +28,8 @@ class Iptables(source):
 
     def __init__(self, group=None, target=None, name=None,
                  args=(), source=None, verbose=None):
-        super(Iptables, self).__init__(group=None, target=None, name=None, args=(), source=None, verbose=None)
+        super(Iptables, self).__init__(group=group, target=target, name=name, args=args, source=source, verbose=verbose)
+        print "IPTABLES CLASS"
         self.tag_log = []
         self.info_config_file = {}
         self.log_sources = LogSources()
@@ -42,7 +43,7 @@ class Iptables(source):
 
         config_file = open(self.config_file, 'r')
 
-        for linea in file.readlines():
+        for linea in config_file.readlines():
 
             line_process = linea.strip().split('\t')
 

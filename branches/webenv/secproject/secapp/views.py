@@ -3,22 +3,29 @@ from django.http import HttpResponse, Http404
 # from django.template import RequestContext, loader
 
 from .models import LogSources, Events, Ips
+from iptables import Iptables
 
 
 # Create your views here.
 
 def index(request):
-    latest_source_list = LogSources.objects.order_by('id')[:3]
+
 
     # Otra forma
     # template = loader.get_template('secapp/index.html')
     # context = RequestContext(request, {
     #    'latest_source_list': latest_source_list
-    #})
+    # })
     # output = ', '.join([lg.Description for lg in latest_source_list])
     # return HttpResponse(template.render(context))
 
     print "HOLA"
+
+    test = Iptables(args=(1,),
+                    source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
+                            'C': './secapp/kernel/conf/iptables-conf.conf'})
+    test.start()
+    latest_source_list = LogSources.objects.order_by('id')[:3]
     context = {'latest_source_list': latest_source_list}
     if request.GET.get('run-btn'):
         hello = int(request.GET.get('textbox'))
@@ -41,7 +48,6 @@ def events(request, id_event):
 
 
 def sources(request, id_source):
-
     # response = "You're looking at the log_source of event %s. "
     # return HttpResponse(response % id_source)
 
