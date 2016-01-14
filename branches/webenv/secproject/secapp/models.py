@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-
 from django.db import models
 
 
@@ -39,13 +38,28 @@ class Events(models.Model):
 
 class Ports(models.Model):
     id_port = models.IntegerField(primary_key=True)
-    Protocol = models.CharField(max_length=10, default='-')
-    Service = models.CharField(max_length=60, default='-')
-    Description = models.CharField(max_length=100, default='-')
     Tag = models.CharField(max_length=25, default='-')
 
     def __str__(self):
         return '%s %s' % (self.id_port, self.Protocol)
+
+
+class TCP(Ports):
+    id = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="id_port")
+    Service = models.CharField(max_length=60, default='-')
+    Description = models.CharField(max_length=100, default='-')
+
+    def __str__(self):
+        return '%s %s' % (self.id, self.Description)
+
+
+class UDP(Ports):
+    id = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="id_port")
+    Service = models.CharField(max_length=60, default='-')
+    Description = models.CharField(max_length=100, default='-')
+
+    def __str__(self):
+        return '%s %s' % (self.id, self.Description)
 
 
 class Tags(models.Model):
