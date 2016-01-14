@@ -45,7 +45,7 @@ class Source(threading.Thread):
                 for line in Pygtail(self.path_source):
                     if len(line) > 1:
                         print "\n Procesando línea --> " + str(line)
-                        self.processLine(line)
+                        self.process_line(line)
             else:
                 break
 

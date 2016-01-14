@@ -153,7 +153,7 @@ class Iptables(source.Source):
             print "---> Insertado registro: " + str(register) + "\n"
             print "---> Fin de procesado de linea \n"
         except Exception as ex:
-            print "ProcessLine -> ", ex
+            print "process_line -> ", ex
 
     def regexp(self, db_column_name, source, values):
         """
@@ -380,7 +380,7 @@ class Iptables(source.Source):
                 Type=self.info_config_file["Type"],
                 Model=self.info_config_file["Model"],
                 Active=self.info_config_file["Active"],
-                Software_class=self.info_config_file["Software_class"],
+                Software_Class=self.info_config_file["Software_class"],
                 Path=self.info_config_file["Path"],
             )
             self.log_sources.save()
