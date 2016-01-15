@@ -12,7 +12,7 @@ from datetime import date
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
-from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags
+from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags, Tcp, Udp
 from dateutil.parser import parse
 
 
@@ -281,43 +281,45 @@ class Iptables(source.Source):
                 if port_number == port_regex:
                     new_port = Ports(
                         id_port=port_regex,
-                        Protocol=port_protocol,
-                        Service=port_service,
-                        Description=port_description,
                         Tag=port_1[0],
                     )
                     new_port.save()
+                    new_tcp = Tcp(
+                        id=new_port.id_port,
+                        Service=port_service,
+                        Description=port_description,
+                    )
+                    new_tcp.save()
 
-            # UDP
-            if len(grep_port) > 1:
-                if len(grep_port[1]) != 0:
-                    port_2 = grep_port[1].split('\t')
+                # UDP
+                if len(grep_port) > 1:
+                    if len(grep_port[1]) != 0:
+                        port_2 = grep_port[1].split('\t')
 
-                    port_number = (grep_port[1].split('\t'))[2].split('/')[0]
-                    port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
+                        port_number = (grep_port[1].split('\t'))[2].split('/')[0]
+                        port_protocol = (grep_port[1].split('\t'))[2].split('/')[1]
 
-                    if len((grep_port[1].split('# '))) > 1:
-                        port_description = (grep_port[1].split('# '))[1]
-                    else:
-                        port_description = '-'
+                        if len((grep_port[1].split('# '))) > 1:
+                            port_description = (grep_port[1].split('# '))[1]
+                        else:
+                            port_description = '-'
 
-                    if len(port_2) > 3:
-                        if port_2[4] != '':
-                            port_service = port_2[4]
+                        if len(port_2) > 3:
+                            if port_2[4] != '':
+                                port_service = port_2[4]
+                            else:
+                                port_service = '-'
                         else:
                             port_service = '-'
-                    else:
-                        port_service = '-'
 
-                    if port_number == port_regex:
-                        new_port = Ports(
-                            id_port=port_regex,
-                            Protocol=port_protocol,
-                            Service=port_service,
-                            Description=port_description,
-                            Tag=port_2[0],
-                        )
-                        new_port.save()
+                        if port_number == port_regex:
+                            new_udp = Udp(
+                                id=new_port.id_port,
+                                Service=port_service,
+                                Description=port_description,
+                            )
+
+                            new_udp.save()
 
         return eval(str(port_regex))
 

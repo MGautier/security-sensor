@@ -44,7 +44,7 @@ class Ports(models.Model):
         return '%s %s' % (self.id_port, self.Protocol)
 
 
-class TCP(Ports):
+class Tcp(Ports):
     id = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="id_port")
     Service = models.CharField(max_length=60, default='-')
     Description = models.CharField(max_length=100, default='-')
@@ -53,7 +53,7 @@ class TCP(Ports):
         return '%s %s' % (self.id, self.Description)
 
 
-class UDP(Ports):
+class Udp(Ports):
     id = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="id_port")
     Service = models.CharField(max_length=60, default='-')
     Description = models.CharField(max_length=100, default='-')
