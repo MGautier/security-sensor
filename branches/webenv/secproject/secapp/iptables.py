@@ -8,7 +8,7 @@ import re
 import subprocess
 import socket
 import time
-from datetime import date
+from django.utils import timezone
 from datetime import datetime
 from kernel import rowsdatabase, source
 from dns import resolver, reversename
@@ -29,7 +29,6 @@ class Iptables(source.Source):
     def __init__(self, group=None, target=None, name=None,
                  args=(), source=None, verbose=None):
         super(Iptables, self).__init__(group=group, target=target, name=name, args=args, source=source, verbose=verbose)
-        print "IPTABLES CLASS"
         self.tag_log = []
         self.info_config_file = {}
         self.log_sources = LogSources()
@@ -74,7 +73,7 @@ class Iptables(source.Source):
             # timestamp tendrá cómo year el valor 1990 ya que el log no proporciona dicho valor y este lo toma
             # por defecto del tiempo unix.
             timestamp = parse(line[0])
-            timestamp_insertion = datetime.now()
+            timestamp_insertion = timezone.now()
             events = Events(
                 Timestamp=timestamp,
                 Timestamp_Insertion=timestamp_insertion,
@@ -105,7 +104,7 @@ class Iptables(source.Source):
                         register[db_column.pop(0)] = self.regexp(db_column_name, label, str(line))
                         self.tag_log.remove(label)
                 else:
-                    register[db_column.pop(0)] = '-'
+                    register[db_column.pop(0)] = None
 
             if (re.compile('MAC')).search(tag_str):
                 if self.tag_log.index('MAC') > 0:
@@ -122,10 +121,12 @@ class Iptables(source.Source):
             # Creamos una instancia del modelo Events (LogSources ya tiene una instancia
             # a traves del metodo set
 
+            log_sources_objects = LogSources.objects.all()
+
             events = Events(
                 Timestamp=timestamp,
                 Timestamp_Insertion=timestamp_insertion,
-                ID_Source=self.log_sources.id,
+                ID_Source=log_sources_objects.get(Type="Iptables"),
                 Comment='Iptables events',
             )
             events.save()
@@ -142,11 +143,11 @@ class Iptables(source.Source):
                 ID_Dest_MAC=register["ID_Dest_MAC"],
                 RAW_Info=register["RAW_Info"],
                 TAG=register["TAG"],
-                id=events.id,
+                id=events,
             )
             packet_events_information.save()
 
-            id_packet_events = packet_events_information.id
+            id_packet_events = packet_events_information
 
             self.set_packet_additional_info(line, id_packet_events)
 
@@ -190,7 +191,7 @@ class Iptables(source.Source):
 
         for it in ips_objects:
             if it.Ip == ip:
-                id_ip = it.id
+                id_ip = it
 
         # Aquí lo que hago es comprobar si existe una ip similar en la
         # tabla. Si no existe se inserta un nuevo registro de ip en la tabla.
@@ -222,7 +223,7 @@ class Iptables(source.Source):
                 )
 
                 ips.save()
-                id_ip = ips.id
+                id_ip = ips
             except Exception as ex:
                 print "get_ip -> ", ex
 
@@ -239,11 +240,12 @@ class Iptables(source.Source):
         """
 
         ports = Ports.objects.all()
+
         port_regex = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
         id_ports = 0
         for it in ports:
             if it.id == port_regex:
-                id_ports = it.id
+                id_ports = it
 
         p = subprocess.Popen(["grep -w " + port_regex + " /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
@@ -257,6 +259,7 @@ class Iptables(source.Source):
                     Tag='-',
                 )
                 new_port.save()
+                id_ports = new_port
 
             # TCP
             if len(grep_port[0]) != 0:
@@ -282,6 +285,7 @@ class Iptables(source.Source):
                         Tag=port_1[0],
                     )
                     new_port.save()
+                    id_ports = new_port
                     new_tcp = Tcp(
                         id=new_port,
                         Service=port_service,
@@ -318,8 +322,7 @@ class Iptables(source.Source):
                             )
 
                             new_udp.save()
-
-        return eval(str(port_regex))
+        return id_ports
 
     @staticmethod
     def get_mac(source, values):
@@ -337,7 +340,7 @@ class Iptables(source.Source):
         id_macs = 0
         for it in macs:
             if it.MAC == mac:
-                id_macs = it.id
+                id_macs = it
 
         if not id_macs:
             new_mac = Macs(
@@ -345,7 +348,7 @@ class Iptables(source.Source):
                 TAG='-',
             )
             new_mac.save()
-            id_macs = new_mac.id
+            id_macs = new_mac
 
         return id_macs
 
@@ -444,7 +447,7 @@ class Iptables(source.Source):
             for it_tag in tags_objects:
                 if it_tag.Tag == it:
                     packet_additional = PacketAdditionalInfo(
-                        ID_Tag=it_tag.id,
+                        ID_Tag=it_tag,
                         ID_Packet_Events=id_packet_event,
                         Value=_register[it],
                     )

@@ -19,8 +19,6 @@ def index(request):
     # output = ', '.join([lg.Description for lg in latest_source_list])
     # return HttpResponse(template.render(context))
 
-    print "HOLA"
-
     test = Iptables(args=(1,),
                     source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
                             'C': './secapp/kernel/conf/iptables-conf.conf'})
