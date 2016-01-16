@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ips, LogSources, Events, Ports, Tags, Macs, PacketAdditionalInfo, PacketEventsInformation
+from .models import Ips, LogSources, Events, Ports, Tags, Macs, PacketAdditionalInfo, PacketEventsInformation, Tcp, Udp
 
 # Register your models here.
 
@@ -11,3 +11,5 @@ admin.site.register(Tags)
 admin.site.register(Macs)
 admin.site.register(PacketAdditionalInfo)
 admin.site.register(PacketEventsInformation)
+admin.site.register(Tcp)
+admin.site.register(Udp)

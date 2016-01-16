@@ -37,15 +37,14 @@ class Events(models.Model):
 
 
 class Ports(models.Model):
-    id_port = models.IntegerField(primary_key=True)
     Tag = models.CharField(max_length=25, default='-')
 
     def __str__(self):
-        return '%s %s' % (self.id_port, self.Protocol)
+        return '%s' % self.id
 
 
-class Tcp(Ports):
-    id = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="id_port")
+class Tcp(models.Model):
+    id = models.OneToOneField(Ports, on_delete=models.CASCADE, primary_key=True)
     Service = models.CharField(max_length=60, default='-')
     Description = models.CharField(max_length=100, default='-')
 
@@ -53,8 +52,8 @@ class Tcp(Ports):
         return '%s %s' % (self.id, self.Description)
 
 
-class Udp(Ports):
-    id = models.ForeignKey(Ports, models.SET_NULL, blank=True, null=True, related_name="id_port")
+class Udp(models.Model):
+    id = models.OneToOneField(Ports, on_delete=models.CASCADE, primary_key=True)
     Service = models.CharField(max_length=60, default='-')
     Description = models.CharField(max_length=100, default='-')
 

@@ -154,6 +154,7 @@ class Iptables(source.Source):
             print "---> Fin de procesado de linea \n"
         except Exception as ex:
             print "process_line -> ", ex
+            print sys.exc_traceback.tb_lineno
 
     def regexp(self, db_column_name, source, values):
         """
@@ -241,8 +242,8 @@ class Iptables(source.Source):
         port_regex = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
         id_ports = 0
         for it in ports:
-            if it.id_port == port_regex:
-                id_ports = it.id_port
+            if it.id == port_regex:
+                id_ports = it.id
 
         p = subprocess.Popen(["grep -w " + port_regex + " /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
@@ -252,10 +253,7 @@ class Iptables(source.Source):
 
             if len(grep_port[0]) == 0:
                 new_port = Ports(
-                    id_port=port_regex,
-                    Protocol='-',
-                    Service='-',
-                    Description='-',
+                    id=port_regex,
                     Tag='-',
                 )
                 new_port.save()
@@ -280,12 +278,12 @@ class Iptables(source.Source):
 
                 if port_number == port_regex:
                     new_port = Ports(
-                        id_port=port_regex,
+                        id=port_regex,
                         Tag=port_1[0],
                     )
                     new_port.save()
                     new_tcp = Tcp(
-                        id=new_port.id_port,
+                        id=new_port,
                         Service=port_service,
                         Description=port_description,
                     )
@@ -314,7 +312,7 @@ class Iptables(source.Source):
 
                         if port_number == port_regex:
                             new_udp = Udp(
-                                id=new_port.id_port,
+                                id=new_port,
                                 Service=port_service,
                                 Description=port_description,
                             )
@@ -362,8 +360,8 @@ class Iptables(source.Source):
             if "TAG_" in it:
                 tags = Tags(
                     id=it.strip("TAG_"),
-                    Description=self.info_config_file[it][0],
-                    Tag=self.info_config_file[it][1]
+                    Description=self.info_config_file[it][1],
+                    Tag=self.info_config_file[it][0]
                 )
                 tags.save()
 
