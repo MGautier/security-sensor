@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Sources</title>
+</head>
+<body>
+<h2>{{ log_source.Type }} - {{ log_source.Description }}</h2>
+<h3>{{ event.Timestamp }} - {{ event.Comment }}</h3>
+<p>Description of the packet:</p>
+<ul>
+    <li>
+        IP Source: {{ packet_event_information.ID_IP_Source.Ip }}
+    </li>
+    <li>
+        IP Destiny: {{ packet_event_information.ID_IP_Dest.Ip }}
+    </li>
+    <li>
+        Source Port: {{ packet_event_information.ID_Source_Port }}
+    </li>
+    <li>
+        Destiny Port: {{ packet_event_information.ID_Dest_Port }}
+    </li>
+    <li>
+        Protocol: {{ packet_event_information.Protocol }}
+    </li>
+    <li>
+        Source MAC: {{ packet_event_information.ID_Source_MAC.MAC }}
+    </li>
+    <li>
+        Destiny MAC: {{ packet_event_information.ID_Dest_MAC.MAC }}
+    </li>
+    <li>
+        Tag: {{ packet_event_information.TAG }}
+    </li>
+</ul>
+<p>
+    Additional information
+</p>
+
+</body>
+</html>

@@ -1,16 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404
 # from django.template import RequestContext, loader
 
-from .models import LogSources, Events, Ips
+from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo
 from iptables import Iptables
 
 
 # Create your views here.
 
 def index(request):
-
-
     # Otra forma
     # template = loader.get_template('secapp/index.html')
     # context = RequestContext(request, {
@@ -32,7 +30,7 @@ def index(request):
     return render(request, 'secapp/index.html', context)
 
 
-def events(request, id_event):
+def events(request, id_log_source):
     # try:
     #    event = Events.objects.get(pk=id_event)
     # except Events.DoesNotExist:
@@ -41,17 +39,36 @@ def events(request, id_event):
 
     # return HttpResponse("You're looking at event %s. " % id_event)
 
-    event = get_object_or_404(Events, pk=id_event)
-    return render(request, 'secapp/events.html', {'event': event})
+    log_source = get_object_or_404(LogSources, pk=id_log_source)
+    events_list = get_list_or_404(Events, ID_Source_id=id_log_source)
+    event = get_object_or_404(Events, pk=id_log_source)
+    context = {'event': event, 'events_list': events_list, 'log_source': log_source}
+    return render(request, 'secapp/events.html', context)
 
 
-def sources(request, id_source):
+def event_information(request, id_log_source, id_event):
     # response = "You're looking at the log_source of event %s. "
     # return HttpResponse(response % id_source)
 
-    source = get_object_or_404(LogSources, pk=id_source)
-    return render(request, 'secapp/sources.html', {'source': source})
+    log_source = get_object_or_404(LogSources, pk=id_log_source)
+    event = get_object_or_404(Events, pk=id_event)
+    packet_event_information = get_object_or_404(PacketEventsInformation, pk=id_event)
+    context = {
+        'log_source': log_source,
+        'event': event,
+        'packet_event_information': packet_event_information,
+    }
+    return render(request, 'secapp/event_information.html', context)
 
 
-def ips(request, id_ip):
-    return HttpResponse("You're looking at the ips of packet events %s. " % id_ip)
+def additional_info(request, id_packet_event):
+    """
+
+    :param request:
+    :param id_packet_event:
+    """
+
+    packet_additional_info = get_list_or_404(PacketAdditionalInfo, pk=id_packet_event)
+    context = {'packet_additional_info': packet_additional_info}
+
+    return render(request, 'secapp/additional_info.html', context)

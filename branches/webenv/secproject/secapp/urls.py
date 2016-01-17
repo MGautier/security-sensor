@@ -7,12 +7,15 @@ urlpatterns = [
     # Index view
     url(r'^$', views.index, name='index'),
 
-    # Events description
-    url(r'^event/(?P<id_event>[0-9]+)/$', views.events, name='events'),
+    # List of events for a Log Source
+    url(r'^(?P<id_log_source>[0-9]+)/event/$', views.events, name='events'),
 
-    # Log sources description
-    url(r'^event/(?P<id_source>[0-9]+)/sources/$', views.sources, name='sources'),
+    # Packet of an event (for a Log Source)
+    url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)$', views.event_information,
+        name='event_information'),
 
-    # Ips description
-    url(r'^event/(?P<id_ip>[0-9]+)/ips/$', views.ips, name='ips'),
+    # Additional information about a packet event
+    # url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)/(?P<id_packet_event>[0-9]+)/add_info/$',
+    #    views.additional_info,
+    #    name='additional_info'),
 ]
