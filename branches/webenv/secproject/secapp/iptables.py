@@ -112,8 +112,8 @@ class Iptables(source.Source):
                     register["ID_Dest_MAC"] = self.regexp("ID_Dest_MAC", 'MAC', str(line))
                     self.tag_log.remove('MAC')
             else:
-                register["ID_Source_MAC"] = '-'
-                register["ID_Dest_MAC"] = '-'
+                register["ID_Source_MAC"] = None
+                register["ID_Dest_MAC"] = None
 
             register["RAW_Info"] = re.sub('\[', '', re.sub('\n', '', " ".join(line)))
             register["TAG"] = self.get_message(line)
