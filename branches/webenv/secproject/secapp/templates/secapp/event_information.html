@@ -5,9 +5,9 @@
     <title>Log Sources</title>
 </head>
 <body>
-<h2>{{ log_source.Type }} - {{ log_source.Description }}</h2>
-<h3>{{ event.Timestamp }} - {{ event.Comment }}</h3>
-<p>Description of the packet:</p>
+<h1>{{ log_source.Type }} - {{ log_source.Description }}</h1>
+<h2>{{ event.Timestamp }} - {{ event.Comment }}</h2>
+<h3>Description of the packet:</h3>
 <ul>
     <li>
         IP Source: {{ packet_event_information.ID_IP_Source.Ip }}
@@ -35,7 +35,7 @@
     </li>
 </ul>
 <p>
-    Additional information
+    <a href="{% url 'secapp:additional_info' log_source.id event.id %}">Additional information</a>
 </p>
 
 </body>

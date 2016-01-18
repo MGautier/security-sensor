@@ -5,10 +5,10 @@
     <title>Events</title>
 </head>
 <body>
-<h3>{{ log_source.Type }} - {{ log_source.Description }}</h3>
-<p>
+<h1>{{ log_source.Type }} - {{ log_source.Description }}</h1>
+<h3>
     List of events:
-</p>
+</h3>
 <ul>
     {% for item in events_list %}
     <li>
@@ -16,5 +16,6 @@
     </li>
     {% endfor %}
 </ul>
+<p><a href="{% url 'secapp:index' %}"></a></p>
 </body>
 </html>

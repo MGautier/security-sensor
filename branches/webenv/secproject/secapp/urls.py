@@ -15,7 +15,7 @@ urlpatterns = [
         name='event_information'),
 
     # Additional information about a packet event
-    # url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)/(?P<id_packet_event>[0-9]+)/add_info/$',
-    #    views.additional_info,
-    #    name='additional_info'),
+    url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)/additional_info/$',
+        views.additional_info,
+        name='additional_info'),
 ]

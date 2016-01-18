@@ -61,14 +61,22 @@ def event_information(request, id_log_source, id_event):
     return render(request, 'secapp/event_information.html', context)
 
 
-def additional_info(request, id_packet_event):
+def additional_info(request, id_log_source, id_event):
     """
 
+    :param id_event:
     :param request:
-    :param id_packet_event:
+    :param id_log_source:
     """
 
-    packet_additional_info = get_list_or_404(PacketAdditionalInfo, pk=id_packet_event)
-    context = {'packet_additional_info': packet_additional_info}
+    log_source = get_object_or_404(LogSources, pk=id_log_source)
+    event = get_object_or_404(Events, pk=id_event)
+    packet_event_information = get_object_or_404(PacketEventsInformation, pk=id_event)
+    packet_additional_info = get_list_or_404(PacketAdditionalInfo, ID_Packet_Events=packet_event_information)
+    context = {
+        'log_source': log_source,
+        'event': event,
+        'packet_additional_info': packet_additional_info,
+    }
 
     return render(request, 'secapp/additional_info.html', context)
