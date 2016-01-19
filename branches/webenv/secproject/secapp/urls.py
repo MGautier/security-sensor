@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)/additional_info/$',
         views.additional_info,
         name='additional_info'),
+
 ]

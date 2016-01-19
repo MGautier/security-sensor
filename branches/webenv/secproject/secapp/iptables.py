@@ -7,11 +7,9 @@ import dns
 import re
 import subprocess
 import socket
-import time
 from django.utils import timezone
-from datetime import datetime
-from kernel import rowsdatabase, source
-from dns import resolver, reversename
+from kernel import source
+from dns import reversename
 from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags, Tcp, Udp
 from dateutil.parser import parse
 

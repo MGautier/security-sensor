@@ -5,8 +5,13 @@
     <title>Log Sources</title>
 </head>
 <body>
+{% load handlers %}
 <h1>{{ log_source.Type }} - {{ log_source.Description }}</h1>
-<h2>{{ event.Timestamp }} - {{ event.Comment }}</h2>
+<h2>
+    {{ event.Timestamp }}:{{ event.Timestamp|get_seconds_ts}}.{{ event.Timestamp|get_miliseconds_ts}}
+    -
+    {{ event.Comment }}
+</h2>
 <h3>Description of the packet:</h3>
 <ul>
     <li>

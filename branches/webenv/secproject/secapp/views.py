@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.http import HttpResponse, Http404
-# from django.template import RequestContext, loader
-
+from django.http import HttpResponse, Http404, JsonResponse
+import time
+from django.views.decorators.csrf import csrf_protect
 from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo
 from iptables import Iptables
 
@@ -43,9 +43,15 @@ def events(request, id_log_source):
     events_list = get_list_or_404(Events, ID_Source_id=id_log_source)
     event = get_object_or_404(Events, pk=id_log_source)
     context = {'event': event, 'events_list': events_list, 'log_source': log_source}
+
+    if request.method == 'POST' and request.is_ajax():
+        data = {"event": event}
+        return JsonResponse(data)
+
     return render(request, 'secapp/events.html', context)
 
 
+@csrf_protect
 def event_information(request, id_log_source, id_event):
     # response = "You're looking at the log_source of event %s. "
     # return HttpResponse(response % id_source)
