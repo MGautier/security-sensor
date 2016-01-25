@@ -1,5 +1,5 @@
 from django.conf.urls import url
-
+from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 app_name = 'secapp'
@@ -19,4 +19,8 @@ urlpatterns = [
         views.additional_info,
         name='additional_info'),
 
+    url(r'^api/(?P<id_event>[0-9]+)/$', views.list_events, name='list_events'),
+
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
