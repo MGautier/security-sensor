@@ -4,6 +4,8 @@ import time
 from django.views.decorators.csrf import csrf_protect
 from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo
 from iptables import Iptables
+from rest_framework import generics
+from serializers import SecappSerializer
 
 
 # Create your views here.
@@ -49,6 +51,13 @@ def events(request, id_log_source):
         return JsonResponse(data)
 
     return render(request, 'secapp/events.html', context)
+
+
+class ListEvents(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Events.objects.all()
+    # Serializer - return the data that we want you know and in another an XML format adjacent
+    # into JSON (buscar mejor descripcion)
+    serializer_class = SecappSerializer
 
 
 @csrf_protect
