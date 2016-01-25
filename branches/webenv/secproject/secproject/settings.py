@@ -27,10 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': 'rest_framework.filters.DjangoFilterBackEnd',
-}
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -49,6 +45,15 @@ INSTALLED_APPS = [
 REACT = {
     'RENDER': not DEBUG,
     'RENDER_URL': 'http://127.0.0.1:8001/render',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
 }
 
 MIDDLEWARE_CLASSES = [
