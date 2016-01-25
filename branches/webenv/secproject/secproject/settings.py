@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': 'rest_framework.filters.DjangoFilterBackEnd',
+}
 
 # Application definition
 
