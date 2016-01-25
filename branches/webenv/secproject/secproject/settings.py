@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'gunicorn',
     'react',
+    'rest_framework',
     'secapp.apps.SecappConfig',
 ]
 
