@@ -53,7 +53,7 @@ def events(request, id_log_source):
     return render(request, 'secapp/events.html', context)
 
 
-class ListEvents(generics.RetrieveUpdateDestroyAPIView):
+class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
     queryset = Events.objects.all()
     # Serializer - return the data that we want you know and in another an XML format adjacent
     # into JSON (buscar mejor descripcion)

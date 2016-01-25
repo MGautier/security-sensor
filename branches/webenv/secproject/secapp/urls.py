@@ -19,7 +19,9 @@ urlpatterns = [
         views.additional_info,
         name='additional_info'),
 
-    url(r'^api/(?P<pk>[0-9]+)/$', views.ListEvents.as_view()),
+    url(r'^api/events/(?P<pk>[0-9]+)/$', views.EventsInformation.as_view()),
+
+    url(r'^api/events/$', views.EventsInformation.as_view()),
 
 ]
 
