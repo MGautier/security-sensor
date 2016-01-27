@@ -1,17 +1,18 @@
 var gulp = require('gulp');
-var cssnano = require('gulp-cssnano');
+var nanoCSS = require('gulp-cssnano');
 var uglify = require('gulp-uglify');
 
+
 gulp.task('cssnano', function(){
-return gulp.src('/home/debian-moises/Documentos/securityproject/branches/webenv/secproject/static/css/*.css')
-.pipe(ccsnano())
-.pipe(gulp.dest('/home/debian-moises/Documentos/securityproject/branches/webenv/secproject/static/build/css'))
+  return gulp.src('$VIRTUAL_ENV/secproject/static/css/*.css')
+    .pipe(nanoCSS())
+    .pipe(gulp.dest('$VIRTUAL_ENV/secproject/static/build/css/'));
 });
 
 gulp.task('uglify', function(){
-return gulp.src('/home/debian-moises/Documentos/securityproject/branches/webenv/secproject/static/js/*.js')
-.pipe(uglify())
-.pipe(gulp.dest('/home/debian-moises/Documentos/securityproject/branches/webenv/secproject/static/build/js/'))
+  return gulp.src('$VIRTUAL_ENV/secproject/static/js/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('$VIRTUAL_ENV/secproject/static/build/js'));
 });
 
-gulp.task('nano', ['cssnano', 'uglify']);
+gulp.task('optimized', ['cssnano', 'uglify']);
