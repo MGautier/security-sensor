@@ -1,23 +1,73 @@
+# coding=utf-8
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404, JsonResponse
 import time
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from rest_framework.renderers import JSONRenderer
 from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo
 from iptables import Iptables
 from rest_framework import generics
 from serializers import SecappSerializer
 
 
-# Create your views here.
+# Class
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
+class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
+
+    # Desde esta clase podemos mostrar la api rest visual. Con cada método tenemos acceso a diferente
+    # informacion mostrada en formato json.
+
+    queryset = Events.objects.all()
+    serializer_class = SecappSerializer
+
+    @csrf_exempt
+    def events_list(self, request, format=None):
+        """
+        Lista todos los eventos de la bd en formato JSON.
+        :param request:
+        :param format:
+        :return:
+        """
+
+        if request.method == 'GET':
+            serializer = SecappSerializer(Events.objects.all(), many=True)
+            return JSONResponse(serializer.data)
+
+    @csrf_exempt
+    def event_detail(self, request, pk, format=None):
+        """
+        Lista el evento mediante su identificador, si se encuentra en la bd,
+        en formato JSON
+        :param pk:
+        :param request:
+        :param format:
+        :return:
+        """
+
+        try:
+            details = Events.objects.get(pk=pk)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+            serializer = SecappSerializer(details)
+            return JSONResponse(serializer.data)
+
+# Methods
+
 
 def index(request):
-    # Otra forma
-    # template = loader.get_template('secapp/index.html')
-    # context = RequestContext(request, {
-    #    'latest_source_list': latest_source_list
-    # })
-    # output = ', '.join([lg.Description for lg in latest_source_list])
-    # return HttpResponse(template.render(context))
 
     test = Iptables(args=(1,),
                     source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
@@ -33,13 +83,6 @@ def index(request):
 
 
 def events(request, id_log_source):
-    # try:
-    #    event = Events.objects.get(pk=id_event)
-    # except Events.DoesNotExist:
-    #    raise Http404("Event does not exist")
-    # return render(request, 'secapp/events.html', {'event': event})
-
-    # return HttpResponse("You're looking at event %s. " % id_event)
 
     log_source = get_object_or_404(LogSources, pk=id_log_source)
     events_list = get_list_or_404(Events, ID_Source_id=id_log_source)
@@ -51,13 +94,6 @@ def events(request, id_log_source):
         return JsonResponse(data)
 
     return render(request, 'secapp/events.html', context)
-
-
-class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Events.objects.all()
-    # Serializer - return the data that we want you know and in another an XML format adjacent
-    # into JSON (buscar mejor descripcion)
-    serializer_class = SecappSerializer
 
 
 @csrf_protect
@@ -95,3 +131,7 @@ def additional_info(request, id_log_source, id_event):
     }
 
     return render(request, 'secapp/additional_info.html', context)
+
+
+
+
