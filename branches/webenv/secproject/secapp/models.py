@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -33,7 +34,7 @@ class Events(models.Model):
     Comment = models.TextField()
 
     def __str__(self):
-        return '%s %s %s' % (self.Timestamp, self.ID_Source, self.Comment)
+        return '%s %s %s' % (timezone.localtime(self.Timestamp), self.ID_Source, self.Comment)
 
 
 class Ports(models.Model):
