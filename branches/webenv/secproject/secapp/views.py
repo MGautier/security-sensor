@@ -1,13 +1,14 @@
 # coding=utf-8
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404, JsonResponse
-import time
+from django.utils import timezone
+from datetime import time, datetime, timedelta
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo
 from iptables import Iptables
 from rest_framework import generics
-from serializers import SecappSerializer
+from serializers import EventsSerializer
 
 
 # Class
@@ -29,7 +30,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
     # informacion mostrada en formato json.
 
     queryset = Events.objects.all()
-    serializer_class = SecappSerializer
+    serializer_class = EventsSerializer
 
     @csrf_exempt
     def events_list(self, request, format=None):
@@ -41,7 +42,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         """
 
         if request.method == 'GET':
-            serializer = SecappSerializer(Events.objects.all(), many=True)
+            serializer = EventsSerializer(Events.objects.all(), many=True)
             return JSONResponse(serializer.data)
 
     @csrf_exempt
@@ -61,8 +62,64 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
             return HttpResponse(status=404)
 
         if request.method == 'GET':
-            serializer = SecappSerializer(details)
+            serializer = EventsSerializer(details)
             return JSONResponse(serializer.data)
+
+    @csrf_exempt
+    def events_source_per_hour(self, request, id_source, format=None):
+        """
+        Lista el número de eventos de cada hora del día para mostrarlos en las gráficas
+        :param request:
+        :param id_source:
+        :param format:
+        :return:
+        """
+
+        try:
+            events_source = Events.objects.filter(ID_Source=id_source)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+            serializer = EventsSerializer(events_source, many=True)
+            return JSONResponse(serializer.data)
+
+    @csrf_exempt
+    def events_source_last_day(self, request, id_source, format=None):
+        """
+        Lista todo los eventos de cada hora para una source en las últimas 24 horas
+        :param request:
+        :param id_source:
+        :param format:
+        :return:
+        """
+
+        try:
+            events_source_last_day = Events.objects.filter(ID_Source=id_source)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+            today = timezone.now()
+            yesterday = today - timedelta(hours=24)
+
+            events_per_hour = {}
+            # Inserto las horas en las que las franjas de tiempo entre hoy y ayer hubo algún evento
+
+            for it in events_source_last_day:
+                if it.Timestamp < today:
+                    if not it.Timestamp < yesterday:
+                        hour = timezone.localtime(it.Timestamp).hour
+                        try:
+                            events_in_hour = events_per_hour['hour']
+                        except KeyError:
+                            events_in_hour = 0
+
+                        events_per_hour = {hour: events_in_hour + 1}
+
+            serializer = EventsSerializer(events_source_last_day, many=True)
+            return JSONResponse(serializer.data)
+
 
 # Methods
 
