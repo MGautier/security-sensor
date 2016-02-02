@@ -25,6 +25,9 @@ urlpatterns = [
 
     url(r'^api/events/$', views.EventsInformation().events_list, name='events_list'),
 
+    url(r'^api/events/hours/(?P<id_source>[0-9]+)/$', views.EventsInformation().events_source_per_hour,
+        name='events_source_per_hour')
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
