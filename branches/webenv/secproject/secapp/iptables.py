@@ -3,13 +3,16 @@
 
 
 import sys
+
 import dns
+
 import re
 import subprocess
 import socket
 from django.utils import timezone
 from kernel import source
-from dns import reversename
+# Si se borra la dependencia resolver de dns no funciona, aunque parezca que no se usa
+from dns import reversename, resolver
 from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags, Tcp, Udp
 from dateutil.parser import parse
 
