@@ -62,9 +62,12 @@ target/
 
 *.offset
 
+# Databases scripts
+*.db
+*.csv
+*.sql
+
 # Others
 
 *~
-*.db
-*.csv
 *.sh
