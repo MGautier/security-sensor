@@ -75,11 +75,6 @@ class Iptables(source.Source):
             # por defecto del tiempo unix.
             timestamp = parse(line[0])
             timestamp_insertion = timezone.now()
-            events = Events(
-                Timestamp=timestamp,
-                Timestamp_Insertion=timestamp_insertion,
-
-            )
 
             tag_str = ((re.compile('^(.*)=')).search(str(line))).group(0)
             tag_split = tag_str.split(',')
@@ -131,6 +126,7 @@ class Iptables(source.Source):
                 Comment='Iptables events',
             )
             events.save()
+
 
             # Creamos una instancia del modelo PacketEventsInformation
 
