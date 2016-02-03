@@ -49,7 +49,7 @@ var EventsList = React.createClass({
   render: function(){
     var eventNodes = this.props.data.map(function(event){
       return (
-          <li><Event Timestamp={event.Timestamp} Comment={event.Comment} key={event.id} /></li>
+          <li><Event Timestamp={event.Local_Timestamp} Comment={event.Comment} key={event.id} /></li>
       );
     });
     return (
