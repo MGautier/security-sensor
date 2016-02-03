@@ -66,9 +66,10 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
             return JSONResponse(serializer.data)
 
     @csrf_exempt
-    def events_source_per_hour(self, request, id_source, format=None):
+    def events_source_in_hour(self, request, pk, format=None):
         """
-        Lista el número de eventos de cada hora del día para mostrarlos en las gráficas
+        Lista el número de eventos de una hora del día para mostrarlos en las gráficas. La franja de tiempo ira desde
+        la hora actual hasta una hora menos de la actual.
         :param request:
         :param id_source:
         :param format:
@@ -76,16 +77,30 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         """
 
         try:
-            events_source = Events.objects.filter(ID_Source=id_source)
+            events_source = Events.objects.filter(ID_Source=pk)
         except Events.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':
-            serializer = EventsSerializer(events_source, many=True)
-            return JSONResponse(serializer.data)
+            today = timezone.localtime(timezone.now())
+            last_hour = today - timedelta(hours=1)
+
+            events_per_hour = {}
+
+            for it in events_source:
+                if it.Timestamp >= last_hour:
+                    if it.Timestamp < today:
+                        try:
+                            events_in_hour = events_per_hour[today.hour]
+                        except KeyError:
+                            events_in_hour = 0
+
+                        events_per_hour = {today.hour: events_in_hour + 1}
+
+            return JSONResponse(events_per_hour)
 
     @csrf_exempt
-    def events_source_last_day(self, request, id_source, format=None):
+    def events_source_last_day(self, request, pk, format=None):
         """
         Lista todo los eventos de cada hora para una source en las últimas 24 horas
         :param request:
@@ -95,30 +110,36 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         """
 
         try:
-            events_source_last_day = Events.objects.filter(ID_Source=id_source)
+            events_source_last_day = Events.objects.filter(ID_Source=pk)
         except Events.DoesNotExist:
             return HttpResponse(status=404)
 
         if request.method == 'GET':
-            today = timezone.now()
+            today = timezone.localtime(timezone.now())
             yesterday = today - timedelta(hours=24)
 
-            events_per_hour = {}
+            events_per_hour = []
             # Inserto las horas en las que las franjas de tiempo entre hoy y ayer hubo algún evento
-
+            print "TODAY: ", today
+            print "YESTERDAY: ", yesterday
             for it in events_source_last_day:
-                if it.Timestamp < today:
-                    if not it.Timestamp < yesterday:
-                        hour = timezone.localtime(it.Timestamp).hour
+                print "TIMESTAMP: ", it.Timestamp
+                local_time = timezone.localtime(it.Timestamp)
+                print "LOCAL_TIME: ", local_time
+                if local_time <= today:
+                    if local_time >= yesterday:
+                        hour = local_time.hour
+                        print "HOUR: ", hour
                         try:
                             events_in_hour = events_per_hour['hour']
                         except KeyError:
                             events_in_hour = 0
 
-                        events_per_hour = {hour: events_in_hour + 1}
+                        print "EVENTS_IN_HOUR: ", events_in_hour
+                        print "EVENTS_PER_HOUR: ", events_per_hour
+                        events_per_hour.append({hour: events_in_hour + 1})
 
-            serializer = EventsSerializer(events_source_last_day, many=True)
-            return JSONResponse(serializer.data)
+            return JSONResponse(events_per_hour)
 
 
 # Methods
