@@ -120,12 +120,13 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
                 if it.Timestamp >= last_hour:
                     if it.Timestamp < today:
                         hour = timezone.localtime(it.Timestamp).hour
+                        day = it.Timestamp.strftime("%Y-%m-%d")
                         try:
                             events_in_hour = events_per_hour[hour]
                         except KeyError:
                             if events_per_hour:
                                 list.append(events_per_hour)
-                            events_per_hour = {hour: 0}
+                            events_per_hour = {hour: 0, "day": day}
                             events_in_hour = 0
 
                         events_per_hour[hour] = events_in_hour + 1
@@ -166,6 +167,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
                 if local_time <= today:
                     if local_time >= yesterday:
                         hour = local_time.hour
+                        day = it.Timestamp.strftime("%Y-%m-%d")
                         # Compruebo si hay algún registro de una hora similar en el diccionario, para crear
                         # un nuevo registro o no. Luego asigno este diccionario a una lista y dado que
                         # en la lista introduzo una instancia u objeto diccionario, cuando fuera de ella se
@@ -179,7 +181,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
                         except KeyError:
                             if events_per_hour:
                                 list.append(events_per_hour)
-                            events_per_hour = {hour: 0}
+                            events_per_hour = {hour: 0, "day": day}
                             events_in_hour = 0
 
                         events_per_hour[hour] = events_in_hour + 1
