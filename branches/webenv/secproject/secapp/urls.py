@@ -19,11 +19,17 @@ urlpatterns = [
         views.additional_info,
         name='additional_info'),
 
+    url(r'^api/events/$', views.EventsInformation().events_list, name='events_list'),
+
+    url(r'^api/events/by_source/(?P<pk>[0-9]+)/$', views.EventsInformation().events_by_source,
+        name='events_by_source'),
+
+    url(r'^api/events/by_source/(?P<pk>[0-9]+)/(?P<fk>[0-9]+)/$', views.EventsInformation().events_by_source_detail,
+        name='events_by_source_detail'),
+
     url(r'^api/events/(?P<pk>[0-9]+)/json$', views.EventsInformation().event_detail, name='event_detail'),
 
     url(r'^api/events/(?P<pk>[0-9]+)/$', views.EventsInformation.as_view()),
-
-    url(r'^api/events/$', views.EventsInformation().events_list, name='events_list'),
 
     url(r'^api/events/hour/(?P<pk>[0-9]+)/$', views.EventsInformation().events_source_in_hour,
         name='events_source_in_hour'),

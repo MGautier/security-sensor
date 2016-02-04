@@ -33,6 +33,34 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EventsSerializer
 
     @csrf_exempt
+    def events_by_source(self, request, pk, format=None):
+        """
+
+        :param request:
+        :param pk:
+        :param format:
+        :return:
+        """
+        if request.method == 'GET':
+            serializer = EventsSerializer(Events.objects.filter(ID_Source=pk), many=True)
+            return JSONResponse(serializer.data)
+
+
+    @csrf_exempt
+    def events_by_source_detail(self, request, pk, fk, format=None):
+        """
+
+        :param request:
+        :param pk:
+        :param fk:
+        :param format:
+        :return:
+        """
+
+        if request.method == 'GET':
+            return EventsInformation().event_detail(request, fk, format)
+
+    @csrf_exempt
     def events_list(self, request, format=None):
         """
         Lista todos los eventos de la bd en formato JSON.
