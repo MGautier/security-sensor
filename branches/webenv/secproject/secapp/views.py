@@ -71,7 +71,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         Lista el número de eventos de una hora del día para mostrarlos en las gráficas. La franja de tiempo ira desde
         la hora actual hasta una hora menos de la actual.
         :param request:
-        :param id_source:
+        :param pk:
         :param format:
         :return:
         """
@@ -104,7 +104,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         """
         Lista todo los eventos de cada hora para una source en las últimas 24 horas
         :param request:
-        :param id_source:
+        :param pk:
         :param format:
         :return:
         """
