@@ -118,28 +118,42 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
             today = timezone.localtime(timezone.now())
             yesterday = today - timedelta(hours=24)
 
-            events_per_hour = []
+            list = []
+            events_per_hour = {}
+
             # Inserto las horas en las que las franjas de tiempo entre hoy y ayer hubo algún evento
-            print "TODAY: ", today
-            print "YESTERDAY: ", yesterday
             for it in events_source_last_day:
-                print "TIMESTAMP: ", it.Timestamp
+
                 local_time = timezone.localtime(it.Timestamp)
-                print "LOCAL_TIME: ", local_time
+                # Saco la hora local del Timestamp insertado en la bd. Comparo las horas antes de la actual
+                # y despues de 24 horas antes de la actual
+
                 if local_time <= today:
                     if local_time >= yesterday:
                         hour = local_time.hour
-                        print "HOUR: ", hour
+                        # Compruebo si hay algún registro de una hora similar en el diccionario, para crear
+                        # un nuevo registro o no. Luego asigno este diccionario a una lista y dado que
+                        # en la lista introduzo una instancia u objeto diccionario, cuando fuera de ella se
+                        # modifique, también lo hará internamente:
+                        # dic = {"ex": 1}
+                        # list.append(dic) list -> [{"ex": 1}]
+                        # dic['ex'] = 2
+                        # list -> [{"ex": 2}]
                         try:
-                            events_in_hour = events_per_hour['hour']
+                            events_in_hour = events_per_hour[hour]
                         except KeyError:
+                            if events_per_hour:
+                                list.append(events_per_hour)
+                            events_per_hour = {hour: 0}
                             events_in_hour = 0
 
-                        print "EVENTS_IN_HOUR: ", events_in_hour
-                        print "EVENTS_PER_HOUR: ", events_per_hour
-                        events_per_hour.append({hour: events_in_hour + 1})
+                        events_per_hour[hour] = events_in_hour + 1
 
-            return JSONResponse(events_per_hour)
+            list.append(events_per_hour)
+            # Asigno el último registro ya que no da la vuelta al bucle de nuevo y quedaría sin asignar
+            # a la lista
+
+            return JSONResponse([result for result in list])
 
 
 # Methods
