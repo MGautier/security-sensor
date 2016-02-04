@@ -85,19 +85,26 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
             today = timezone.localtime(timezone.now())
             last_hour = today - timedelta(hours=1)
 
+            list = []
             events_per_hour = {}
 
             for it in events_source:
                 if it.Timestamp >= last_hour:
                     if it.Timestamp < today:
+                        hour = timezone.localtime(it.Timestamp).hour
                         try:
-                            events_in_hour = events_per_hour[today.hour]
+                            events_in_hour = events_per_hour[hour]
                         except KeyError:
+                            if events_per_hour:
+                                list.append(events_per_hour)
+                            events_per_hour = {hour: 0}
                             events_in_hour = 0
 
-                        events_per_hour = {today.hour: events_in_hour + 1}
+                        events_per_hour[hour] = events_in_hour + 1
 
-            return JSONResponse(events_per_hour)
+            list.append(events_per_hour)
+
+            return JSONResponse([result for result in list])
 
     @csrf_exempt
     def events_source_last_day(self, request, pk, format=None):
