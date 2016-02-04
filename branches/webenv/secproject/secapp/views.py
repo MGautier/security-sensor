@@ -9,6 +9,7 @@ from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAddi
 from iptables import Iptables
 from rest_framework import generics
 from serializers import EventsSerializer
+from django.views.generic import View
 
 
 # Class
@@ -31,6 +32,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Events.objects.all()
     serializer_class = EventsSerializer
+    http_method_names = ['get', 'post', ]
 
     @csrf_exempt
     def events_by_source(self, request, pk, format=None):
