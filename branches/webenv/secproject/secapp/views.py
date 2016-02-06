@@ -26,7 +26,7 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
+class EventsInformation(generics.RetrieveAPIView):
     # Desde esta clase podemos mostrar la api rest visual. Con cada método tenemos acceso a diferente
     # informacion mostrada en formato json.
 
@@ -43,6 +43,7 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         :param format:
         :return:
         """
+
         if request.method == 'GET':
             serializer = EventsSerializer(Events.objects.filter(ID_Source=pk), many=True)
             return JSONResponse(serializer.data)
@@ -122,13 +123,13 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
                     if it.Timestamp < today:
                         hour = timezone.localtime(it.Timestamp).hour
                         day = it.Timestamp.strftime("%Y-%m-%d")
+                        events_in_hour = 0
                         try:
                             events_in_hour = events_per_hour[hour]
                         except KeyError:
                             if events_per_hour:
                                 list.append(events_per_hour)
                             events_per_hour = {hour: 0, "day": day}
-                            events_in_hour = 0
 
                         events_per_hour[hour] = events_in_hour + 1
 
@@ -146,24 +147,28 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         :return:
         """
 
-        _pk = 0
+        events_in_day = 0
 
         if type(pk) is DictType:
             _pk = pk['pk']
-            week_day = pk['day']
+            day = pk['day']
+            month = pk['month']
+            year = pk['year']
+            events_in_day = pk['events_db']
         else:
             _pk = pk
 
-        try:
-            events_in_day = Events.objects.filter(ID_Source=_pk)
-        except Events.DoesNotExist:
-            return HttpResponse(status=404)
+        if not events_in_day:
+            try:
+                events_in_day = Events.objects.filter(ID_Source=_pk)
+            except Events.DoesNotExist:
+                return HttpResponse(status=404)
 
         if request.method == 'GET':
 
             local_today = timezone.localtime(timezone.now())
             if type(pk) is DictType:
-                today = datetime(local_today.year, local_today.month, week_day, tzinfo=timezone.get_current_timezone())
+                today = datetime(year, month, day, tzinfo=timezone.get_current_timezone())
             else:
                 today = datetime(local_today.year, local_today.month, local_today.day,
                                  tzinfo=timezone.get_current_timezone())
@@ -182,13 +187,13 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
                 hour = local_timestamp.hour
 
                 if date_timestamp == today:
+                    events_in_hour = 0
                     try:
                         events_in_hour = events_per_hour[hour]
                     except KeyError:
                         if events_per_hour:
                             list_hours.append(events_per_hour)
                         events_per_hour = {hour: 0, "day": today.strftime("%Y-%m-%d")}
-                        events_in_hour = 0
 
                     events_per_hour[hour] = events_in_hour + 1
 
@@ -209,30 +214,154 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
         :return:
         """
 
-        try:
-            events_source_in_week = Events.objects.filter(ID_Source=pk)
-        except Events.DoesNotExist:
-            return HttpResponse(status=404)
+        _pk = 0
+        list_week = []
+        list_events_week = []
+        calendary = Calendar(0)
+        today = timezone.localtime(timezone.now())
+        year = today.year
+        month = today.month
+        events_in_week = 0
+
+        if type(pk) is DictType:
+            _pk = pk['pk']
+            list_week = pk['list_week']
+            month = pk['month']
+            year = pk['year']
+            events_in_week = pk['events_db']
+        else:
+            _pk = pk
+            for it in calendary.monthdayscalendar(today.year, today.month):
+                try:
+                    if it.index(today.day):
+                        list_week = it
+                except ValueError:
+                    pass
+
+        if not events_in_week:
+            try:
+                events_in_week = Events.objects.filter(ID_Source=_pk)
+            except Events.DoesNotExist:
+                return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            for it in list_week:
+                if not it == 0:
+                    dict_day = {'day': it, 'pk': _pk, 'year': year, 'month': month, 'events_db': events_in_week}
+                    list_events_week.append(EventsInformation().events_source_in_day(request, dict_day))
+
+            result = []  # Esta lista es para el uso interno de las otras funciones de la clase
+            result_json = []  # Esta lista es para dar más información al json de la api
+            count = 0
+            for it in list_events_week:
+                count += 1
+                result_json.append({'day_week': count, 'events': it})
+                for it_dict in it:
+                    if it_dict:
+                        result.append(it_dict)
+
+            if type(pk) is DictType:
+                return result
+            else:
+                return JSONResponse(result_json)
+
+    @csrf_exempt
+    def events_source_in_month(self, request, pk, format=None):
+        """
+        Lista todos los eventos de una source en el mes actual
+        :param request:
+        :param pk:
+        :param format:
+        :return:
+        """
+
+        list_events_month = []
+        calendary = Calendar(0)
+        today = timezone.localtime(timezone.now())
+        year = today.year
+        month = today.month
+        events_in_month = 0
+
+        if type(pk) is DictType:
+            _pk = pk['pk']
+            list_month = pk['list_month']
+            month = pk['month']
+            year = pk['year']
+            events_in_month = pk['events_db']
+        else:
+            _pk = pk
+            list_month = calendary.monthdayscalendar(today.year, today.month)
+
+        if not events_in_month:
+            try:
+                events_in_month = Events.objects.filter(ID_Source=_pk)
+            except Events.DoesNotExist:
+                return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            for it in list_month:
+                dict_month = {'pk': _pk, 'list_week': it, 'year': year, 'month': month, 'events_db': events_in_month}
+                list_events_month.append(EventsInformation().events_source_in_week(request, dict_month))
+
+            result = []
+            count = 0
+            for it in list_events_month:
+                count += 1
+                result.append({'week': count, 'days': it})
+
+            if type(pk) is DictType:
+                return result
+            else:
+                return JSONResponse(result)
+
+    @csrf_exempt
+    def events_source_in_year(self, request, pk, format=None):
+        """
+        Lista los eventos de una source durante el año actual
+        :param request:
+        :param pk:
+        :param format:
+        :return:
+        """
 
         calendary = Calendar(0)
         today = timezone.localtime(timezone.now())
-        list_week = []
+        list_month_year = []
+        year = today.year
 
-        for it in calendary.monthdayscalendar(today.year, today.month):
-            try:
-                if it.index(today.day):
-                    list_week = it
-            except ValueError:
-                pass
+        try:
+            events_in_year = Events.objects.filter(ID_Source=pk)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
 
-        list_events_week = []
+        calendary_year = calendary.yeardayscalendar(today.year)
+        # Esta variable almacena la información en 4 listas de la siguiente manera:
+        # - Primera lista: 3 meses del año (Empezando en Enero)
+        # - Segunda lista: 1 mes completo dividido en 4-6 listas de semanas (lista que se pasa a la funcion interna
+        # de la clase events_source_in_month)
+        # - Tercera lista: dias del mes por semana
+        # - Cuarta lista: dias de la semana
 
-        for it in list_week:
-            if not it == 0:
-                dict_day = {'day': it, 'pk': pk}
-                list_events_week.append(EventsInformation().events_source_in_day(request, dict_day)[0])
+        count_month = 0
+        for it in calendary_year:
+            for it_month in it:
+                count_month += 1
+                dict_year = {'pk': pk, 'list_month': it_month, 'year': year, 'month': count_month,
+                             'events_db': events_in_year}
+                list_month_year.append(EventsInformation().events_source_in_month(request, dict_year))
 
-        return JSONResponse([result for result in list_events_week])
+        result = []
+        count = 0
+
+        for it in list_month_year:
+            count += 1
+            result.append({'month': count, 'weeks': it})
+
+        print "RESULT: ", result
+
+        return JSONResponse(result)
 
     @csrf_exempt
     def events_source_last_day(self, request, pk, format=None):
@@ -290,32 +419,6 @@ class EventsInformation(generics.RetrieveUpdateDestroyAPIView):
             # a la lista
 
             return JSONResponse([result for result in list])
-
-    @csrf_exempt
-    def events_source_by_week(self, request, pk, format=None):
-        """
-        Lista todos los eventos de una semana por días
-        :param request:
-        :param pk:
-        :param format:
-        :return:
-        """
-
-        try:
-            events_source_by_week = Events.objects.filter(ID_Source=pk)
-        except Events.DoesNotExist:
-            return HttpResponse(status=404)
-
-        if request.method == 'GET':
-            calendary = Calendar(0)
-            today = datetime.now()
-            list_week = []
-            for it in calendary.monthdayscalendar(today.year, today.month):
-                try:
-                    if it.index(today.day):
-                        list_week = it
-                except ValueError:
-                    pass
 
 
 # Methods
