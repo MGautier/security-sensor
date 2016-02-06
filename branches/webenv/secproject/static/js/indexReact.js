@@ -62,7 +62,7 @@ var EventsList = React.createClass({
   }
 });
 
-React.render(
-    <EventsComponent url="api/events/" pollInterval={2000} />,
-  document.getElementById('content')
-);
+//React.render(
+//    <EventsComponent url="api/events/" pollInterval={10000} />,
+//  document.getElementById('content')
+//);
