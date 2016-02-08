@@ -37,6 +37,21 @@ class Events(models.Model):
         return '%s %s %s' % (timezone.localtime(self.Timestamp), self.ID_Source, self.Comment)
 
 
+class Visualizations(models.Model):
+
+    Week_Month = models.IntegerField('Position of the week in a list. For calendar objects list')
+    Week_Day = models.IntegerField('Position of the day in a list. For calendar objects list')
+    Name_Day = models.IntegerField('Name of the day')
+    Date = models.DateField('Events process date')  # Como parametro de entrada recibe objetos datetime.date
+    Hour = models.TimeField('Events process hour')
+    # Hour: Como parametro de entrada recibe objetos datetime.time, que contendran el valor de la hora en la que
+    # se han producido todos esos eventos (sin contar minutos, segundos y microsegundos)
+    Process_Events = models.IntegerField('Number of process events in a hour')
+
+    def __str__(self):
+        return '%s %s %s' % (self.Name_Day, self.Date, self.Time)
+
+
 class Ports(models.Model):
     Tag = models.CharField(max_length=25, default='-')
 
