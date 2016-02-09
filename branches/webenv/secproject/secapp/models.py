@@ -41,15 +41,16 @@ class Visualizations(models.Model):
 
     Week_Month = models.IntegerField('Position of the week in a list. For calendar objects list')
     Week_Day = models.IntegerField('Position of the day in a list. For calendar objects list')
-    Name_Day = models.IntegerField('Name of the day')
+    Name_Day = models.CharField(max_length=25, default='-')
     Date = models.DateField('Events process date')  # Como parametro de entrada recibe objetos datetime.date
-    Hour = models.TimeField('Events process hour')
+    Hour = models.IntegerField('Events process hour')
+    ID_Source = models.ForeignKey(LogSources, on_delete=models.CASCADE, blank=True, null=True, related_name="LogSource")
     # Hour: Como parametro de entrada recibe objetos datetime.time, que contendran el valor de la hora en la que
     # se han producido todos esos eventos (sin contar minutos, segundos y microsegundos)
     Process_Events = models.IntegerField('Number of process events in a hour')
 
     def __str__(self):
-        return '%s %s %s' % (self.Name_Day, self.Date, self.Time)
+        return '%s %s Hora: %s' % (self.Date, self.Name_Day, self.Hour)
 
 
 class Ports(models.Model):
