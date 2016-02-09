@@ -13,8 +13,11 @@ from django.utils import timezone
 from kernel import source
 # Si se borra la dependencia resolver de dns no funciona, aunque parezca que no se usa
 from dns import reversename, resolver
-from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags, Tcp, Udp
+from .models import Events, PacketEventsInformation, LogSources, Ips, Ports, Macs, PacketAdditionalInfo, Tags, Tcp
+from .models import Visualizations, Udp
+import calendar
 from dateutil.parser import parse
+from datetime import date
 
 
 # Author: Moisés Gautier Gómez
@@ -56,6 +59,62 @@ class Iptables(source.Source):
         config_file.close()
         self.set_tags()
         self.set_log_source()
+
+    @staticmethod
+    def visualizations(event):
+        """
+        Método que nos permite ir almacenando en el modelo Visualizations el número de eventos producidos
+        en una hora de un determinado día para luego extraer dicha información en la vistas de la aplicación
+        :param event:
+        :return:
+        """
+
+        try:
+            visualizations = Visualizations.objects.get(
+                Date=event['Date'],
+                Hour=event['Hour'],
+                ID_Source=LogSources.objects.get(Type='Iptables')
+            )
+            number_events = visualizations.Process_Events + 1
+            Visualizations.objects.filter(pk=visualizations.pk).update(Process_Events=number_events)
+            visualizations.refresh_from_db()
+
+        except Visualizations.DoesNotExist:
+
+            list_names_days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+            year = event['Date'].year
+            month = event['Date'].month
+            day = event['Date'].day
+            week_day = calendar.weekday(year, month, day)
+            week_month = 0
+            count_week = 0
+
+            for it in calendar.Calendar(0).monthdayscalendar(year, month):
+                try:
+                    if it.index(day):
+                        week_month = count_week
+                except ValueError:
+                    count_week += 1
+
+            try:
+                visualizations = Visualizations(
+                    Week_Month=week_month,
+                    Week_Day=week_day,
+                    Name_Day=list_names_days[week_day],
+                    Date=event['Date'],
+                    Hour=event['Hour'],
+                    ID_Source=LogSources.objects.get(Type='Iptables'),
+                    Process_Events=1,
+                )
+
+                visualizations.save()
+            except Exception as ex:
+                print "visualizations -> ", ex
+                print sys.exc_traceback.tb_lineno
+
+        except Exception as ex:
+            print "visualizations -> ", ex
+            print sys.exc_traceback.tb_lineno
 
     def process_line(self, line):
         """
@@ -126,7 +185,12 @@ class Iptables(source.Source):
                 Comment='Iptables events',
             )
             events.save()
+            date_info = date(events.Timestamp.year, events.Timestamp.month, events.Timestamp.day)
+            # Dia del evento
+            hour_info = events.Timestamp.hour
+            # No incluyo el resto de datos porque los eventos se contabilizan por hora
 
+            self.visualizations({'Date': date_info, 'Hour': hour_info})
 
             # Creamos una instancia del modelo PacketEventsInformation
 
