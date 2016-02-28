@@ -36,6 +36,8 @@ etc/
 
 # Distribution / nodejs npm
 
+# Pycharm configuration
+.idea/
 
 
 # PyInstaller
