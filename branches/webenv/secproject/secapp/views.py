@@ -11,6 +11,7 @@ from rest_framework import generics
 from serializers import EventsSerializer
 from calendar import Calendar
 from types import *
+import threading
 
 
 # Class
@@ -425,10 +426,27 @@ class EventsInformation(generics.RetrieveAPIView):
 
 
 def index(request):
-    test = Iptables(args=(1,),
+
+    exist_thread = False
+
+    for threads in threading.enumerate():
+
+        test = Iptables(args=(1,),
                     source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
                             'C': './secapp/kernel/conf/iptables-conf.conf'})
-    test.start()
+        if type(threads) == type(test):
+            exist_thread = True
+
+    if not exist_thread:
+        thread_iptables = Iptables(args=(1,),
+                                   source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
+                                           'C': './secapp/kernel/conf/iptables-conf.conf'})
+        thread_iptables.start()
+
+
+    print "ENUMERATE THREADS: ", threading.enumerate()
+    print "CURRENT THREAD - ", threading.currentThread()
+
     latest_source_list = LogSources.objects.order_by('id')[:3]
     context = {'latest_source_list': latest_source_list}
     if request.GET.get('run-btn'):
