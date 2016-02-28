@@ -444,9 +444,6 @@ def index(request):
         thread_iptables.start()
 
 
-    print "ENUMERATE THREADS: ", threading.enumerate()
-    print "CURRENT THREAD - ", threading.currentThread()
-
     latest_source_list = LogSources.objects.order_by('id')[:3]
     context = {'latest_source_list': latest_source_list}
     if request.GET.get('run-btn'):
