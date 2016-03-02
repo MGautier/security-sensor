@@ -1,0 +1,37 @@
+[
+    {
+        "text": "Hey there!",
+        "id": 1388534400000,
+        "author": "Pete Hunt"
+    },
+    {
+        "text": "React is *great*!",
+        "id": 1388534400001,
+        "author": "Paul O\u2019Shannessy"
+    },
+    {
+        "text": "React is *wonderful*!",
+        "id": 1388534400002,
+        "author": "Shaun O\u2019Neil"
+    },
+    {
+        "text": "It works!",
+        "id": 1388534400003,
+        "author": "Paul Mc Carny"
+    },
+    {
+        "text": "Good job",
+        "id": 1388534400004,
+        "author": "Moises G"
+    },
+    {
+        "text": "Neverland is *amazing*",
+        "id": 1453725278913,
+        "author": "John Smitz"
+    },
+    {
+        "text": "My spoon is too big",
+        "id": 1453725675303,
+        "author": "Kitty Wolf"
+    }
+]
