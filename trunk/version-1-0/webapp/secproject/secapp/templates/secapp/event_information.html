@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Sources</title>
+</head>
+<body>
+{% load handlers %}
+<h1>{{ log_source.Type }} - {{ log_source.Description }}</h1>
+<h2>
+    {{ event.Timestamp }}:{{ event.Timestamp|get_seconds_ts}}.{{ event.Timestamp|get_miliseconds_ts}}
+    -
+    {{ event.Comment }}
+</h2>
+<h3>Description of the packet:</h3>
+<ul>
+    <li>
+        IP Source: {{ packet_event_information.ID_IP_Source.Ip }}
+    </li>
+    <li>
+        IP Destiny: {{ packet_event_information.ID_IP_Dest.Ip }}
+    </li>
+    <li>
+        Source Port: {{ packet_event_information.ID_Source_Port }}
+    </li>
+    <li>
+        Destiny Port: {{ packet_event_information.ID_Dest_Port }}
+    </li>
+    <li>
+        Protocol: {{ packet_event_information.Protocol }}
+    </li>
+    <li>
+        Source MAC: {{ packet_event_information.ID_Source_MAC.MAC }}
+    </li>
+    <li>
+        Destiny MAC: {{ packet_event_information.ID_Dest_MAC.MAC }}
+    </li>
+    <li>
+        Tag: {{ packet_event_information.TAG }}
+    </li>
+</ul>
+<p>
+    <a href="{% url 'secapp:additional_info' log_source.id event.id %}">Additional information</a>
+</p>
+<p><a href="{% url 'secapp:events' log_source.id %}">Events</a></p>
+</body>
+</html>
