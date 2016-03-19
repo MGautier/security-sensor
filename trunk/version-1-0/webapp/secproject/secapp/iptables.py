@@ -81,7 +81,7 @@ class Iptables(source.Source):
 
         except Visualizations.DoesNotExist:
 
-            list_names_days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+            list_names_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
             year = event['Date'].year
             month = event['Date'].month
             day = event['Date'].day

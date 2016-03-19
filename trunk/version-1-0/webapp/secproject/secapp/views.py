@@ -5,10 +5,10 @@ from django.utils import timezone
 from datetime import time, datetime, timedelta
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo
+from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo, Visualizations
 from iptables import Iptables
 from rest_framework import generics
-from serializers import EventsSerializer
+from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
 from types import *
 import threading
@@ -25,6 +25,27 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
+
+class VisualizationsInformation(generics.RetrieveAPIView):
+
+    queryset = Visualizations.objects.all()
+    serializer_class = VisualizationsSerializer
+    http_method_names = ['get', 'post', ]
+
+    @csrf_exempt
+    def list_of_visualizations(self, request, format=None):
+        """
+        Lista de todas las entradas de la tabla visualizations en formato json. Esto me será útil para la generación
+        de la tabla de eventos por día, de la cuál luego podré amplicar información con api/events o similares.
+        :param request:
+        :param pk:
+        :param format:
+        :return:
+        """
+
+        if request.method == 'GET':
+            serializer = VisualizationsSerializer(Visualizations.objects.all(), many=True)
+            return JSONResponse(serializer.data)
 
 
 class EventsInformation(generics.RetrieveAPIView):
@@ -102,7 +123,7 @@ class EventsInformation(generics.RetrieveAPIView):
         Lista el número de eventos de una hora del día para mostrarlos en las gráficas. La franja de tiempo ira desde
         la hora actual hasta una hora menos de la actual.
         :param request:
-        :param pk:
+        :param pk: Identificador del Log_Source (1:Iptables ,...)
         :param format:
         :return:
         """

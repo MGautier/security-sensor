@@ -50,6 +50,9 @@ urlpatterns = [
     url(r'^api/events/last_day/(?P<pk>[0-9]+)/$', views.EventsInformation().events_source_last_day,
         name='events_source_last_day'),
 
+    url(r'^api/visualizations/$', views.VisualizationsInformation().list_of_visualizations,
+        name='visualizations_list'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
