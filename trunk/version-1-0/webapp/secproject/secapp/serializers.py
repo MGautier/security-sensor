@@ -17,5 +17,6 @@ class EventsSerializer(serializers.ModelSerializer):
 
 
 class VisualizationsSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Visualizations

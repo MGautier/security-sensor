@@ -47,6 +47,50 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             serializer = VisualizationsSerializer(Visualizations.objects.all(), many=True)
             return JSONResponse(serializer.data)
 
+    @csrf_exempt
+    def list_of_visualizations_week(self, request, format=None):
+        """
+
+        :param request:
+        :param format:
+        :return:
+        """
+
+        if request.method == 'GET':
+
+            calendary = Calendar(0)
+            today = timezone.localtime(timezone.now())
+            week = []
+            events_day_week = []
+
+            for it in calendary.monthdayscalendar(today.year, today.month):
+                try:
+                    if it.index(today.day):
+                        week = it
+                except ValueError:
+                    pass
+
+            for it in week:
+
+                date_week = datetime(today.year,today.month, it)
+
+                try:
+                    serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
+
+                    if serializer.data:
+                        for it_list in serializer.data:
+                            events_day_week.append(it_list)
+
+                except Visualizations.DoesNotExist:
+                    pass
+
+
+        return JSONResponse([result for result in events_day_week])
+
+
+
+
+
 
 class EventsInformation(generics.RetrieveAPIView):
     # Desde esta clase podemos mostrar la api rest visual. Con cada método tenemos acceso a diferente

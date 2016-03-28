@@ -53,6 +53,9 @@ urlpatterns = [
     url(r'^api/visualizations/$', views.VisualizationsInformation().list_of_visualizations,
         name='visualizations_list'),
 
+    url(r'^api/visualizations/week/$', views.VisualizationsInformation().list_of_visualizations_week,
+        name='visualizations_list_week'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
