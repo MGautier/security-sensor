@@ -1,3 +1,61 @@
+var Visualizations = React.createClass({
+  render: function() {
+    return (
+       <div className="visualizations">
+       </div>
+    );
+  }
+});
+
+var VisualizationsComponent = React.createClass({
+  loadVisualizationsFromServer: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err){
+        console.error(this.props.url, status, err.toString());
+      }
+    });
+  },
+  getInitialState: function() {
+    return {data: []};
+  },
+  componentDidMount: function() {
+    this.loadVisualizationsFromServer();
+    setInterval(this.loadVisualizationsFromServer, this.props.pollInterval);
+  },
+  render: function() {
+    var Style = {fontSize: '18px', marginRight: '20px' };
+    return (
+        <div className="visualizationsComponent" style={Style}>
+           <h1>Visualizations</h1>
+           <VisualizationsList data={this.state.data}/>
+        </div>
+    );
+  }
+});
+
+var VisualizationsList = React.createClass({
+  render: function(){
+    var visualNodes = this.props.data.map(function(visualizations){
+      return (
+          <li><Visualizations key={visualizations.id} /></li>
+      );
+    });
+    return (
+        <div className="visualizationsList">
+        <ul>
+        {visualNodes}
+      </ul>
+        </div>
+    );
+  }
+});
+
 var Event = React.createClass({
   render: function() {
     return (
@@ -62,7 +120,8 @@ var EventsList = React.createClass({
   }
 });
 
-//React.render(
-//    <EventsComponent url="api/events/" pollInterval={10000} />,
-//  document.getElementById('content')
-//);
+React.render(
+    <EventsComponent url="api/events/" pollInterval={10000} />,
+    //<VisualizationsComponent url="api/visualizations/week" pollInterval{10000} />,
+  document.getElementById('content')
+);
