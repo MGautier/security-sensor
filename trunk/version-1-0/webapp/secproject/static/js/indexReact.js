@@ -1,14 +1,46 @@
-var Visualizations = React.createClass({
+var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+      columns: [
+        ['data1', 30, 200, 100, 400, 150, 250],
+        ['data2', 50, 20, 10, 40, 15, 25]
+      ],
+      axes: {
+        data2: 'y2' // ADD
+      }
+    },
+    axis: {
+      y2: {
+        show: true // ADD
+      }
+    }
+});
+
+
+
+var Visualization = React.createClass({
   render: function() {
     return (
-       <div className="visualizations">
-       </div>
+        <div className="visualization">
+        <div className="visualizationDate">
+        {this.props.Date}
+      </div>
+        <div className="visualizationDay">
+        {this.props.Day}
+      </div>
+        <div className="visualizationHour">
+        {this.props.Hour}
+      </div>
+        <div className="visualizationEvents">
+        {this.props.Events}
+      </div>
+        </div>
     );
   }
 });
 
 var VisualizationsComponent = React.createClass({
-  loadVisualizationsFromServer: function() {
+  loadVisualizationsFromServer: function(){
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -18,22 +50,22 @@ var VisualizationsComponent = React.createClass({
       }.bind(this),
       error: function(xhr, status, err){
         console.error(this.props.url, status, err.toString());
-      }
+      }.bind(this)
     });
   },
-  getInitialState: function() {
+  getInitialState: function(){
     return {data: []};
   },
-  componentDidMount: function() {
+  componentDidMount: function(){
     this.loadVisualizationsFromServer();
     setInterval(this.loadVisualizationsFromServer, this.props.pollInterval);
   },
-  render: function() {
-    var Style = {fontSize: '18px', marginRight: '20px' };
+  render: function(){
+    var testStyle = { fontSize: '18px', marginRight: '20px' };
     return (
-        <div className="visualizationsComponent" style={Style}>
-           <h1>Visualizations</h1>
-           <VisualizationsList data={this.state.data}/>
+        <div className="visualizationsComponent" style={testStyle}>
+        <h1>Visualizations</h1>
+        <VisualizationsList data={this.state.data}/>
         </div>
     );
   }
@@ -41,15 +73,15 @@ var VisualizationsComponent = React.createClass({
 
 var VisualizationsList = React.createClass({
   render: function(){
-    var visualNodes = this.props.data.map(function(visualizations){
+    var visualizationNodes = this.props.data.map(function(visualization){
       return (
-          <li><Visualizations key={visualizations.id} /></li>
+          <li><Visualization Date={visualization.Date} Day={visualization.Name_Day} Hour={visualization.Hour} Events={visualization.Process_Events} key={visualization.id} /></li>
       );
     });
     return (
         <div className="visualizationsList">
         <ul>
-        {visualNodes}
+        {visualizationNodes}
       </ul>
         </div>
     );
@@ -121,7 +153,7 @@ var EventsList = React.createClass({
 });
 
 React.render(
-    <EventsComponent url="api/events/" pollInterval={10000} />,
-    //<VisualizationsComponent url="api/visualizations/week" pollInterval{10000} />,
+    //<EventsComponent url="api/events/" pollInterval={10000} />,
+    <VisualizationsComponent url="api/visualizations/week" pollInterval={10000} />,
   document.getElementById('content')
 );
