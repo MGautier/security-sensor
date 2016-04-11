@@ -3,9 +3,7 @@
 
 
 import sys
-
 import dns
-
 import re
 import subprocess
 import socket
@@ -90,10 +88,10 @@ class Iptables(source.Source):
             count_week = 0
 
             for it in calendar.Calendar(0).monthdayscalendar(year, month):
-                try:
-                    if it.index(day):
-                        week_month = count_week
-                except ValueError:
+
+                if it.count(day) == 1:
+                    week_month = count_week
+                else:
                     count_week += 1
 
             try:

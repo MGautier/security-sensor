@@ -26,8 +26,8 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-class VisualizationsInformation(generics.RetrieveAPIView):
 
+class VisualizationsInformation(generics.RetrieveAPIView):
     queryset = Visualizations.objects.all()
     serializer_class = VisualizationsSerializer
     http_method_names = ['get', 'post', ]
@@ -64,15 +64,13 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             events_day_week = []
 
             for it in calendary.monthdayscalendar(today.year, today.month):
-                try:
-                    if it.index(today.day):
-                        week = it
-                except ValueError:
-                    pass
+
+                if it.count(today.day) == 1:
+                    week = it
 
             for it in week:
 
-                date_week = datetime(today.year,today.month, it)
+                date_week = datetime(today.year, today.month, it)
 
                 try:
                     serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
@@ -84,12 +82,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                 except Visualizations.DoesNotExist:
                     pass
 
-
         return JSONResponse([result for result in events_day_week])
-
-
-
-
 
 
 class EventsInformation(generics.RetrieveAPIView):
@@ -491,14 +484,13 @@ class EventsInformation(generics.RetrieveAPIView):
 
 
 def index(request):
-
     exist_thread = False
 
     for threads in threading.enumerate():
 
         test = Iptables(args=(1,),
-                    source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
-                            'C': './secapp/kernel/conf/iptables-conf.conf'})
+                        source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
+                                'C': './secapp/kernel/conf/iptables-conf.conf'})
         if type(threads) == type(test):
             exist_thread = True
 
@@ -507,7 +499,6 @@ def index(request):
                                    source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
                                            'C': './secapp/kernel/conf/iptables-conf.conf'})
         thread_iptables.start()
-
 
     latest_source_list = LogSources.objects.order_by('id')[:3]
     context = {'latest_source_list': latest_source_list}
