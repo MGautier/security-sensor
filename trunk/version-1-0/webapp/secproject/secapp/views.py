@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.http import HttpResponse, Http404, JsonResponse
 from django.utils import timezone
-from datetime import time, datetime, timedelta
+from datetime import time, datetime, timedelta, date
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo, Visualizations
@@ -83,6 +83,71 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                     pass
 
         return JSONResponse([result for result in events_day_week])
+
+    @csrf_exempt
+    def visualizations_chart(self, request, format=None):
+        """
+
+        :param request:
+        :param format:
+        :return:
+        """
+
+        if request.method == 'GET':
+
+            calendary = Calendar(0)
+            today = timezone.localtime(timezone.now())
+            week = []
+            events_day_week = []
+            events_per_day = {}
+            list_events = []
+
+            for it in calendary.monthdayscalendar(today.year, today.month):
+
+                if it.count(today.day) == 1:
+                    week = it
+
+            for it in week:
+
+                date_week = datetime(today.year, today.month, it)
+
+                try:
+                    serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
+
+                    if serializer.data:
+                        for it_list in serializer.data:
+                            events_day_week.append(it_list)
+                            try:
+
+                                if events_per_day['day'] == it_list['Name_Day']:
+                                    events_sum = it_list['Process_Events'] + events_per_day['events']
+                                    events_per_day = {
+                                        "events": events_sum,
+                                        "day": it_list['Name_Day'],
+                                        "date": it_list['Date']
+                                        }
+                                else:
+                                    if events_per_day:
+                                        list_events.append(events_per_day)
+
+                                    events_per_day = {
+                                        "events": it_list['Process_Events'],
+                                        "day": it_list['Name_Day'],
+                                        "date": it_list['Date']
+                                        }
+                            except KeyError:
+                                events_per_day = {
+                                    "events": it_list['Process_Events'],
+                                    "day": it_list['Name_Day'],
+                                    "date": it_list['Date']
+                                    }
+
+                except Visualizations.DoesNotExist:
+                    pass
+
+            list_events.append(events_per_day)
+
+        return JSONResponse([result for result in list_events])
 
 
 class EventsInformation(generics.RetrieveAPIView):
@@ -479,6 +544,34 @@ class EventsInformation(generics.RetrieveAPIView):
 
             return JSONResponse([result for result in list])
 
+    @csrf_exempt
+    def events_list_in_day(self, request, pk, day, month, year, format=None):
+        """
+        Lista todos los eventos de cada hora para una source en las últimas 24 horas
+        :param request:
+        :param pk:
+        :param day:
+        :param month:
+        :param year:
+        :param format:
+        :return:
+        """
+
+        events_list = []
+
+        try:
+            events_list_in_day = Events.objects.filter(ID_Source=pk)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            for it in events_list_in_day:
+                if it.Timestamp.year == int(year) and it.Timestamp.month == int(month) and it.Timestamp.day == int(day):
+                    events_list.append(it)
+
+            serializer = EventsSerializer(events_list,  many=True)
+            return JSONResponse(serializer.data)
 
 # Methods
 
