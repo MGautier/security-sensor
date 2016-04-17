@@ -51,6 +51,8 @@
  }
  });*/
 
+var web = "api/events/day/";
+
 var Visualization = React.createClass({
   render: function() {
     return(
@@ -61,11 +63,85 @@ var Visualization = React.createClass({
           selection: {
             enabled: true
           },
-          onclick: function (d, data, element){
+          onclick: function (d, element){
 
-            var JSON = React.createClass({
+            var Parent = React.createClass({
+              getInitialState: function(){
+                return {day: d.x, date: this.props.Date, source: this.props.ID_Source};
+              },
               render: function() {
-                return (<Event url="api/visualizations/chart.json"/>);
+                return (
+                  console.log(web + this.state.source + "/" + this.state.date),
+                    <EventsComponent source={this.state.source} date={this.state.date} pollInterval={60000} />
+                  /*  <div className="parent">
+                    <div className="parentDate">
+                    {this.props.Date}
+                  </div>
+                    <div className="parentEvents">
+                    {this.props.Events}
+                  </div>
+                    <div className="parentDay">
+                    {this.props.Day}
+                  </div>
+                   </div>*/
+                );
+              }
+            });
+
+            var ParentComponent = React.createClass({
+              loadParentFromServer: function(){
+                $.ajax({
+                  url: this.props.url,
+                  dataType: 'json',
+                  cache: false,
+                  success: function(data) {
+                    this.setState({data: data});
+                  }.bind(this),
+                  error: function(xhr, status, err){
+                    console.error(this.props.url, status, err.toString());
+                  }.bind(this)
+                });
+              },
+              getInitialState: function(){
+                return {data: []};
+              },
+              componentDidMount: function(){
+                this.loadParentFromServer();
+                setInterval(this.loadParentFromServer, this.props.pollInterval);
+              },
+              render: function(){
+                var testStyle = { fontSize: '18px', marginRight: '20px' };
+                return (
+                    <div className="parentComponent" style={testStyle}>
+                    <h1>Parent</h1>
+                    <ParentList data={this.state.data}/>
+                    </div>
+                );
+              }
+            });
+
+            var ParentList = React.createClass({
+              render: function(){
+                console.log("ENTRO POR AQUÍ");
+                var count = 0;
+                var parentNodes = this.props.data.map(function(parent){
+                  if (count == d.index)
+                  {
+                    console.log("CONTADOR", count);
+                    console.log("D-INDEX", d.index);
+                    count++;
+                    return (<li><Parent ID_Source={parent.id_source} Date={parent.date} Events={parent.events} Day={parent.day} key={parent.id} /></li>);
+                  }
+
+                });
+                console.log("PARENT NODES", parentNodes);
+                return (
+                    <div className="parentList">
+                    <ul>
+                    {parentNodes}
+                  </ul>
+                    </div>
+                );
               }
             });
 
@@ -87,14 +163,14 @@ var Visualization = React.createClass({
             var EventsComponent = React.createClass({
               loadEventsFromServer: function(){
                 $.ajax({
-                  url: this.props.url,
+                  url: web + this.props.source + "/"+ this.props.date,
                   dataType: 'json',
                   cache: false,
                   success: function(data) {
                     this.setState({data: data});
                   }.bind(this),
                   error: function(xhr, status, err){
-                    console.error(this.props.url, status, err.toString());
+                    console.error(web + this.props.day + "/"+ this.props.date, status, err.toString());
                   }.bind(this)
                 });
               },
@@ -118,6 +194,7 @@ var Visualization = React.createClass({
 
             var EventsList = React.createClass({
               render: function(){
+                //console.log(this.props.data[0]);
                 var eventNodes = this.props.data.map(function(event){
                   return (
                       <li><Event Timestamp={event.Local_Timestamp} Comment={event.Comment} key={event.id} /></li>
@@ -134,8 +211,8 @@ var Visualization = React.createClass({
             });
 
             ReactDOM.render(
-              console.log("ON-RENDER",d),
-                <EventsComponent url="api/events/" pollInterval={10000} />,
+                <ParentComponent url="api/visualizations/chart/" pollInterval={10000} />,
+                //<EventsComponent url="api/events/" pollInterval={10000} />,
               document.getElementById('sub-content')
             );
           },
