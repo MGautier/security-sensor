@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^api/events/day/(?P<pk>[0-9]+)/$', views.EventsInformation().events_source_in_day,
         name='events_source_in_day'),
 
-    url(r'^api/events/day/(?P<pk>[0-9]+)/(?P<day>[0-9][0-9]+)/(?P<month>[0-9][0-9]+)/(?P<year>[0-9][0-9][0-9][0-9]+)/$',
+    url(r'^api/events/day/(?P<pk>[0-9]+)/(?P<year>[0-9][0-9][0-9][0-9]+)-(?P<month>[0-9][0-9]+)-(?P<day>[0-9][0-9]+)/$',
         views.EventsInformation().events_list_in_day, name='events_list_in_day'),
 
     url(r'^api/events/week/(?P<pk>[0-9]+)/$', views.EventsInformation().events_source_in_week,

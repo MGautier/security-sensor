@@ -124,7 +124,8 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                     events_per_day = {
                                         "events": events_sum,
                                         "day": it_list['Name_Day'],
-                                        "date": it_list['Date']
+                                        "date": it_list['Date'],
+                                        "id_source": it_list['ID_Source']
                                         }
                                 else:
                                     if events_per_day:
@@ -133,13 +134,15 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                     events_per_day = {
                                         "events": it_list['Process_Events'],
                                         "day": it_list['Name_Day'],
-                                        "date": it_list['Date']
+                                        "date": it_list['Date'],
+                                        "id_source": it_list['ID_Source']
                                         }
                             except KeyError:
                                 events_per_day = {
                                     "events": it_list['Process_Events'],
                                     "day": it_list['Name_Day'],
-                                    "date": it_list['Date']
+                                    "date": it_list['Date'],
+                                    "id_source": it_list['ID_Source']
                                     }
 
                 except Visualizations.DoesNotExist:
