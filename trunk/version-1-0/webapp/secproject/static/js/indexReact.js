@@ -125,14 +125,7 @@ var Visualization = React.createClass({
                 console.log("ENTRO POR AQUÍ");
                 var count = 0;
                 var parentNodes = this.props.data.map(function(parent){
-                  if (count == d.index)
-                  {
-                    console.log("CONTADOR", count);
-                    console.log("D-INDEX", d.index);
-                    count++;
                     return (<li><Parent ID_Source={parent.id_source} Date={parent.date} Events={parent.events} Day={parent.day} key={parent.id} /></li>);
-                  }
-
                 });
                 console.log("PARENT NODES", parentNodes);
                 return (
@@ -211,7 +204,7 @@ var Visualization = React.createClass({
             });
 
             ReactDOM.render(
-                <ParentComponent url="api/visualizations/chart/" pollInterval={10000} />,
+                <ParentComponent url="api/visualizations/chart/" pollInterval={60000} />,
                 //<EventsComponent url="api/events/" pollInterval={10000} />,
               document.getElementById('sub-content')
             );
