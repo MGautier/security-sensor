@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-04-12" view-index="0" gantt-divider-location="819" resource-divider-location="300" version="2.7.2" locale="es_ES">
+<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-02-17" view-index="0" gantt-divider-location="257" resource-divider-location="300" version="2.7.2" locale="es_ES">
     <description><![CDATA[Éste software se enmarca dentro del desarrollo del proyecto fin de carrera para la titulación Ingeniería en Informática de la ETSIIT (UGR). Se trata de una herramienta de procesado de softwares de seguridad dentro de nuestro sistema y su posterior manipulación en pros de obtener eventos críticos o vulnerabilidades.]]></description>
     <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Nombre" width="45" order="0"/>
+        <field id="tpd3" name="Nombre" width="44" order="0"/>
         <field id="tpd4" name="Fecha de inicio" width="26" order="1"/>
         <field id="tpd5" name="Fecha de fin" width="28" order="2"/>
         <option id="color.recent"><![CDATA[#cc3300 #ffff00 #00cc33]]></option>
@@ -139,9 +139,9 @@ Se trataron los siguientes puntos
         <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd12" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="367" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="208" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="225" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="105" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="64" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="69" visible="true"/>
         <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
