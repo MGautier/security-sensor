@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-04-12" view-index="0" gantt-divider-location="819" resource-divider-location="300" version="2.7.2" locale="es_ES">
+    <description><![CDATA[Éste software se enmarca dentro del desarrollo del proyecto fin de carrera para la titulación Ingeniería en Informática de la ETSIIT (UGR). Se trata de una herramienta de procesado de softwares de seguridad dentro de nuestro sistema y su posterior manipulación en pros de obtener eventos críticos o vulnerabilidades.]]></description>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="Nombre" width="45" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="26" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="28" order="2"/>
+        <option id="color.recent"><![CDATA[#cc3300 #ffff00 #00cc33]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nombre" width="50" order="0"/>
+        <field id="1" name="Función" width="50" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" name="Comienzo del proyecto" color="#00cc33" meeting="false" start="2015-05-01" duration="1" complete="0" expand="true"/>
+        <task id="2" name="Planificación y estudio del estado del arte" color="#8cb6ce" meeting="false" start="2015-05-04" duration="4" complete="0" expand="true"/>
+        <task id="5" name="Tecnología de los Monitores" color="#8cb6ce" meeting="false" start="2015-05-11" duration="5" complete="0" expand="true" cost-manual-value="100.0" cost-calculated="true"/>
+        <task id="9" name="Tecnología de los mánager" color="#8cb6ce" meeting="false" start="2015-05-12" duration="5" complete="0" expand="true"/>
+        <task id="11" name="Tecnología de las BBDD" color="#8cb6ce" meeting="false" start="2015-05-13" duration="5" complete="0" expand="true"/>
+        <task id="13" name="Tecnología de los assets" color="#8cb6ce" meeting="false" start="2015-05-18" duration="4" complete="0" expand="true"/>
+        <task id="15" name="Tecnología de la visualización" color="#8cb6ce" meeting="false" start="2015-05-25" duration="4" complete="0" expand="true"/>
+        <task id="17" name="Definición de la estructura en Git (BitBucket) y uso de la Heramienta Taiga" color="#8cb6ce" meeting="false" start="2015-06-01" duration="4" complete="0" expand="true"/>
+        <task id="19" name="Reunión de planificación con el Tutor" color="#cc3300" meeting="false" start="2015-06-09" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Reunión día Martes 9 de Junio de 2015 - Duración: 1 hora
+
+Se trataron los siguientes puntos
+- Tipo de formato de los logs de los firewalls (iptables y essentials)
+- Centrar el esfuerzo en crear una base de datos que pueda ser flexible con distintos assets no contemplados en el caso base
+- El trabajo de los monitores será del tipo hilo padre (Manager) e hilos hijos (monitores) que harán la monitorización de lo assets del sistema.]]></notes>
+        </task>
+        <task id="22" name="Reunión de planificación con el Tutor" color="#cc3300" meeting="false" start="2015-06-11" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Reunión día Jueves 11 de Junio de 2015 - Duración: 2:30 hora
+
+Se trataron los siguientes puntos
+- Especificación de nuevas tareas semanales y la definición de la base de datos.]]></notes>
+        </task>
+        <task id="24" name="Arquitectura Manager" color="#8cb6ce" meeting="false" start="2015-06-12" duration="4" complete="0" expand="true"/>
+        <task id="26" name="Arquitectura BBDD - Formato de Tablas" color="#8cb6ce" meeting="false" start="2015-06-12" duration="1" complete="0" expand="true">
+            <depend id="35" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="28" name="Arquitectura Local Visualization" color="#8cb6ce" meeting="false" start="2015-06-12" duration="4" complete="0" expand="true"/>
+        <task id="30" name="Arquitectura Assets" color="#8cb6ce" meeting="false" start="2015-06-12" duration="4" complete="0" expand="true">
+            <depend id="74" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="32" name="Arquitectura Monitor" color="#8cb6ce" meeting="false" start="2015-06-12" duration="4" complete="0" expand="true">
+            <depend id="76" type="1" difference="0" hardness="Strong"/>
+        </task>
+        <task id="34" name="Reunión de planificación con el Tutor" color="#cc3300" meeting="false" start="2015-06-19" duration="1" complete="0" expand="true"/>
+        <task id="35" name="Tarea 1: Análisis de Base de Datos" color="#8cb6ce" meeting="false" start="2015-06-15" duration="3" complete="0" expand="true">
+            <depend id="46" type="1" difference="0" hardness="Strong"/>
+        </task>
+        <task id="46" name="Tarea 2: Implementar una primera solución de BD" color="#8cb6ce" meeting="false" start="2015-06-15" duration="3" complete="0" expand="true">
+            <depend id="59" type="1" difference="0" hardness="Strong"/>
+        </task>
+        <task id="59" name="Tarea 2.1: Forma de operaciones con la BD" color="#8cb6ce" meeting="false" start="2015-06-15" duration="1" complete="0" expand="true">
+            <depend id="71" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="71" name="Tarea 3: Definir las tablas de la base de datos" color="#8cb6ce" meeting="false" start="2015-06-16" duration="10" complete="0" expand="true"/>
+        <task id="74" name="Tarea 4: Procesos vs hilos" color="#8cb6ce" meeting="false" start="2015-06-18" duration="8" complete="0" expand="true"/>
+        <task id="76" name="Tarea 5: Modelos diferentes de monitores" color="#8cb6ce" meeting="false" start="2015-06-12" duration="1" complete="0" expand="true"/>
+        <task id="88" name="Reunión de planificación con Tutor" color="#cc3300" meeting="false" start="2015-06-26" duration="1" complete="0" expand="true"/>
+        <task id="77" name="Tarea 6: Driver de fuente" color="#8cb6ce" meeting="false" start="2015-06-29" duration="2" complete="0" expand="true">
+            <depend id="79" type="1" difference="0" hardness="Strong"/>
+            <depend id="80" type="2" difference="0" hardness="Strong"/>
+            <depend id="81" type="1" difference="0" hardness="Strong"/>
+        </task>
+        <task id="79" name="Tarea 6.1 : Check Source" color="#8cb6ce" meeting="false" start="2015-06-29" duration="1" complete="0" expand="true"/>
+        <task id="80" name="Tarea 6.2: Forma de comprobar si un dato de source se ha actualizado" color="#8cb6ce" meeting="false" start="2015-07-01" duration="4" complete="0" expand="true"/>
+        <task id="81" name="Tarea 6.3 : Implementar una primera solución para iptables" color="#8cb6ce" meeting="false" start="2015-06-29" duration="166" complete="0" expand="true"/>
+        <task id="84" name="Tarea 6.4 : Configuración de rsyslog para generación logs iptables" color="#8cb6ce" meeting="false" start="2015-10-26" duration="3" complete="0" expand="true"/>
+        <task id="85" name="Métodos que hay que crear en la BD" color="#8cb6ce" meeting="false" start="2015-06-23" duration="5" complete="0" expand="true"/>
+        <task id="90" name="Reunión de planificación con Tutor" color="#cc3300" meeting="false" start="2015-07-01" duration="1" complete="0" expand="true"/>
+        <task id="87" name="Diseñar un diagrama en UML de clases para la base de datos" meeting="false" start="2015-06-30" duration="1" complete="0" expand="true"/>
+        <task id="92" name="Reunión de planificación con Tutor" color="#cc3300" meeting="false" start="2015-07-06" duration="1" complete="0" expand="true"/>
+        <task id="94" name="Reunión de planificación con Tutor" color="#cc3300" meeting="false" start="2015-07-13" duration="1" complete="0" expand="true"/>
+        <task id="127" name="Reunión 29 de Octubre" color="#cc3300" meeting="false" start="2015-10-29" duration="1" complete="0" expand="true"/>
+        <task id="129" name="Reunión 30 de Octubre" color="#cc3300" meeting="false" start="2015-10-30" duration="1" complete="0" expand="true"/>
+        <task id="96" name="Cambiar nombre de las columnas events" meeting="false" start="2015-11-03" duration="1" complete="0" expand="true"/>
+        <task id="97" name="Fichero de configuración de log_sources" meeting="false" start="2015-11-03" duration="5" complete="0" expand="true"/>
+        <task id="98" name="Cambiar nombres de tablas" meeting="false" start="2015-11-03" duration="1" complete="0" expand="true"/>
+        <task id="99" name="Añadir campos a la tabla log_sources" meeting="false" start="2015-11-03" duration="6" complete="0" expand="true"/>
+        <task id="100" name="Cambiar campos tabla IPs" meeting="false" start="2015-11-03" duration="1" complete="0" expand="true"/>
+        <task id="101" name="Nuevas sources a procesar" meeting="false" start="2015-11-03" duration="6" complete="0" expand="true"/>
+        <task id="102" name="Comprobar si existe una línea en blanco en el archivo de log" meeting="false" start="2015-11-09" duration="2" complete="0" expand="true"/>
+        <task id="103" name="Resolución a la inversa para obtener el hostname de una ip" meeting="false" start="2015-11-04" duration="5" complete="0" expand="true"/>
+        <task id="104" name="Refactorización del código fuente" meeting="false" start="2015-11-03" duration="1" complete="0" expand="true"/>
+        <task id="105" name="Cambiar el nombre de archivos" meeting="false" start="2015-11-03" duration="1" complete="0" expand="true"/>
+        <task id="131" name="Reunión 12 de Noviembre" meeting="false" start="2015-11-12" duration="1" complete="0" expand="true"/>
+        <task id="106" name="Inicialización de clase Iptables" meeting="false" start="2015-11-16" duration="2" complete="0" expand="true"/>
+        <task id="107" name="Refactorizar el código" meeting="false" start="2015-11-16" duration="2" complete="0" expand="true"/>
+        <task id="108" name="Base de Datos - 1" meeting="false" start="2015-11-16" duration="2" complete="0" expand="true"/>
+        <task id="109" name="Base de Datos - 2" meeting="false" start="2015-11-16" duration="2" complete="0" expand="true"/>
+        <task id="110" name="Base de Datos - 3" meeting="false" start="2015-11-16" duration="2" complete="0" expand="true"/>
+        <task id="111" name="Base de Datos - 4" meeting="false" start="2015-11-16" duration="3" complete="0" expand="true"/>
+        <task id="112" name="GUI: Evaluar alternativas y ponerlas en funcionamiento" meeting="false" start="2015-11-16" duration="5" complete="0" expand="true"/>
+        <task id="113" name="Estudio: Servicio entre BD y Front-end" meeting="false" start="2015-11-16" duration="15" complete="0" expand="true"/>
+        <task id="114" name="Proceso de aprendizaje Django" meeting="false" start="2015-12-07" duration="46" complete="0" expand="true"/>
+        <task id="115" name="Archivo de configuración de supervisor" meeting="false" start="2015-12-16" duration="1" complete="0" expand="true"/>
+        <task id="117" name="Cambiar el formato de los timestamps de rsyslogd" meeting="false" start="2015-12-18" duration="1" complete="0" expand="true"/>
+        <task id="118" name="Herencia en modelo de django" meeting="false" start="2016-01-14" duration="1" complete="0" expand="true"/>
+        <task id="119" name="Aprendizaje de Reactjs (api para la aplicación)" color="#ffff00" meeting="false" start="2016-01-22" duration="66" complete="0" expand="true"/>
+        <task id="120" name="Gulp (Optimización de código js y css)" meeting="false" start="2016-01-25" duration="2" complete="0" expand="true"/>
+        <task id="121" name="Bower" meeting="false" start="2016-01-26" duration="1" complete="0" expand="true"/>
+        <task id="122" name="Webpack / browserify" meeting="false" start="2016-01-28" duration="1" complete="0" expand="true"/>
+        <task id="123" name="D3js - Proceso de aprendizaje" meeting="false" start="2016-01-29" duration="52" complete="0" expand="true"/>
+        <task id="124" name="Visualización de la base de datos primera aproximación" color="#ffff00" meeting="false" start="2015-11-04" duration="123" complete="0" expand="true"/>
+        <task id="125" name="Dotar a X.offset y X.log de permisos adm o de lectura" color="#8cb6ce" meeting="false" start="2015-11-11" duration="47" complete="0" expand="true"/>
+        <task id="132" name="Reunión 11 de Febrero 2016" color="#cc3300" meeting="false" start="2016-02-11" duration="1" complete="0" expand="true"/>
+        <task id="134" name="Reunión 13 de Mayo 2016" color="#cc3300" meeting="false" start="2016-05-13" duration="1" complete="0" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd2" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd12" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd3" order="0" width="367" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="208" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="225" visible="true"/>
+        <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd7" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd13" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
