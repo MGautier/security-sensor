@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.10.29)  11 FEB 2016 19:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2015/dev/Debian) (preloaded format=pdflatex 2015.6.22)  23 APR 2016 17:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1230,7 +1230,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros (./portada.tex
-<logo_ugr.png, id=55, 150.5625pt x 195.73125pt>
+<logo_ugr.png, id=71, 150.5625pt x 195.73125pt>
 File: logo_ugr.png Graphic file (type png)
  <use logo_ugr.png>
 Package pdftex.def Info: logo_ugr.png used on input line 6.
@@ -1591,50 +1591,92 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-)
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.41 \input{introduccion.tex}
-                             
-? q
-OK, entering \batchmode...
- (./estadoarte.tex
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 11.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 11.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 11.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 11.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 11.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 11.
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 23.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 23.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 23.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 23.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 23.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 23.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 26.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.1 \chapter
-            {Estado del arte} [1
+l.26 \section
+             {Alcance} [1
 
 ]
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 26.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 32.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 32.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 32.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 32.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 32.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 32.
+) (./estadoarte.tex
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
+LaTeX Info: Redefining \. on input line 1.
+LaTeX Info: Redefining \% on input line 1.
+
 
 Package Fancyhdr Warning: \headheight is too small (0.0pt): 
  Make it at least 15.56403pt.
@@ -1670,9 +1712,7 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.1 \chapter
-            {Estado del arte} [2
-
-]
+            {Estado del arte} [2]
 Cap\'{\i }tulo 2.
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
@@ -1687,18 +1727,12 @@ Package babel Info: Redefining spanish shorthand "!
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
 )
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.43 \input{estadoarte.tex}
-                           
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
+Overfull \hbox (3.76749pt too wide) in paragraph at lines 10--44
+[]\T1/bch/m/n/12 Tecnolog�as (des-crip-ci�n) pyt-hon: li-bre-rias c�-mo pyg-tai
+l, gu-ni-corn, djan-go (fra-me-work),
+ []
 
- (./requisitos.tex
+(./requisitos.tex
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand >>
@@ -1728,7 +1762,9 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.1 \chapter
-            {Especificación de requisitos} [3]
+            {Especificación y análisis de requisitos} [3
+
+]
 LaTeX Info: Redefining \. on input line 1.
 LaTeX Info: Redefining \% on input line 1.
 Package babel Info: Redefining spanish shorthand <<
@@ -1760,7 +1796,7 @@ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.1 \chapter
-            {Especificación de requisitos} [4
+            {Especificación y análisis de requisitos} [4
 
 ]
 Cap\'{\i }tulo 3.
@@ -1776,19 +1812,17 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-)
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.45 \input{requisitos.tex}
-                           
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
 
- (./planificacion.tex
+Underfull \hbox (badness 10000) in paragraph at lines 4--5
+
+ []
+
+)
+Underfull \hbox (badness 10000) in paragraph at lines 6--46
+
+ []
+
+(./design.tex
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand >>
@@ -1856,19 +1890,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-)
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.47 \input{planificacion.tex}
-                              
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
-
- (./design.tex
+) (./implementacion.tex
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand >>
@@ -1936,19 +1958,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-)
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.49 \input{design.tex}
-                       
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
-
- (./implementacion.tex
+) (./evaluacion.tex
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand >>
@@ -2016,19 +2026,7 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-)
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.51 \input{implementacion.tex}
-                               
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
-
- (./evaluacion.tex
+) (./planificacion.tex
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand >>
@@ -2096,86 +2094,31 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 1.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 1.
-) (./conclusiones.tex
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 7.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 7.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 7.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 7.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 7.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 7.
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 15.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 15.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 15.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 15.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 15.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
- [13]
-LaTeX Info: Redefining \. on input line 1.
-LaTeX Info: Redefining \% on input line 1.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
- [14
-
-]
-Cap\'{\i }tulo 8.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
+(babel)             in language append on input line 15.
 )
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.55 \input{conclusiones.tex}
-                             
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
-
 Package babel Info: Redefining spanish shorthand <<
 (babel)             in language append on input line 57.
 Package babel Info: Redefining spanish shorthand >>
@@ -2200,7 +2143,9 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 57.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 57.
- [15]
+ [13]
+LaTeX Info: Redefining \. on input line 57.
+LaTeX Info: Redefining \% on input line 57.
 LaTeX Info: Redefining \. on input line 57.
 LaTeX Info: Redefining \% on input line 57.
 Package babel Info: Redefining spanish shorthand <<
@@ -2227,93 +2172,40 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 57.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 57.
- [16
+ [14
 
 ]
 No file securityproject.bbl.
 No file securityproject.bbl.
- (./licencia.tex
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 1.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 1.
-)
-Runaway argument?
-! File ended while scanning use of \language@active@arg>.
-<inserted text> 
-                \par 
-l.66 \input{licencia.tex}
-                         
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
-
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 69.
-Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 69.
- [17
-
-
-]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 69.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 69.
- (./securityproject.aux
+(./securityproject.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 69.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 69.
 Package rerunfilecheck Info: File `securityproject.out' has not changed.
-(rerunfilecheck)             Checksum: 5A32762AF515DBB65BE3DDB33F49D363;645.
+(rerunfilecheck)             Checksum: 1E04FBF9360C3337B81D72D895D27E06;959.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 69.
  ) 
 Here is how much of TeX's memory you used:
- 25504 strings out of 493105
- 487287 string characters out of 6137071
- 620552 words of memory out of 5000000
- 28407 multiletter control sequences out of 15000+600000
- 48773 words of font info for 66 fonts, out of 8000000 for 9000
+ 25498 strings out of 493105
+ 487200 string characters out of 6137072
+ 622552 words of memory out of 5000000
+ 28405 multiletter control sequences out of 15000+600000
+ 51595 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 55i,11n,82p,413b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,11n,82p,564b,458s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /public/amsfonts/cm/cmsy10.pfb>
-Output written on securityproject.pdf (27 pages, 77230 bytes).
+Output written on securityproject.pdf (24 pages, 85149 bytes).
 PDF statistics:
- 209 PDF objects out of 1000 (max. 8388607)
- 172 compressed objects within 2 object streams
- 36 named destinations out of 1000 (max. 500000)
- 114 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 219 PDF objects out of 1000 (max. 8388607)
+ 185 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 500000)
+ 146 words of extra memory for PDF output out of 10000 (max. 10000000)
 
