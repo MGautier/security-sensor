@@ -56,6 +56,7 @@ var web = "api/events/day/";
 var Visualization = React.createClass({
   render: function() {
     return(
+
       c3.generate({
         data: {
           url: 'api/visualizations/chart.json/',
@@ -66,13 +67,9 @@ var Visualization = React.createClass({
           onclick: function (d, element){
 
             var Parent = React.createClass({
-              getInitialState: function(){
-                return {day: d.x, date: this.props.Date, source: this.props.ID_Source};
-              },
               render: function() {
                 return (
-                  console.log(web + this.state.source + "/" + this.state.date),
-                    <EventsComponent source={this.state.source} date={this.state.date} pollInterval={60000} />
+                    <EventsComponent source={this.props.ID_Source} date={this.props.Date} url={web + this.props.ID_Source + "/" + this.props.Date} key={this.props.id} pollInterval={60000} />
                   /*  <div className="parent">
                     <div className="parentDate">
                     {this.props.Date}
@@ -114,7 +111,7 @@ var Visualization = React.createClass({
                 return (
                     <div className="parentComponent" style={testStyle}>
                     <h1>Parent</h1>
-                    <ParentList data={this.state.data}/>
+                    <ParentList data={this.state.data} key={this.state.id}/>
                     </div>
                 );
               }
@@ -156,7 +153,7 @@ var Visualization = React.createClass({
             var EventsComponent = React.createClass({
               loadEventsFromServer: function(){
                 $.ajax({
-                  url: web + this.props.source + "/"+ this.props.date,
+                  url: this.props.url,
                   dataType: 'json',
                   cache: false,
                   success: function(data) {
@@ -179,7 +176,7 @@ var Visualization = React.createClass({
                 return (
                     <div className="eventsComponent" style={testStyle}>
                     <h1>Events</h1>
-                    <EventsList data={this.state.data}/>
+                    <EventsList data={this.state.data} key={this.state.id}/>
                     </div>
                 );
               }
@@ -257,7 +254,7 @@ var VisualizationsComponent = React.createClass({
     return (
         <div className="visualizationsComponent" style={testStyle}>
         <h1>Visualizations</h1>
-        <VisualizationsList data={this.state.data}/>
+        <VisualizationsList data={this.state.data} key={this.state.id}/>
         </div>
     );
   }
@@ -267,14 +264,13 @@ var VisualizationsList = React.createClass({
   render: function(){
     var visualizationNodes = this.props.data.map(function(visualization){
       return (
-          <li><Visualization Date={visualization.Date} Day={visualization.Name_Day} Hour={visualization.Hour} Events={visualization.Process_Events} key={visualization.id} /></li>
+          <Visualization Date={visualization.Date} Day={visualization.Name_Day} ID_Source={visualization.ID_Source} Hour={visualization.Hour} Events={visualization.Process_Events} key={visualization.id} />
+        //<li><Visualization data={visualization} key={visualization.id} /></li>
       );
     });
     return (
         <div className="visualizationsList">
-        <ul>
         {visualizationNodes}
-      </ul>
         </div>
     );
   }
