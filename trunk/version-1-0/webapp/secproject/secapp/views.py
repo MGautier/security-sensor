@@ -61,6 +61,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             calendary = Calendar(0)
             today = timezone.localtime(timezone.now())
             week = []
+            next_first_month_week = [] #Utilizo esta variable para almacenar la primera semana del siguiente mes
             events_day_week = []
 
             for it in calendary.monthdayscalendar(today.year, today.month):
@@ -68,20 +69,41 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                 if it.count(today.day) == 1:
                     week = it
 
+            for it in calendary.monthdayscalendar(today.year, today.month+1):
+
+                if it.count(1) == 1:
+                    next_first_month_week = it
+
+
             for it in week:
+                if not it == 0:
+                    date_week = datetime(today.year, today.month, it)
+                    print "DATE_WEEK_ACTUAL:",date_week
+                    try:
+                        serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
-                date_week = datetime(today.year, today.month, it)
+                        if serializer.data:
+                            for it_list in serializer.data:
+                                events_day_week.append(it_list)
 
-                try:
-                    serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
+                    except Visualizations.DoesNotExist:
+                        pass
 
-                    if serializer.data:
-                        for it_list in serializer.data:
-                            events_day_week.append(it_list)
+            for it in next_first_month_week:
+                if not it == 0:
+                    date_week = datetime(today.year, today.month+1, it)
+                    print "DATE_WEEK_NEXT_MONTH:",date_week
+                    try:
+                        serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
-                except Visualizations.DoesNotExist:
-                    pass
+                        if serializer.data:
+                            for it_list in serializer.data:
+                                events_day_week.append(it_list)
 
+                    except Visualizations.DoesNotExist:
+                        pass
+
+                    
         return JSONResponse([result for result in events_day_week])
 
     @csrf_exempt
@@ -101,15 +123,22 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             events_day_week = []
             events_per_day = {}
             list_events = []
+            next_first_month_week = []
 
             for it in calendary.monthdayscalendar(today.year, today.month):
 
                 if it.count(today.day) == 1:
                     week = it
 
-            for it in week:
+            for it in calendary.monthdayscalendar(today.year, today.month+1):
 
-                date_week = datetime(today.year, today.month, it)
+                if it.count(1) == 1:
+                    next_first_month_week = it
+
+
+            for it in week:
+                if not it == 0:
+                    date_week = datetime(today.year, today.month, it)
 
                 try:
                     serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
@@ -126,7 +155,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                         "day": it_list['Name_Day'],
                                         "date": it_list['Date'],
                                         "id_source": it_list['ID_Source']
-                                        }
+                                    }
                                 else:
                                     if events_per_day:
                                         list_events.append(events_per_day)
@@ -136,17 +165,59 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                         "day": it_list['Name_Day'],
                                         "date": it_list['Date'],
                                         "id_source": it_list['ID_Source']
-                                        }
+                                    }
                             except KeyError:
                                 events_per_day = {
                                     "events": it_list['Process_Events'],
                                     "day": it_list['Name_Day'],
                                     "date": it_list['Date'],
                                     "id_source": it_list['ID_Source']
-                                    }
+                                }
 
                 except Visualizations.DoesNotExist:
                     pass
+
+            for it in next_first_month_week:
+                if not it == 0:
+                    date_week = datetime(today.year, today.month+1, it)
+
+                    try:
+                        serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
+
+                        if serializer.data:
+                            for it_list in serializer.data:
+                                events_day_week.append(it_list)
+                                try:
+
+                                    if events_per_day['day'] == it_list['Name_Day']:
+                                        events_sum = it_list['Process_Events'] + events_per_day['events']
+                                        events_per_day = {
+                                            "events": events_sum,
+                                            "day": it_list['Name_Day'],
+                                            "date": it_list['Date'],
+                                            "id_source": it_list['ID_Source']
+                                        }
+                                    else:
+                                        if events_per_day:
+                                            list_events.append(events_per_day)
+
+                                        events_per_day = {
+                                            "events": it_list['Process_Events'],
+                                            "day": it_list['Name_Day'],
+                                            "date": it_list['Date'],
+                                            "id_source": it_list['ID_Source']
+                                        }
+                                except KeyError:
+                                    events_per_day = {
+                                        "events": it_list['Process_Events'],
+                                        "day": it_list['Name_Day'],
+                                        "date": it_list['Date'],
+                                        "id_source": it_list['ID_Source']
+                                    }
+
+                    except Visualizations.DoesNotExist:
+                        pass
+                
 
             list_events.append(events_per_day)
 
