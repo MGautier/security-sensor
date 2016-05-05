@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-02-17" view-index="0" gantt-divider-location="257" resource-divider-location="300" version="2.7.2" locale="es_ES">
+<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-04-23" view-index="0" gantt-divider-location="257" resource-divider-location="300" version="2.7.2" locale="es_ES">
     <description><![CDATA[Éste software se enmarca dentro del desarrollo del proyecto fin de carrera para la titulación Ingeniería en Informática de la ETSIIT (UGR). Se trata de una herramienta de procesado de softwares de seguridad dentro de nuestro sistema y su posterior manipulación en pros de obtener eventos críticos o vulnerabilidades.]]></description>
     <view zooming-state="default:3" id="gantt-chart">
         <field id="tpd3" name="Nombre" width="44" order="0"/>
         <field id="tpd4" name="Fecha de inicio" width="26" order="1"/>
         <field id="tpd5" name="Fecha de fin" width="28" order="2"/>
-        <option id="color.recent"><![CDATA[#cc3300 #ffff00 #00cc33]]></option>
+        <option id="color.recent"><![CDATA[#000000 #cc3300 #ffff00 #00cc33]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Nombre" width="50" order="0"/>
@@ -129,6 +129,17 @@ Se trataron los siguientes puntos
         <task id="125" name="Dotar a X.offset y X.log de permisos adm o de lectura" color="#8cb6ce" meeting="false" start="2015-11-11" duration="47" complete="0" expand="true"/>
         <task id="132" name="Reunión 11 de Febrero 2016" color="#cc3300" meeting="false" start="2016-02-11" duration="1" complete="0" expand="true"/>
         <task id="134" name="Reunión 13 de Mayo 2016" color="#cc3300" meeting="false" start="2016-05-13" duration="1" complete="0" expand="true"/>
+        <task id="135" name="[LATEST] Problemas imprevistos en las fechas del sistema" color="#000000" meeting="false" start="2016-04-25" duration="1" complete="0" expand="true">
+            <notes><![CDATA[Me he dado un problema esta semana dado que la lista de días de esta semana es la siguiente [25,26,27,28,29,30,0]. Ése cero al final representa al día 1 del mes de mayo. Lo que sucede es que a la hora de iterar sobre la lista ese cero cómo que no cuadra.
+
+Lo que he tenido que hacer es generarme una lista de la primera semana del mes siguiente por si acaso vuelve a ocurrir este problema y usarla en otro bucle si detectamos un día cero en la siguiente lista, corresponden a los días del mes anterior que previamente teniamos, es decir:
+
+lista del mes de abril de la semana actual: [25, 26, 27, 28, 29, 30, 0]
+lista del mes de mayo de la primera semana: [0, 0, 0, 0, 0, 0, 1]
+
+Usando estas dos lista tengo cubierto la semana de abril que no sea cero y la semana de mayo que no sea cero y así poder insertar o poder tomar la fecha en concreto de toda la semana.]]></notes>
+        </task>
+        <task id="137" name="[LATEST] Proceso de generación visual - Reactjs - C3js" color="#000000" meeting="false" start="2016-04-25" duration="1" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
