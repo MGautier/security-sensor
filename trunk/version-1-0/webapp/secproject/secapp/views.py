@@ -61,7 +61,8 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             calendary = Calendar(0)
             today = timezone.localtime(timezone.now())
             week = []
-            next_first_month_week = [] #Utilizo esta variable para almacenar la primera semana del siguiente mes
+            next_first_month_week = []
+            # Utilizo esta variable para almacenar la primera semana del siguiente mes
             events_day_week = []
 
             for it in calendary.monthdayscalendar(today.year, today.month):
@@ -73,7 +74,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                 if it.count(1) == 1:
                     next_first_month_week = it
-
 
             for it in week:
                 if not it == 0:
@@ -102,7 +102,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                     except Visualizations.DoesNotExist:
                         pass
-
                     
         return JSONResponse([result for result in events_day_week])
 
@@ -134,7 +133,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                 if it.count(1) == 1:
                     next_first_month_week = it
-
 
             for it in week:
                 if not it == 0:
@@ -217,7 +215,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                     except Visualizations.DoesNotExist:
                         pass
-                
 
             list_events.append(events_per_day)
 
@@ -641,7 +638,9 @@ class EventsInformation(generics.RetrieveAPIView):
         if request.method == 'GET':
 
             for it in events_list_in_day:
-                if it.Timestamp.year == int(year) and it.Timestamp.month == int(month) and it.Timestamp.day == int(day):
+                if timezone.localtime(it.Timestamp).year == int(year) and \
+                                timezone.localtime(it.Timestamp).month == int(month) and \
+                                timezone.localtime(it.Timestamp).day == int(day):
                     events_list.append(it)
 
             serializer = EventsSerializer(events_list,  many=True)
