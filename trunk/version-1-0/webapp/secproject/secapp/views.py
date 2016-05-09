@@ -78,7 +78,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             for it in week:
                 if not it == 0:
                     date_week = datetime(today.year, today.month, it)
-                    print "DATE_WEEK_ACTUAL:",date_week
+
                     try:
                         serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
@@ -92,7 +92,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             for it in next_first_month_week:
                 if not it == 0:
                     date_week = datetime(today.year, today.month+1, it)
-                    print "DATE_WEEK_NEXT_MONTH:",date_week
+
                     try:
                         serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
