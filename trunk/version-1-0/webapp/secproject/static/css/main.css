@@ -35,6 +35,13 @@ h1, h2, h3 {
   display: none;
 }
 
+div {
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.73;
+  letter-spacing: 1.5px;
+}
+
 ol {
     counter-reset: li; /* Inicia el contador */
     list-style: none; /* Elimina la numeracion por defecto */
