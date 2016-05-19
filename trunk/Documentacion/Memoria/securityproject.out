@@ -21,10 +21,31 @@
 \BOOKMARK [2][-]{subsection.2.3.2}{An\341lisis}{section.2.3}% 21
 \BOOKMARK [1][-]{section.2.4}{Soluci\363n tecnol\363gica de mi proyecto}{chapter.2}% 22
 \BOOKMARK [1][-]{section.2.5}{Tecnolog\355as implementadas}{chapter.2}% 23
-\BOOKMARK [0][-]{chapter.3}{Especificaci\363n y an\341lisis de requisitos}{}% 24
-\BOOKMARK [0][-]{chapter.4}{Dise\361o}{}% 25
-\BOOKMARK [0][-]{chapter.5}{Implementaci\363n}{}% 26
-\BOOKMARK [0][-]{chapter.6}{Evaluaci\363n}{}% 27
-\BOOKMARK [0][-]{chapter.7}{Planificaci\363n y estimaci\363n de costes}{}% 28
-\BOOKMARK [1][-]{section.7.1}{Software utilizado}{chapter.7}% 29
-\BOOKMARK [1][-]{section.7.2}{Licencia}{chapter.7}% 30
+\BOOKMARK [2][-]{subsection.2.5.1}{Python}{section.2.5}% 24
+\BOOKMARK [2][-]{subsection.2.5.2}{Procesos vs hilos}{section.2.5}% 25
+\BOOKMARK [2][-]{subsection.2.5.3}{Django}{section.2.5}% 26
+\BOOKMARK [2][-]{subsection.2.5.4}{Dependencias Python}{section.2.5}% 27
+\BOOKMARK [2][-]{subsection.2.5.5}{C3js}{section.2.5}% 28
+\BOOKMARK [2][-]{subsection.2.5.6}{D3js}{section.2.5}% 29
+\BOOKMARK [2][-]{subsection.2.5.7}{LaTeX}{section.2.5}% 30
+\BOOKMARK [2][-]{subsection.2.5.8}{Reactjs}{section.2.5}% 31
+\BOOKMARK [2][-]{subsection.2.5.9}{Sqlite}{section.2.5}% 32
+\BOOKMARK [2][-]{subsection.2.5.10}{Rsyslog}{section.2.5}% 33
+\BOOKMARK [2][-]{subsection.2.5.11}{Logrotate}{section.2.5}% 34
+\BOOKMARK [2][-]{subsection.2.5.12}{Syslog}{section.2.5}% 35
+\BOOKMARK [2][-]{subsection.2.5.13}{Iptables}{section.2.5}% 36
+\BOOKMARK [2][-]{subsection.2.5.14}{Django-rest}{section.2.5}% 37
+\BOOKMARK [2][-]{subsection.2.5.15}{Json}{section.2.5}% 38
+\BOOKMARK [2][-]{subsection.2.5.16}{Pycharm}{section.2.5}% 39
+\BOOKMARK [2][-]{subsection.2.5.17}{Taiga}{section.2.5}% 40
+\BOOKMARK [2][-]{subsection.2.5.18}{Bitbucket}{section.2.5}% 41
+\BOOKMARK [2][-]{subsection.2.5.19}{Git}{section.2.5}% 42
+\BOOKMARK [2][-]{subsection.2.5.20}{Digital Ocean}{section.2.5}% 43
+\BOOKMARK [2][-]{subsection.2.5.21}{Nginx}{section.2.5}% 44
+\BOOKMARK [0][-]{chapter.3}{Especificaci\363n y an\341lisis de requisitos}{}% 45
+\BOOKMARK [0][-]{chapter.4}{Dise\361o}{}% 46
+\BOOKMARK [0][-]{chapter.5}{Implementaci\363n}{}% 47
+\BOOKMARK [0][-]{chapter.6}{Evaluaci\363n}{}% 48
+\BOOKMARK [0][-]{chapter.7}{Planificaci\363n y estimaci\363n de costes}{}% 49
+\BOOKMARK [1][-]{section.7.1}{Software utilizado}{chapter.7}% 50
+\BOOKMARK [1][-]{section.7.2}{Licencia}{chapter.7}% 51
