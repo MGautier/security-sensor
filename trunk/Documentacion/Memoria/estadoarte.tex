@@ -201,6 +201,36 @@ Lo que se realiza en esa comprobación es que dentro de la pila o lista de threa
 
 \subsection{Django}
 
+Django es un framework web de alto nivel para el lenguaje de programación Python. Éste framework permite un despliegue de una aplicación de escritorio al entorno web de una forma sencilla, segura y fácilmente escalable. \\
+
+Su metodología es MVT - Model View Template en la que se explicarán en que consisten cada una de ellas:
+
+\subsubsection{Model}
+
+Model o Modelo es la parte encargada de la gestión con la base de datos y de abstraer su uso encapsulandola mediante clases que representan a cada una de las instancias de la BD (o tablas).\\
+
+\subsubsection{View}
+
+View o Vista es la parte encargada de la gestión entre la base de datos y el template. Puede llevar a confusión esta metodología de desarrollo web, ya que existe una similar: MVC. Pero en MVC (Modelo-View-Controller) el modelo se encarga de la gestión de la BD, la vista de representar los datos y el controlador de administrador o motor de contenidos entre la BD y la vista final de la aplicación web. \\
+
+Así pues la Vista en el framework Django se representa al modelo MVC cómo el controlador.\\
+
+\subsubsection{Template}
+
+Template o Plantilla se refiere a la parte encargad de reprensentar la información almacenada en BD y procesada y generada mediante la Vista (View). Al contrario de un modelo MVC, en dónde el controlador se encarga de generar las vistas, en este modelo se representan las mismas cómo una plantilla de muchas otras que se van enrutando a diferentes funciones generadas por la vista. \\
+
+Dicho esto siempre habra una plantilla Master o padre de la que heredaran todas las hijas que vayamos asociando a nuestra web. Estas heredan una estructura o skeleton en formato html enriquecido con lenguaje propio de Django en formato python. Veamos un ejemplo de plantilla Master y una plantilla que se nutre de éste skeleton:\\
+
+\begin{minipage}{\linewidth}
+  \lstinputlisting[language=HTML]{trozos-codigo/codigo-2.html}
+\end{minipage}
+\newpage
+\begin{minipage}{\linewidth}
+  En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos dónde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ése bloque.\\
+  \lstinputlisting[language=HTML]{trozos-codigo/codigo-3.html}
+  Aquí se observa perfectamente cómo se heredan las características de la plantilla Master y se define el bloque de contenido que en la plantilla Master ya se especifico. \\
+\end{minipage}
+
 \subsection{Dependencias Python}
 
 \subsection{C3js}
