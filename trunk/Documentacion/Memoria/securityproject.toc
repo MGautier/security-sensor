@@ -35,27 +35,28 @@
 \contentsline {subsubsection}{View}{16}{section*.11}
 \contentsline {subsubsection}{Template}{17}{section*.12}
 \contentsline {subsection}{\numberline {2.5.4}Dependencias Python}{19}{subsection.2.5.4}
-\contentsline {subsection}{\numberline {2.5.5}C3js}{19}{subsection.2.5.5}
-\contentsline {subsection}{\numberline {2.5.6}D3js}{19}{subsection.2.5.6}
-\contentsline {subsection}{\numberline {2.5.7}\LaTeX }{19}{subsection.2.5.7}
-\contentsline {subsection}{\numberline {2.5.8}Reactjs}{19}{subsection.2.5.8}
-\contentsline {subsection}{\numberline {2.5.9}Sqlite}{19}{subsection.2.5.9}
-\contentsline {subsection}{\numberline {2.5.10}Rsyslog}{19}{subsection.2.5.10}
-\contentsline {subsection}{\numberline {2.5.11}Logrotate}{19}{subsection.2.5.11}
-\contentsline {subsection}{\numberline {2.5.12}Syslog}{19}{subsection.2.5.12}
-\contentsline {subsection}{\numberline {2.5.13}Iptables}{19}{subsection.2.5.13}
-\contentsline {subsection}{\numberline {2.5.14}Django-rest}{19}{subsection.2.5.14}
-\contentsline {subsection}{\numberline {2.5.15}Json}{19}{subsection.2.5.15}
-\contentsline {subsection}{\numberline {2.5.16}Pycharm}{19}{subsection.2.5.16}
-\contentsline {subsection}{\numberline {2.5.17}Taiga}{19}{subsection.2.5.17}
-\contentsline {subsection}{\numberline {2.5.18}Bitbucket}{19}{subsection.2.5.18}
-\contentsline {subsection}{\numberline {2.5.19}Git}{19}{subsection.2.5.19}
-\contentsline {subsection}{\numberline {2.5.20}Digital Ocean}{19}{subsection.2.5.20}
-\contentsline {subsection}{\numberline {2.5.21}Nginx}{19}{subsection.2.5.21}
-\contentsline {chapter}{\numberline {3}Especificaci\IeC {\'o}n y an\IeC {\'a}lisis de requisitos}{21}{chapter.3}
-\contentsline {chapter}{\numberline {4}Dise\IeC {\~n}o}{23}{chapter.4}
-\contentsline {chapter}{\numberline {5}Implementaci\IeC {\'o}n}{25}{chapter.5}
-\contentsline {chapter}{\numberline {6}Evaluaci\IeC {\'o}n}{27}{chapter.6}
-\contentsline {chapter}{\numberline {7}Planificaci\IeC {\'o}n y estimaci\IeC {\'o}n de costes}{29}{chapter.7}
-\contentsline {section}{\numberline {7.1}Software utilizado}{29}{section.7.1}
-\contentsline {section}{\numberline {7.2}Licencia}{29}{section.7.2}
+\contentsline {subsubsection}{Virtualenv}{19}{section*.13}
+\contentsline {subsection}{\numberline {2.5.5}C3js}{20}{subsection.2.5.5}
+\contentsline {subsection}{\numberline {2.5.6}D3js}{21}{subsection.2.5.6}
+\contentsline {subsection}{\numberline {2.5.7}\LaTeX }{21}{subsection.2.5.7}
+\contentsline {subsection}{\numberline {2.5.8}Reactjs}{22}{subsection.2.5.8}
+\contentsline {subsection}{\numberline {2.5.9}SQLite}{22}{subsection.2.5.9}
+\contentsline {subsection}{\numberline {2.5.10}Rsyslog}{23}{subsection.2.5.10}
+\contentsline {subsection}{\numberline {2.5.11}Logrotate}{24}{subsection.2.5.11}
+\contentsline {subsection}{\numberline {2.5.12}Syslog}{25}{subsection.2.5.12}
+\contentsline {subsection}{\numberline {2.5.13}Iptables}{25}{subsection.2.5.13}
+\contentsline {subsection}{\numberline {2.5.14}Django-rest}{25}{subsection.2.5.14}
+\contentsline {subsection}{\numberline {2.5.15}JSON}{25}{subsection.2.5.15}
+\contentsline {subsection}{\numberline {2.5.16}PyCharm}{26}{subsection.2.5.16}
+\contentsline {subsection}{\numberline {2.5.17}Taiga}{26}{subsection.2.5.17}
+\contentsline {subsection}{\numberline {2.5.18}Bitbucket}{27}{subsection.2.5.18}
+\contentsline {subsection}{\numberline {2.5.19}Git}{27}{subsection.2.5.19}
+\contentsline {subsection}{\numberline {2.5.20}Digital Ocean}{28}{subsection.2.5.20}
+\contentsline {subsection}{\numberline {2.5.21}Nginx}{28}{subsection.2.5.21}
+\contentsline {chapter}{\numberline {3}Especificaci\IeC {\'o}n y an\IeC {\'a}lisis de requisitos}{31}{chapter.3}
+\contentsline {chapter}{\numberline {4}Dise\IeC {\~n}o}{33}{chapter.4}
+\contentsline {chapter}{\numberline {5}Implementaci\IeC {\'o}n}{35}{chapter.5}
+\contentsline {chapter}{\numberline {6}Evaluaci\IeC {\'o}n}{37}{chapter.6}
+\contentsline {chapter}{\numberline {7}Planificaci\IeC {\'o}n y estimaci\IeC {\'o}n de costes}{39}{chapter.7}
+\contentsline {section}{\numberline {7.1}Software utilizado}{39}{section.7.1}
+\contentsline {section}{\numberline {7.2}Licencia}{39}{section.7.2}

@@ -145,6 +145,8 @@ A continuación explicaré las diferentes tecnologías/bibliotecas/lenguajes que
 
 \subsection{Python}
 
+Web: \url{https://www.python.org/}\\
+
 Python es un lenguaje multiparadigma cuya estructura principal está integramente basada en objetos con sus diferentes métodos y atributos internos. Además también posee tipado dinámico, recolector/administrador de la memoria interna y un sistema de referenciado interno de atributos. \\
 
 Las principales características que hicieron de su elección fueron:
@@ -201,6 +203,10 @@ Lo que se realiza en esa comprobación es que dentro de la pila o lista de threa
 
 \subsection{Django}
 
+\hspace*{1.9in}{\includegraphics[scale=0.15]{diagramas/django-logo.png}}
+
+Web: \url{https://www.djangoproject.com/}\\
+
 Django es un framework web de alto nivel para el lenguaje de programación Python. Éste framework permite un despliegue de una aplicación de escritorio al entorno web de una forma sencilla, segura y fácilmente escalable. \\
 
 Su metodología es MVT - Model View Template en la que se explicarán en que consisten cada una de ellas:
@@ -228,41 +234,233 @@ Dicho esto siempre habra una plantilla Master o padre de la que heredaran todas 
 \begin{minipage}{\linewidth}
   En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos dónde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ése bloque.\\
   \lstinputlisting[language=HTML]{trozos-codigo/codigo-3.html}
-  Aquí se observa perfectamente cómo se heredan las características de la plantilla Master y se define el bloque de contenido que en la plantilla Master ya se especifico. \\
+  Aquí se observa perfectamente cómo se heredan las características de la plantilla Master y se define el bloque de contenido que en la plantilla Master que ya se especifico (va dentro de las etiquetas \textbf{block} y \textbf{endblock}). \\
 \end{minipage}
 
 \subsection{Dependencias Python}
 
+Estas son las dependencias que se necesitan para la fase de desarrollo del proyecto. Para poder uso de ellas, previamente tendremos que tener instalado un entorno virtual o virtualenv desde el cual hacer la instalación de estos paquetes.
+
+\subsubsection{Virtualenv}
+
+Es una herramienta que nos permite crear entornos aislados de Python. De esta forma podemos realizar pruebas de dependencias o paquetes para un entorno de desarrollo, en dónde las instalaciones o pruebas no afecten a las dependencias internas del sistema.\\
+
+\begin{itemize}
+  \item Django 1.9.2: \url{https://pypi.python.org/pypi/Django/1.9.2}
+  \item argparse 1.4.0: \url{https://docs.python.org/2.7/library/argparse.html}
+  \item dnspython 1.12.0: \url{https://pypi.python.org/pypi/dnspython/1.12.0} - Se usa para hacer resolución directa e inversa de DNS.
+  \item gunicorn 19.4.5: \url{https://pypi.python.org/pypi/gunicorn} - Sirve para desplegar un servidor WSGI (Web Server Gateway Interface) HTTP en entornos Unix.
+  \item optional-django 0.3.0: \url{https://pypi.python.org/pypi/optional-django/} - Otras utilidades del framework Django
+  \item pygtail 0.6.1: \url{https://pypi.python.org/pypi/pygtail} - Sirve para leer archivos de log que no se han leido aún. Similar al comando tail -f en sistemas Unix.
+  \item python-dateutil 2.4.2: \url{https://pypi.python.org/pypi/python-dateutil/2.4.2} - Extensión al módulo principal de Python datetime.
+  \item react 2.0.2: \url{https://pypi.python.org/pypi/react/2.0.2} - Módulo que ejecuta un servidor de datos para los componentes react de la aplicación en Python.
+  \item requests 2.9.1: \url{https://pypi.python.org/pypi/requests/} - Bibloteca Python para poder consumir recursos HTTP de forma segura y controlada.
+  \item setuptools 20.1.1: \url{https://pypi.python.org/pypi/setuptools} - Herramienta para la descarga, compilación, instalación, desinstalación y actualización de todos los paquetes Python. El resultado de la misma se puede usar mediante pip que se nutre el repositorio de paquetes PyPi.
+  \item six 1.10.0: \url{https://pypi.python.org/pypi/six} - Es una bibloteca de compatibilidad entre Python 2 y 3.
+  \item wheel 0.29.0: \url{https://pypi.python.org/pypi/wheel} - Es un gestor o generador de paquetes en Python.
+  \item wsgiref 0.1.2: \url{https://pypi.python.org/pypi/wsgiref} - Es una biblioteca que sirve cómo soporte de validación para WSGI 1.0.1 para versiones de Python inferiores a la 3.2.
+\end{itemize}
+
 \subsection{C3js}
 
+Web: \url{http://c3js.org/}\\
+
+Es una biblioteca gráfica basada D3js, que es otra biblioteca visual en Javascript. En este caso, la biblioteca hace uso de la funcionalidad para gráficas de D3js adaptando su motor a otras posibles soluciones posibles de implementación.\\
+
+\includegraphics[scale=0.25]{diagramas/c3js-chart.png}
+
 \subsection{D3js}
+\hspace*{1in}{\includegraphics[scale=0.35]{diagramas/d3js-logo.png}}
+
+Web: \url{https://d3js.org/}
+
+D3.js es una biblioteca javascript para la manipulación de documentos basado en datos. D3 nos ayuda a la hora de dar vida a los datos usando HTML, SVG y CSS de una forma sencilla y visualmente muy espectacular. Tiene su propio lenguaje que hace uso de las funcionalidades de Javascript por debajo y cuya comunidad es muy amplia en dónde podemos obtener multitud de ejemplos visuales que demuestran la capacidad de generación de gráficas y eventos de la biblioteca.\\
+
+\hspace*{.6in}{\includegraphics[scale=0.35]{diagramas/d3js-example.png}}
+
 
 \subsection{\LaTeX}
 
+Web: \url{https://www.latex-project.org/}\\
+
+\LaTeX es un lenguaje de marcado que sirve para la redacción de documentos científicos o técnicos. Con esta herramienta o lenguaje se ha desarrollado la memoria actual del proyecto de final de carrera.
+
 \subsection{Reactjs}
 
-\subsection{Sqlite}
+\hspace*{2.5in}{\includegraphics[scale=0.15]{diagramas/Reactjs-logo.png}}
+
+Web: \url{https://facebook.github.io/react/}\\
+
+React es una biblioteca Javascript que permite construir interfaces de usuario en nuestra aplicación web. Existen soluciones similares a React cómo podría ser JQuery, pero en este caso el proceso de creación de componentes visuales se hace muy intuitiva mediante clases internas que encapsulan el contenido que posteriormente se traducirá a código Javascript nativo.\\
+
+Para la traducción React utiliza un componente llamada JSX, pero en nuestra solución se ha usado el paquete Babel (\url{https://babeljs.io/}) que es similar pero en formato Javascript y no NodeJS.\\
+
+\subsection{SQLite}
+
+\hspace*{2.25in}{\includegraphics[scale=0.5]{diagramas/sqlite-logo.png}}
+
+Web: \url{https://www.sqlite.org/}\\
+
+SQLite es un biblioteca software que implementa un motor para bases de datos SQL. Sus principales características son las siguientes:
+
+\begin{itemize}
+\item Las transacciones de datos son atómicas, consistentes, aisladas y durarderas (ACID) incluso después de que el sistema tengo un fallo o se apague inesperadamente.
+\item No necesita de una administración o configuración previa para su normal funcionamiento.
+\item Implementación de un sistema SQL integro con características más avanzadas cómo indexación parcial.
+\item La base de datos, en su totalidad, se almacena cómo un archivo normal en disco. Esto es útil para ser cargado directamente cómo un archivo en una aplicación.
+\item Soporta bases de datos de Terabytes de tamaño y Gigabytes de string o archivos.
+\item Facilidad de uso mediante su API interna.
+\item No tiene ninguna dependencia externa.
+\item Multiplataforma: Android, BSD, iOS, Linux, Mac, Solaris, VxWorks y Windows soportan este tipo de formato de base de datos.
+\item El código fuente está bajo dominio público para cualquier tipo de uso.
+\end{itemize}
 
 \subsection{Rsyslog}
 
+Web: \url{http://www.rsyslog.com/}\\
+
+Rsyslog (Rocket-Fast System for Log Processing), es un sistema de recogida de logs de sistemas UNIX (servidos mediante syslogd) que nos permite manipularlos y exportarlos a un formato más adecuado para su procesado.\\
+
+\hspace*{.5in}{\includegraphics[scale=0.5]{diagramas/rsyslog-esquema.png}}\\
+
+\begin{itemize}
+\item Multihilo
+\item TCP, SSL, TLS RELP
+\item Se puede filtrar cualquier parte de los mensajes de syslog
+\item Se puede configurar el formato de salida de la recolección
+\end{itemize}
+
+\newpage
+
 \subsection{Logrotate}
+
+Web: \url{https://github.com/logrotate/logrotate}\\
+man: \url{http://linux.die.net/man/8/logrotate}\\
+
+Es una utilidad de los sistemas UNIX que nos permite simplificar la administración de archivos de logs en un sistema en dónde haya logs de muchos tipos de fuentes. Nos permite automatizar la rotación, compresión, eliminación y envío por email de los archivos de logs del sistema. Logrotate se encuentra normalmente corriendo cómo un proceso cron diario. \\
+
+\begin{lstlisting}[language=bash]
+/var/log/iptables.log
+        {
+                rotate 7
+                daily
+                missingok
+                notifempty
+                delaycompress
+                compress
+                postrotate
+                        invoke-rc.d rsyslog restart > /dev/null
+                endscript
+        }
+\end{lstlisting}
+
+Ahora se realizará una breve explicación de cada configuración que se ha establecido sobre el archivo iptables.log:
+
+\begin{itemize}
+\item \textbf{rotate <count>}: Los archivos de log son rotados una cantidad de <count> veces antes de ser eliminados o enviados por correo. Si <count> es 0, las versiones anteriores son eliminados antes de efectuarse la rotación.
+\item \textbf{daily}: Los archivos de log son rotados diariamente.
+\item \textbf{missingok}: Si el archivo de log no existe, ir al siguiente sin mostrar un mensaje de error.
+\item \textbf{notifempty}: No rotar el log si éste está vacío.
+\item \textbf{delaycompress}: Pospone la compresión de los logs previos para el siguiente ciclo de rotaciones. Esto sólo sucede cuando se combina con la opción \textbf{compress}.
+\item \textbf{compress}: Las versiones antiguas de logs son comprimidas con gzip por defecto.
+\item \textbf{postrotate-endscript}: Las líneas que se encuentran entre estas dos palabras en el configuración, son ejecutadas (usando /bin/sh) antes de que el archivo de log sea rotado y sólo si el log actual va a ser rotado.
+
+  En este caso, el comando que se ejecuta fuerza a rsyslog a reabrir el archivo de log para escribir en él. Se suele usar después que logrotate mueva los archivos de logs antiguos, entonces rsyslog comienza a escribir en los nuevos.
+\end{itemize}
 
 \subsection{Syslog}
 
+Web (man): \url{http://linux.die.net/man/3/syslog}\\
+
+Sirve para el envío de mensajes al sistema de logs interno. syslog() genera un mensaje de log, el cuál se distribuye mediante el demonio syslogd.
+
 \subsection{Iptables}
+
+Web: \url{http://www.netfilter.org/projects/iptables/index.html}\\
+Manual: \url{http://www.netfilter.org/documentation/HOWTO/es/packet-filtering-HOWTO-7.html}\\
+man: \url{http://linux.die.net/man/8/iptables}\\
+
+Herramienta de filtrado de paquetes IPv4/IPv6 y NAT. Iptables es usado para configurar, mantener e inspeccionar tablas de paquetes IP mediante filtros o reglas en el kernel de Linux. Se pueden definir multitud de tablas, en las que cada una pueda contener un número de reglas precargadas o que pueden ser redefinidas por el usuario. \\
 
 \subsection{Django-rest}
 
-\subsection{Json}
+\hspace*{.75in}{\includegraphics[scale=0.5]{diagramas/django-rest-logo.png}}
 
-\subsection{Pycharm}
+Web: \url{http://www.django-rest-framework.org/}
+
+Django REST es un framework potente y flexible que permite construir Web APIs. Se usa cómo un complemento al framework Django para el uso de API Restfull dentro de la propia aplicación.
+
+\subsection{JSON}
+
+Web: \url{http://www.json.org/}\\
+
+JSON (Javascript Object Notation) es un formato de intercambio de datos ligero. Se usa para facilitar la legibilidad y escritura para los humanos y además es fácil de interpretar y parsear para una máquina. Está basado cómo un subconjunto de JavaScript y el Standard ECMA-262 3ª Edición. \\
+
+JSON está construido sobre dos estructuras:
+
+\begin{itemize}
+\item Una colección de pares nombre/valores. En varios lenguajes, esto se realiza mediante objetos, registros, estructuras, diccionarios, tablas hash, listas de claves o arrays asociativos.
+\item Una lista de valores ordenados. En la mayoría de lenguajes, esto se realiza mediante un array, un vector, lista o secuencia.
+\end{itemize}
+
+\subsection{PyCharm}
+
+\hspace*{2.25in}{\includegraphics[scale=0.25]{diagramas/pycharm-logo.png}}
+
+Web: \url{https://www.jetbrains.com/pycharm/}\\
+
+PyCharm es un IDE que permite el trabajo con aplicaciones Python en sus respectivos entornos virtuales (virtualenv) así cómo la integración con frameworks de desarrollo cómo es el caso de Django. La aplicación en sí fue desarrollada nativamente mediante un editor de texto (Emacs) pero a la hora de realizar un empaquetado e integración con otra herramientas se optó por éste IDE. \\
 
 \subsection{Taiga}
 
+\hspace*{2.5in}{\includegraphics[scale=0.25]{diagramas/taiga-logo.png}}
+
+Web: \url{https://taiga.io/}\\
+
+Taiga es un gestor de proyectos que nos permite implementar una metodología SCRUM o Kanban sobre nuestro proyecto. Es una herramienta muy intuitiva y colaborativa, que permite definir hitos/tareas/wikis para solucionar cada punto de la fase de desarrollo de un proyecto. Además, permite la integración (WebHooks) con otras plataformas de repositorios de proyectos cómo GitHub, GitLab o BitBucket. \\
+
+\includegraphics[scale=0.235]{diagramas/taiga-backlog.png}
+
 \subsection{Bitbucket}
+
+\hspace*{2in}{\includegraphics{diagramas/bitbucket-logo.png}}\\
+
+Web: \url{https://bitbucket.org/}\\
+Repositorio: \url{https://bitbucket.org/MGautierGomez/securityproject}\\
+
+Gestor de repositorios Git y Mercurial. Se optó por éste gestor para probar su funcionamiento, así cómo la posibilidad de tener repositorios privados para desarrollar partes del proyecto que necesitasen ser ocultadas.\\
 
 \subsection{Git}
 
+\hspace*{2.1in}{\includegraphics[scale=0.5]{diagramas/git-logo.png}}
+
+Web: \url{https://git-scm.com/}\\
+
+Git es un sistema open-source de control de versiones diseñado manejar integramente las fases de desarrollo de proyectos, simples y complejos, con velocidad y eficiencia.\\
+
 \subsection{Digital Ocean}
 
+\hspace*{1.5in}{\includegraphics[scale=0.35]{diagramas/digital-ocean-logo.jpg}}
+
+Web: \url{https://www.digitalocean.com/}\\
+
+Servidor web para alojar proyectos en cloud. La ventaja de este servicio de VPS es que te permite desplegar máquinas de cualquier tipo (siempre que sean software lire) de una manera muy fácil y rápida. Además tiene un punto fuerte y es que la información se almacena en discos SSD, con lo que el procesamiento se ve muy mejorado a la hora de computar (en este caso eventos de Iptables).\\
+
+\hspace*{-.5in}{\includegraphics[scale=0.45]{diagramas/droplets.png}}
+
 \subsection{Nginx}
+
+\hspace*{2in}{\includegraphics[scale=0.5]{diagramas/nginx-logo.png}\\}
+
+Web: \url{http://nginx.org/}\\
+Características: \url{http://nginx.org/en/}\\
+
+Nginx (engine x) es un servidor HTTP y proxy inverso, un servidor proxy de email y un servidor proxy genérico de TCP/UDP. Algunas de sus principales características son las siguientes:\\
+
+\begin{itemize}
+\item Sirve archivos estáticos, index y autoindexados.
+\item Acelera el proceso de proxy inverso con caché: Tolerancia a fallos y carga balanceada de datos.
+\item Soporta aceleración con cacheo de FastCGI, uwsgi, SCGI y servidores memcached: Tolerancia a fallos y carga balanceada de datos.
+\item Soporta SSL y TLS SNI.
+\item Soporta HTTP/2 con dependencia basada en prioridad y balanceo.
+\end{itemize}
