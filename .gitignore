@@ -83,6 +83,14 @@ target/
 *.csv
 *.sql
 
+# LaTeX compiled
+*.log
+*.lot
+*.out
+*.toc
+*.lof
+*.aux
+
 # Others
 
 *~
