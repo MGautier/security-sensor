@@ -41,8 +41,10 @@ Arquitectura
 \item Balanceo de carga.
 \item Despliegue remoto de funcionalidades y actualizaciones.
 \end{itemize}
-
+\begin{figure}[H]
 \hspace*{-0.25in}{\includegraphics[scale=0.5]{diagramas/funcionalidades-lookwise.png}}
+\caption{Funcionalidades Lookwise}
+\end{figure}
 
 \subsection{Análisis de la herramienta}
 
@@ -53,7 +55,10 @@ La herramienta de análisis de incidencias y vulnerabilidades hace la mismas fun
 
 La pila ELK se basa en una solución open-source de tres productos bien diferenciados que se relacionan entre sí de la siguiente manera:
 
+\begin{figure}[H]
 \hspace*{.5in}{\includegraphics[scale=0.65]{diagramas/elk-stack.png}\\}
+\caption{ELK Stack}
+\end{figure}
 
 \begin{itemize}
 \item Elasticsearch para la búsqueda de datos y análisis en profundidad de un sistema.
@@ -66,10 +71,16 @@ La pila ELK se basa en una solución open-source de tres productos bien diferenc
 Elasticsearch es un motor open-source de búsqueda y análisis de información de gran escalabilidad. Esta herramienta permite almacenar, buscar y analizar grandes volúmenes de datos de forma rápida y en tiempo real. Se suele utilizar cómo motor/tecnología subyacente de otras aplicaciones (wrapers), permitiendo así realizar funciones de búsqueda complejas de una manera más ágil.\\
 
 \subsection{Logstash}
-\hspace*{1.75in}{\includegraphics[scale=0.25]{diagramas/logstash.png}\\}
+\begin{figure}[H]
+  \hspace*{1.75in}{\includegraphics[scale=0.25]{diagramas/logstash.png}\\}
+  \caption{Logstash description}
+\end{figure}
 Logstash es un motor open-source de recopilación de datos con capacidad de multihebrado en tiempo real. Esta herramienta puede unificar dinámicamente datos de diferentes fuentes y normalizar dichos datos para los outputs de nuestra elección. Además nos permite filtrar y discretizar todo los datos recolectados para obtener información analítica que pueda ser visualizada.\\
 
-\hspace*{.5in}{\includegraphics[scale=0.65]{diagramas/logstash-configuration.png}\\}
+\begin{figure}[H]
+  \hspace*{.5in}{\includegraphics[scale=0.65]{diagramas/logstash-configuration.png}\\}
+  \caption{Diagrama de flujo interno de logstash}
+\end{figure}
 
 Con logstash, cualquier tipo de evento puede ser enriquecido y transformado con un amplio repertorio de inputs/filtros y los datos de salida, se pueden modificar dependiendo del tipo de software sobre el que queramos introducir esos datos (plugins y códecs).\\
 
@@ -145,6 +156,8 @@ A continuación explicaré las diferentes tecnologías/bibliotecas/lenguajes que
 
 \subsection{Python}
 
+\hspace*{1.2in}{\includegraphics[scale=0.4]{diagramas/python-logo.png}}
+
 Web: \url{https://www.python.org/}\\
 
 Python es un lenguaje multiparadigma cuya estructura principal está integramente basada en objetos con sus diferentes métodos y atributos internos. Además también posee tipado dinámico, recolector/administrador de la memoria interna y un sistema de referenciado interno de atributos. \\
@@ -198,7 +211,7 @@ El kernel (para sistemas GNU) en sí mismo no se ejecuta cómo un proceso sino q
 A la hora de la implementación para comprobar que hilos se están ejecutando a través el hilo padre, se utiliza el método de la clase Thread enumerate.\\
 
 Lo que se realiza en esa comprobación es que dentro de la pila o lista de thread que se han lanzado haya alguna coincidencia de objetos de la clase Iptables y si la hay ya existe un hilo previo en ejecución que hace las comprobaciones pertinentes.\\
-\newpage
+
 \lstinputlisting{trozos-codigo/codigo-1.py}
 
 \subsection{Django}
@@ -227,9 +240,8 @@ Template o Plantilla se refiere a la parte encargad de reprensentar la informaci
 
 Dicho esto siempre habra una plantilla Master o padre de la que heredaran todas las hijas que vayamos asociando a nuestra web. Estas heredan una estructura o skeleton en formato html enriquecido con lenguaje propio de Django en formato python. Veamos un ejemplo de plantilla Master y una plantilla que se nutre de éste skeleton:\\
 
-\begin{minipage}{\linewidth}
-  \lstinputlisting[language=HTML]{trozos-codigo/codigo-2.html}
-\end{minipage}
+\lstinputlisting[language=HTML]{trozos-codigo/codigo-2.html}
+
 \newpage
 \begin{minipage}{\linewidth}
   En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos dónde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ése bloque.\\
@@ -276,7 +288,10 @@ Web: \url{https://d3js.org/}
 
 D3.js es una biblioteca javascript para la manipulación de documentos basado en datos. D3 nos ayuda a la hora de dar vida a los datos usando HTML, SVG y CSS de una forma sencilla y visualmente muy espectacular. Tiene su propio lenguaje que hace uso de las funcionalidades de Javascript por debajo y cuya comunidad es muy amplia en dónde podemos obtener multitud de ejemplos visuales que demuestran la capacidad de generación de gráficas y eventos de la biblioteca.\\
 
-\hspace*{.6in}{\includegraphics[scale=0.35]{diagramas/d3js-example.png}}
+\begin{figure}[H]
+  \hspace*{.6in}{\includegraphics[scale=0.35]{diagramas/d3js-example.png}}
+  \caption{Ejemplo de D3js}
+\end{figure}
 
 
 \subsection{\LaTeX}
@@ -320,8 +335,10 @@ SQLite es un biblioteca software que implementa un motor para bases de datos SQL
 Web: \url{http://www.rsyslog.com/}\\
 
 Rsyslog (Rocket-Fast System for Log Processing), es un sistema de recogida de logs de sistemas UNIX (servidos mediante syslogd) que nos permite manipularlos y exportarlos a un formato más adecuado para su procesado.\\
-
-\hspace*{.5in}{\includegraphics[scale=0.5]{diagramas/rsyslog-esquema.png}}\\
+\begin{figure}[H]
+  \hspace*{.5in}{\includegraphics[scale=0.5]{diagramas/rsyslog-esquema.png}}\\
+  \caption{Esquema de Rsyslog}
+\end{figure}
 
 \begin{itemize}
 \item Multihilo
@@ -330,8 +347,6 @@ Rsyslog (Rocket-Fast System for Log Processing), es un sistema de recogida de lo
 \item Se puede configurar el formato de salida de la recolección
 \end{itemize}
 
-\newpage
-
 \subsection{Logrotate}
 
 Web: \url{https://github.com/logrotate/logrotate}\\
@@ -339,6 +354,7 @@ man: \url{http://linux.die.net/man/8/logrotate}\\
 
 Es una utilidad de los sistemas UNIX que nos permite simplificar la administración de archivos de logs en un sistema en dónde haya logs de muchos tipos de fuentes. Nos permite automatizar la rotación, compresión, eliminación y envío por email de los archivos de logs del sistema. Logrotate se encuentra normalmente corriendo cómo un proceso cron diario. \\
 
+\begin{figure}[H]
 \begin{lstlisting}[language=bash]
 /var/log/iptables.log
         {
@@ -353,6 +369,8 @@ Es una utilidad de los sistemas UNIX que nos permite simplificar la administraci
                 endscript
         }
 \end{lstlisting}
+\caption{Configuración de iptables para Logrotate}
+\end{figure}
 
 Ahora se realizará una breve explicación de cada configuración que se ha establecido sobre el archivo iptables.log:
 
@@ -418,8 +436,10 @@ PyCharm es un IDE que permite el trabajo con aplicaciones Python en sus respecti
 Web: \url{https://taiga.io/}\\
 
 Taiga es un gestor de proyectos que nos permite implementar una metodología SCRUM o Kanban sobre nuestro proyecto. Es una herramienta muy intuitiva y colaborativa, que permite definir hitos/tareas/wikis para solucionar cada punto de la fase de desarrollo de un proyecto. Además, permite la integración (WebHooks) con otras plataformas de repositorios de proyectos cómo GitHub, GitLab o BitBucket. \\
-
+\begin{figure}[H]
 \includegraphics[scale=0.235]{diagramas/taiga-backlog.png}
+\caption{Backlog del proyecto siguiendo un SCRUM}
+\end{figure}
 
 \subsection{Bitbucket}
 
@@ -446,7 +466,10 @@ Web: \url{https://www.digitalocean.com/}\\
 
 Servidor web para alojar proyectos en cloud. La ventaja de este servicio de VPS es que te permite desplegar máquinas de cualquier tipo (siempre que sean software lire) de una manera muy fácil y rápida. Además tiene un punto fuerte y es que la información se almacena en discos SSD, con lo que el procesamiento se ve muy mejorado a la hora de computar (en este caso eventos de Iptables).\\
 
+\begin{figure}[H]
 \hspace*{-.5in}{\includegraphics[scale=0.45]{diagramas/droplets.png}}
+\caption{Droplet desplegado en digital ocean}
+\end{figure}
 
 \subsection{Nginx}
 
@@ -464,3 +487,41 @@ Nginx (engine x) es un servidor HTTP y proxy inverso, un servidor proxy de email
 \item Soporta SSL y TLS SNI.
 \item Soporta HTTP/2 con dependencia basada en prioridad y balanceo.
 \end{itemize}
+
+Configuración de nginx para el servidor en digital ocean:
+
+\begin{figure}[H]
+\begin{lstlisting}[language=bash]
+server {
+
+        root /var/www/html;
+
+        # Tipos de archivos index de nuestro sistema
+
+        index index.html index.htm index.nginx-debian.html;
+
+        # Nombre del servidor en local
+
+        server_name 139.59.165.31;
+
+        location /static/ {
+                alias ~/trunk/version-1-0/webapp/secproject/static/;
+                expires 30d;
+        }
+
+        location / {
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header Host $http_host;
+                proxy_redirect off;
+                proxy_pass http://127.0.0.1:8000;
+                proxy_pass_header Server;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_connect_timeout 10;
+                proxy_read_timeout 10;
+
+
+        }
+}
+\end{lstlisting}
+\caption{Configuración de nginx en digital ocean}
+\end{figure}
