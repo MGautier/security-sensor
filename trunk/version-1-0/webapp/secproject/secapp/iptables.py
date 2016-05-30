@@ -16,6 +16,7 @@ from .models import Visualizations, Udp
 import calendar
 from dateutil.parser import parse
 from datetime import date
+from configparser import ConfigParser
 
 
 # Author: Moisés Gautier Gómez
@@ -42,19 +43,17 @@ class Iptables(source.Source):
         almacena internamente en los atributos de la clase.
         """
 
-        config_file = open(self.config_file, 'r')
+        config_file = ConfigParser()
+        config_file.read(self.config_file)
 
-        for linea in config_file.readlines():
-
-            line_process = linea.strip().split('\t')
-
-            if line_process[0] != '' and line_process[0][0] != '#':
-                if "TAG_" in line_process[0]:
-                    self.info_config_file[line_process[0]] = [line_process[1], line_process[2]]
+        for it in config_file.sections():
+            for it_field in config_file.items(it):
+                if "tag" in it_field[0]:
+                    tag_field = it_field[1].strip().split('\t')
+                    self.info_config_file[it_field[0].upper()] = [tag_field[0], tag_field[1]]
                 else:
-                    self.info_config_file[line_process[0]] = line_process[1]
+                    self.info_config_file[it_field[0].title()] = it_field[1]
 
-        config_file.close()
         self.set_tags()
         self.set_log_source()
 
@@ -142,8 +141,8 @@ class Iptables(source.Source):
             # El nombre de las tags, segun el orden de la columnas en db_column, las extraigo del fichero
             # de configuracion a traves del registro info_config_file
 
-            labels = [self.info_config_file["Source_IP"], self.info_config_file["Dest_IP"],
-                      self.info_config_file["Source_PORT"], self.info_config_file["Dest_PORT"],
+            labels = [self.info_config_file["Source_Ip"], self.info_config_file["Dest_Ip"],
+                      self.info_config_file["Source_Port"], self.info_config_file["Dest_Port"],
                       self.info_config_file["Protocol"]]
 
             for it in tag_split:
@@ -442,7 +441,7 @@ class Iptables(source.Source):
                 Type=self.info_config_file["Type"],
                 Model=self.info_config_file["Model"],
                 Active=self.info_config_file["Active"],
-                Software_Class=self.info_config_file["Software_class"],
+                Software_Class=self.info_config_file["Software_Class"],
                 Path=self.info_config_file["Path"],
             )
             self.log_sources.save()
@@ -461,7 +460,7 @@ class Iptables(source.Source):
                     Type=self.info_config_file["Type"],
                     Model=self.info_config_file["Model"],
                     Active=self.info_config_file["Active"],
-                    Software_class=self.info_config_file["Software_class"],
+                    Software_class=self.info_config_file["Software_Class"],
                     Path=self.info_config_file["Path"],
                 )
                 self.log_sources.save()
