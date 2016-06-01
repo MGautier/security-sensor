@@ -138,42 +138,43 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                 if not it == 0:
                     date_week = datetime(today.year, today.month, it)
 
-                try:
-                    serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
-                    if serializer.data:
-                        for it_list in serializer.data:
-                            events_day_week.append(it_list)
-                            try:
+                    try:
+                        serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
-                                if events_per_day['day'] == it_list['Name_Day']:
-                                    events_sum = it_list['Process_Events'] + events_per_day['events']
-                                    events_per_day = {
-                                        "events": events_sum,
-                                        "day": it_list['Name_Day'],
-                                        "date": it_list['Date'],
-                                        "id_source": it_list['ID_Source']
-                                    }
-                                else:
-                                    if events_per_day:
-                                        list_events.append(events_per_day)
+                        if serializer.data:
+                            for it_list in serializer.data:
+                                events_day_week.append(it_list)
+                                try:
 
+                                    if events_per_day['day'] == it_list['Name_Day']:
+                                        events_sum = it_list['Process_Events'] + events_per_day['events']
+                                        events_per_day = {
+                                            "events": events_sum,
+                                            "day": it_list['Name_Day'],
+                                            "date": it_list['Date'],
+                                            "id_source": it_list['ID_Source']
+                                        }
+                                    else:
+                                        if events_per_day:
+                                            list_events.append(events_per_day)
+
+                                        events_per_day = {
+                                            "events": it_list['Process_Events'],
+                                            "day": it_list['Name_Day'],
+                                            "date": it_list['Date'],
+                                            "id_source": it_list['ID_Source']
+                                        }
+                                except KeyError:
                                     events_per_day = {
                                         "events": it_list['Process_Events'],
                                         "day": it_list['Name_Day'],
                                         "date": it_list['Date'],
                                         "id_source": it_list['ID_Source']
                                     }
-                            except KeyError:
-                                events_per_day = {
-                                    "events": it_list['Process_Events'],
-                                    "day": it_list['Name_Day'],
-                                    "date": it_list['Date'],
-                                    "id_source": it_list['ID_Source']
-                                }
 
-                except Visualizations.DoesNotExist:
-                    pass
+                    except Visualizations.DoesNotExist:
+                        pass
 
             for it in next_first_month_week:
                 if not it == 0:
