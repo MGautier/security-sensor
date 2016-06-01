@@ -18,7 +18,7 @@ var Visualization = React.createClass({
         names: {
           events: 'Iptables Events'
         },
-        onmouseover: function (d, element){
+        onclick: function (d, element){
           var events_per_day = "api/events/day/" + source + "/" + days[d.index];
           var Event = React.createClass({
             handleClick: function(event){
