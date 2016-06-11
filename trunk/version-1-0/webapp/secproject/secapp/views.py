@@ -1,11 +1,11 @@
 # coding=utf-8
 from django.shortcuts import render, get_object_or_404, get_list_or_404
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
-from datetime import time, datetime, timedelta, date
+from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from .models import LogSources, Events, Ips, PacketEventsInformation, PacketAdditionalInfo, Visualizations
+from .models import LogSources, Events, PacketEventsInformation, PacketAdditionalInfo, Visualizations
 from iptables import Iptables
 from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
@@ -15,6 +15,7 @@ import threading
 
 
 class JSONResponse(HttpResponse):
+
     """
     Clase que recibe como parametro un objeto HttpResponse cuyo contenido se renderiza o transforma en formato
     JSON.
@@ -32,18 +33,21 @@ class VisualizationsInformation(generics.RetrieveAPIView):
     Clase que se emplea para la renderización de datos extraidos del modelo (Base de datos) junto con informacion
     pasada por protocolo Http (peticion GET/POST) para visualizar contenido en formato JSON en la web.
     """
+
     queryset = Visualizations.objects.all()
     serializer_class = VisualizationsSerializer
     http_method_names = ['get', 'post', ]
 
     @csrf_exempt
-    def list_of_visualizations(self, request, format=None):
+    def list_of_visualizations(self, request):
         """
         Lista de todas las entradas de la tabla visualizations en formato json. Esto me será útil para la generación
         de la tabla de eventos por día, de la cuál luego podré extraer información con api/events o similares.
-        :param request: Peticion http (normalmente GET)
-        :param format: Formato de la peticion
-        :return: Muestra en formato JSON todos los items del modelo Visualizations
+        Args:
+            request: Peticion http (normalmente GET)
+
+        Returns: Muestra en formato JSON todos los items del modelo Visualizations
+
         """
 
         if request.method == 'GET':
@@ -51,14 +55,15 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             return JSONResponse(serializer.data)
 
     @csrf_exempt
-    def list_of_visualizations_week(self, request, format=None):
+    def list_of_visualizations_week(self, request):
         """
         Lista de todas las entradas de la tabla visualizations en formato json (para la semana actual). Esto me será
         útil para la generación de la tabla de eventos por día, de la cuál luego podré extraer información con
         api/events o similares.
-        :param request: Peticion http (normalmente GET)
-        :param format: Formato de la peticion
-        :return: Muestra en formato JSON todos los items del modelo Visualization para la semana actual
+        Args:
+            request: Peticion http (normalmente GET)
+
+        Returns: Muestra en formato JSON todos los items del modelo Visualization para la semana actual
         Ejemplo:
         {
         "id":56,
@@ -70,6 +75,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
         "Process_Events":68,
         "ID_Source":1
         }
+
         """
 
         if request.method == 'GET':
@@ -88,14 +94,15 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
             if 1 <= today.day <= 7:
 
-                len_month = len(calendary.monthdayscalendar(today.year, today.month-1))
+                len_month = len(calendary.monthdayscalendar(today.year, today.month - 1))
 
-                for it in calendary.monthdayscalendar(today.year, today.month-1)[len_month-1]:
+                for it in calendary.monthdayscalendar(today.year, today.month - 1)[len_month - 1]:
                     if not it == 0:
-                        date_week = datetime(today.year, today.month-1, it)
+                        date_week = datetime(today.year, today.month - 1, it)
 
                         try:
-                            serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
+                            serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week),
+                                                                  many=True)
 
                             if serializer.data:
                                 for it_list in serializer.data:
@@ -130,9 +137,11 @@ class VisualizationsInformation(generics.RetrieveAPIView):
         Lista de todas las entradas de la tabla visualizations en formato json (para la semana actual). Esto me será
         útil para la generación de la tabla de eventos por día, de la cuál luego podré extraer información con
         api/events o similares.
-        :param request: Peticion http (normalmente GET)
-        :param format: Formato de la peticion
-        :return: Muestra en formato JSON todos los items del modelo Visualization para la semana actual
+        Args:
+            request: Peticion http (normalmente GET)
+            format:
+
+        Returns: Muestra en formato JSON todos los items del modelo Visualization para la semana actual
         Ejemplo
         {
         "date":"2016-06-08",
@@ -140,6 +149,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
         "events":68,
         "day":"Wednesday"
         }
+
         """
 
         if request.method == 'GET':
@@ -153,14 +163,15 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
             if 1 <= today.day <= 7:
 
-                len_month = len(calendary.monthdayscalendar(today.year, today.month-1))
+                len_month = len(calendary.monthdayscalendar(today.year, today.month - 1))
 
-                for it in calendary.monthdayscalendar(today.year, today.month-1)[len_month-1]:
+                for it in calendary.monthdayscalendar(today.year, today.month - 1)[len_month - 1]:
                     if not it == 0:
-                        date_week = datetime(today.year, today.month-1, it)
+                        date_week = datetime(today.year, today.month - 1, it)
 
                         try:
-                            serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
+                            serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week),
+                                                                  many=True)
 
                             if serializer.data:
                                 for it_list in serializer.data:
@@ -265,9 +276,11 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_by_source(self, request, pk):
         """
         Listado de eventos almacenados en el sistema para una determinada fuente.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente de la que queremos extraer los eventos
-        :return: Listado en formato JSON de todos los eventos de una fuente determinada
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente de la que queremos extraer los eventos
+
+        Returns: Listado en formato JSON de todos los eventos de una fuente determinada
 
         """
 
@@ -276,13 +289,17 @@ class EventsInformation(generics.RetrieveAPIView):
             return JSONResponse(serializer.data)
 
     @csrf_exempt
-    def events_by_source_detail(self, request, pk, fk):
+    def events_by_source_detail(self, request, pk, fk, format=None):
         """
         Muestra el evento almacenado en el sistema para una determinada fuente.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente de la que queremos extraer el evento
-        :param fk: Identificador del evento del cual queremos obtener mas informacion
-        :return: JSON con informacion del evento almacenado para una determinada fuente
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente de la que queremos extraer el evento
+            fk: Identificador del evento del cual queremos obtener mas informacion
+            format:
+
+        Returns: JSON con informacion del evento almacenado para una determinada fuente
+
         """
 
         if request.method == 'GET':
@@ -292,8 +309,11 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_list(self, request):
         """
         Lista todos los eventos de la bd en formato JSON.
-        :param request: Peticion http (normalmente GET)
-        :return: JSON con informacion de todos los eventos del sistema sin discretizar por fuente
+        Args:
+            request: Peticion http (normalmente GET)
+
+        Returns: JSON con informacion de todos los eventos del sistema sin discretizar por fuente
+
         """
 
         if request.method == 'GET':
@@ -304,9 +324,12 @@ class EventsInformation(generics.RetrieveAPIView):
     def event_detail(self, request, pk):
         """
         Lista el evento mediante su identificador, si se encuentra en la bd, en formato JSON
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador del evento dentro de la BD
-        :return: JSON con informacion del evento almacenado en el sistema, en caso contrario un error 404
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador del evento dentro de la BD
+
+        Returns: JSON con informacion del evento almacenado en el sistema, en caso contrario un error 404
+
         """
 
         try:
@@ -323,9 +346,12 @@ class EventsInformation(generics.RetrieveAPIView):
         """
         Lista el numero de eventos de una hora del día para mostrarlos en las graficas. La franja de tiempo ira desde
         la hora actual hasta una hora menos de la actual.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables ,...)
-        :return: JSON con el numero de eventos ocurridos en la ultima hora para la fuente determinada
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables ,...)
+
+        Returns: JSON con el numero de eventos ocurridos en la ultima hora para la fuente determinada
+
         """
 
         try:
@@ -363,10 +389,13 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_source_in_day(self, request, pk):
         """
         Lista todos los eventos de ese dia para una determinada fuente
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
-        consumido por la web o internamente por la aplicacion
-        :return: JSON con el numero de eventos ocurridos durante el dia actual discretizando por horas
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
+            consumido por la web o internamente por la aplicacion
+
+        Returns: JSON con el numero de eventos ocurridos durante el dia actual discretizando por horas
+
         """
 
         # Creo esta variable a modo de global para que su ambito llege a todos los puntos del metodo
@@ -434,11 +463,14 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_source_in_week(self, request, pk):
         """
         Lista todos los eventos de la semana (7 dias) en la que nos encontramos actualmente
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
-        consumido por la web o internamente por la aplicacion
-        :return: JSON con los eventos ocurridos durante la semana discretizando cada dia por las horas en las que han
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
+            consumido por la web o internamente por la aplicacion
+
+        Returns: JSON con los eventos ocurridos durante la semana discretizando cada dia por las horas en las que han
         ocurrido los eventos.
+
         """
 
         list_week = []
@@ -499,11 +531,14 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_source_in_month(self, request, pk):
         """
         Lista todos los eventos de una fuente determinada para el mes actual.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
-        consumido por la web o internamente por la aplicacion
-        :return: JSON con los eventos ocurridos durante el mes discretizando por semanas, dias y en cada dia por horas
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
+            consumido por la web o internamente por la aplicacion
+
+        Returns: JSON con los eventos ocurridos durante el mes discretizando por semanas, dias y en cada dia por horas
         en las que han sucedido los eventos de la fuente
+
         """
 
         list_events_month = []
@@ -553,11 +588,14 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_source_in_year(self, request, pk):
         """
         [Metodo muy lento] Lista los eventos de una fuente determinada para el year actual.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
-        consumido por la web o internamente por la aplicacion
-        :return: JSON que contiene todos los meses del year en donde cada mes se divide por semanas y dias, y los dias
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables, ...) o diccionario dependiendo de si el metodo es
+            consumido por la web o internamente por la aplicacion
+
+        Returns: JSON que contiene todos los meses del year en donde cada mes se divide por semanas y dias, y los dias
         se dividen por horas en las que ha sucedido cada evento
+
         """
 
         calendary = Calendar(0)
@@ -600,9 +638,12 @@ class EventsInformation(generics.RetrieveAPIView):
         """
         Lista todos los eventos de cada hora para una fuente determinada en las ultimas 24 horas contando desde la
         hora actual del sistema.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables, ...)
-        :return: JSON con un listado de eventos por horas desde la hora actual hasta 24 horas atras en el tiempo.
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables, ...)
+
+        Returns: JSON con un listado de eventos por horas desde la hora actual hasta 24 horas atras en el tiempo.
+
         """
 
         try:
@@ -656,12 +697,15 @@ class EventsInformation(generics.RetrieveAPIView):
     def events_list_in_day(self, request, pk, day, month, year):
         """
         Lista todos los eventos de una fecha para una fuente determinada.
-        :param request: Peticion http (normalmente GET)
-        :param pk: Identificador de la fuente (1:Iptables, ...)
-        :param day: Valor entero que representa al dia de la fecha y cuyo formato es [0-9][0-9]
-        :param month: Valor entero que representa al mes de la fecha y cuyo formato es [0-9][0-9]
-        :param year: Valor entero que representa al year de la fecha y cuyo formato es {4}[0-9]
-        :return: Listado en JSON con todos los eventos para esa fecha y fuente determinada
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente (1:Iptables, ...)
+            day: Valor entero que representa al dia de la fecha y cuyo formato es [0-9][0-9]
+            month: Valor entero que representa al mes de la fecha y cuyo formato es [0-9][0-9]
+            year: Valor entero que representa al year de la fecha y cuyo formato es {4}[0-9]
+
+        Returns: Listado en JSON con todos los eventos para esa fecha y fuente determinada
+
         """
 
         events_list = []
@@ -679,7 +723,7 @@ class EventsInformation(generics.RetrieveAPIView):
                                 timezone.localtime(it.Timestamp).day == int(day):
                     events_list.append(it)
 
-            serializer = EventsSerializer(events_list,  many=True)
+            serializer = EventsSerializer(events_list, many=True)
             return JSONResponse(serializer.data)
 
 
@@ -701,14 +745,14 @@ def index(request):
 
         test = Iptables(args=(1,),
                         source_info={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
-                                'C': './secapp/kernel/conf/iptables-conf.conf'})
+                                     'C': './secapp/kernel/conf/iptables-conf.conf'})
         if type(threads) == type(test):
             exist_thread = True
 
     if not exist_thread:
         thread_iptables = Iptables(args=(1,),
                                    source_info={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
-                                           'C': './secapp/kernel/conf/iptables-conf.conf'})
+                                                'C': './secapp/kernel/conf/iptables-conf.conf'})
         thread_iptables.start()
 
     latest_source_list = LogSources.objects.order_by('id')[:3]

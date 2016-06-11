@@ -282,7 +282,8 @@ class Iptables(source.Source):
         elif "MAC" in db_column_name:
             return self.get_mac(source_field, values)
         else:
-            return (((re.compile(source_field + '=\S+')).search(values)).group(0)).split(source_field + '=')[1].strip("',")
+            return (((re.compile(source_field + '=\S+')).search(values)).
+                    group(0)).split(source_field + '=')[1].strip("',")
 
     @staticmethod
     def get_ip(source_field, values):
@@ -357,7 +358,8 @@ class Iptables(source.Source):
         ports = Ports.objects.all()
         # Realizamos una comprobacion previa sobre el modelo por si existiera un puerto similar anteriormente
         # insertado, sino se crea con todos los campos relacionados.
-        port_regex = (((re.compile(source_field + '=\S+')).search(values)).group(0)).split(source_field + '=')[1].strip("',")
+        port_regex = (((re.compile(source_field + '=\S+')).search(values)).
+                      group(0)).split(source_field + '=')[1].strip("',")
         id_ports = 0
         for it in ports:
             if it.id == port_regex:
