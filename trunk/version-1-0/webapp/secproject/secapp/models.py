@@ -3,8 +3,11 @@ from django.db import models
 from django.utils import timezone
 
 
-# Create your models here.
+# Author: Moises Gautier Gomez
+# Proyecto fin de carrera - Ing. en Informatica
+# Universidad de Granada
 
+# Clase que alberga los campos de las IPs extraidas de log
 
 class Ips(models.Model):
     Ip = models.CharField(max_length=60, default='-')
@@ -14,6 +17,8 @@ class Ips(models.Model):
     def __str__(self):
         return '%s' % self.Ip
 
+
+# Clase que alberga los campos de las fuentes (sources) de seguridad a procesar, en el caso que sigue, Iptables
 
 class LogSources(models.Model):
     Description = models.TextField()
@@ -27,6 +32,8 @@ class LogSources(models.Model):
         return '%s %s ' % (self.Type, self.Description)
 
 
+# Clase que alberga los campos de los eventos (lineas de log) de una fuente (source) de seguridad procesada
+
 class Events(models.Model):
     Timestamp = models.DateTimeField('Log process date')
     Timestamp_Insertion = models.DateTimeField('Insertion bd date')
@@ -36,6 +43,8 @@ class Events(models.Model):
     def __str__(self):
         return '%s %s %s' % (timezone.localtime(self.Timestamp), self.ID_Source, self.Comment)
 
+
+# Clase que alberga los campos de los eventos importantes para la visualizacion grafica de los mismos en la vista
 
 class Visualizations(models.Model):
 
@@ -53,12 +62,16 @@ class Visualizations(models.Model):
         return '%s %s Hora: %s' % (self.Date, self.Name_Day, self.Hour)
 
 
+# Clase que alberga los campos de los puertos extraidos del log. Tiene dos clases heredadas TCP y UDP
+
 class Ports(models.Model):
     Tag = models.CharField(max_length=25, default='-')
 
     def __str__(self):
         return '%s' % self.id
 
+
+# Clase que alberga los campos de un puerto para un determinado tipo de trafico TCP
 
 class Tcp(models.Model):
     id = models.OneToOneField(Ports, on_delete=models.CASCADE, primary_key=True)
@@ -69,6 +82,8 @@ class Tcp(models.Model):
         return '%s %s' % (self.id, self.Description)
 
 
+# Clase que alberga los campos de un puerto para un determinado tipo de trafico UDP
+
 class Udp(models.Model):
     id = models.OneToOneField(Ports, on_delete=models.CASCADE, primary_key=True)
     Service = models.CharField(max_length=60, default='-')
@@ -78,6 +93,8 @@ class Udp(models.Model):
         return '%s %s' % (self.id, self.Description)
 
 
+# Clase que alberga las etiquetas y su descripcion, para cada paquete procesado en el log
+
 class Tags(models.Model):
     Description = models.TextField()
     Tag = models.CharField(max_length=255, default='-')
@@ -86,6 +103,8 @@ class Tags(models.Model):
         return '%s' % self.Tag
 
 
+# Clase que alberga los campos MAC extraidos del log
+
 class Macs(models.Model):
     MAC = models.CharField(max_length=17, default='-')
     TAG = models.CharField(max_length=255, default='-')
@@ -93,6 +112,9 @@ class Macs(models.Model):
     def __str__(self):
         return '%s' % self.MAC
 
+
+# Clase que alberga la informacion relacionada con el paquete extraido mediante el log. La gran mayoria de los campos
+# son identificadores o claves foraneas a otros objetos/instancias de la base de datos.
 
 class PacketEventsInformation(models.Model):
     ID_IP_Source = models.ForeignKey(Ips, models.SET_NULL, blank=True, null=True, related_name="ip_source")
@@ -109,6 +131,8 @@ class PacketEventsInformation(models.Model):
     def __str__(self):
         return '%s' % self.id
 
+
+# Clase que alberga la informacion relacionada con la informacion adicional de un paquete extraido mediante el log.
 
 class PacketAdditionalInfo(models.Model):
     ID_Tag = models.ForeignKey(Tags, models.SET_NULL, blank=True, null=True, related_name="id_tag")

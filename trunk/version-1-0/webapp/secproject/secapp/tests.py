@@ -1,3 +1,3 @@
-from django.test import TestCase
-
-# Create your tests here.
+# Author: Moises Gautier Gomez
+# Proyecto fin de carrera - Ing. en Informatica
+# Universidad de Granada

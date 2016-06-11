@@ -19,8 +19,8 @@ from datetime import date
 from configparser import ConfigParser
 
 
-# Author: Moisés Gautier Gómez
-# Proyecto fin de carrera - Ing. en Informática
+# Author: Moises Gautier Gomez
+# Proyecto fin de carrera - Ing. en Informatica
 # Universidad de Granada
 
 class Iptables(source.Source):
@@ -30,10 +30,34 @@ class Iptables(source.Source):
     """
 
     def __init__(self, group=None, target=None, name=None,
-                 args=(), source=None, verbose=None):
-        super(Iptables, self).__init__(group=group, target=target, name=name, args=args, source=source, verbose=verbose)
+                 args=(), source_info=None, verbose=None):
+        """
+        Metodo constructor de la clase Iptables.
+        Args:
+            group: por defecto su valor es None; reservado para la futura ampliacion de implementacion de la clase
+            ThreadGroup
+            target: es el objeto invocado por el metodo interno run(), que por defecto es None mientras nadie lo use
+            name: es el nombre del hilo. Por defecto, un nombre para un hilo se construye de la forma "Thread-N",
+            donde N es un numero entero decimal.
+            args: es una tupla de datos usada para la invocacion del target. Por defecto es ()
+            source_info: Diccionario con informacion sobre la fuente a procesar (Nombre, Archivo de configuracion,
+            modelo, Archivo de log, etc)
+            verbose: None
+
+        Returns: Objeto de la clase Iptables inicializado que hereda funcionalidades de la clase Source
+
+        """
+        super(Iptables, self).__init__(group=group, target=target, name=name, args=args, source=source_info,
+                                       verbose=verbose)
+        # Inicializamos la clase con los parametros que se pasa como argumento al constructor y a su vez instanciamos
+        # un objeto temporal para la realizacion de tareas en la clase
+        # Lista que contiene las etiquetas procesadas del log de iptables
         self.tag_log = []
+
+        # Diccionario que contiene la información extraida del archivo de configuración para iptables.
         self.info_config_file = {}
+
+        # Objeto de la clase LogSources que sirve para almacenar informacion de la fuente en la BD
         self.log_sources = LogSources()
 
     def read_config_file(self):
@@ -41,20 +65,29 @@ class Iptables(source.Source):
         Método modificador de la clase que abre y lee el contenido del archivo
         de configuracion para el software iptables. El contenido del archivo se
         almacena internamente en los atributos de la clase.
+        Returns: None
+
         """
 
+        # Instanciamos un objeto de la clase ConfigParser
         config_file = ConfigParser()
+
+        # Abrimos el archivo de configuracion para lectura especificando la ruta relativa al archivo
         config_file.read(self.config_file)
 
         for it in config_file.sections():
             for it_field in config_file.items(it):
                 if "tag" in it_field[0]:
                     tag_field = it_field[1].strip().split('\t')
+                    # El campo de las TAG en el archivo de configuracion se divide por tabulaciones.
                     self.info_config_file[it_field[0].upper()] = [tag_field[0], tag_field[1]]
                 else:
                     self.info_config_file[it_field[0].title()] = it_field[1]
 
+        # Se establecen las tags con su descripcion para el modelo de la BD (Tag)
         self.set_tags()
+
+        # Se establece la información perteneciente al source obtenida del archivo de configuracion
         self.set_log_source()
 
     @staticmethod
@@ -62,9 +95,14 @@ class Iptables(source.Source):
         """
         Método que nos permite ir almacenando en el modelo Visualizations el número de eventos producidos
         en una hora de un determinado día para luego extraer dicha información en la vistas de la aplicación
-        :param event:
-        :return:
+        Args:
+            event: Objeto de la BD que contiene información de un evento asociado de Iptables
+
+        Returns: Almacena en el modelo Visualizations la información extraida del evento.
+
         """
+
+        # Creamos un objeto Visualizations con la informacion pasada como argumento al metodo
 
         try:
             visualizations = Visualizations.objects.get(
@@ -75,7 +113,8 @@ class Iptables(source.Source):
             number_events = visualizations.Process_Events + 1
             Visualizations.objects.filter(pk=visualizations.pk).update(Process_Events=number_events)
             visualizations.refresh_from_db()
-
+        # Sino hay un objeto o hay algun fallo en la creación del objeto se crea la estructura
+        # completa en la bd
         except Visualizations.DoesNotExist:
 
             list_names_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -117,10 +156,14 @@ class Iptables(source.Source):
         """
         Método modificador que procesa e introduce en un bd la informacion
         relevante del filtrado de paquetes, en este caso, de iptables.
-        :type line: object string
-        :param line:
+        Args:
+            line: Objeto file que contiene el log leido de iptables
+
+        Returns: Muestra informacion por linea de comando de los eventos procesados y almacenados en la bd
+
         """
 
+        # Se trocea por palabras el log leido
         line = re.split("\W? ", line)
 
         register = {}  # Diccionario con los valores del log iptables
@@ -145,10 +188,13 @@ class Iptables(source.Source):
                       self.info_config_file["Source_Port"], self.info_config_file["Dest_Port"],
                       self.info_config_file["Protocol"]]
 
+            # Almacenamos las etiquetas o campos del log de iptables
             for it in tag_split:
                 if len(it.split('=')) == 2:
                     self.tag_log.append((it.split('='))[0].strip('\' '))
 
+            # Buscamos la correlación entre los campos definidos en la configuración con los extraidos del log
+            # de iptables
             for label in labels:
                 if (re.compile(label)).search(tag_str):
                     if self.tag_log.index(label) > 0:
@@ -167,11 +213,13 @@ class Iptables(source.Source):
                 register["ID_Source_MAC"] = None
                 register["ID_Dest_MAC"] = None
 
+            # Log en crudo
             register["RAW_Info"] = re.sub('\[', '', re.sub('\n', '', " ".join(line)))
+            # Etiqueta MSG del log
             register["TAG"] = self.get_message(line)
 
             # Creamos una instancia del modelo Events (LogSources ya tiene una instancia
-            # a traves del metodo set
+            # a traves del metodo set)
 
             log_sources_objects = LogSources.objects.all()
 
@@ -215,36 +263,42 @@ class Iptables(source.Source):
             print "process_line -> ", ex
             print sys.exc_traceback.tb_lineno
 
-    def regexp(self, db_column_name, source, values):
+    def regexp(self, db_column_name, source_field, values):
         """
-        Método que nos permite usar expresiones regulares para
-        filtrar los contenidos de la línea log de iptables.
-        :param source:
-        :param values:
-        :return:
-        :param db_column_name:
+        Método que nos permite usar expresiones regulares para filtrar los contenidos de la línea log de iptables.
+        Args:
+            db_column_name: Lista con los nombres de las columnas que usa el modelo de la BD interno
+            source_field: Parametro que concierne al tipo de campo (IP,MAC,PORT,MSG)
+            values: Objeto string que representa una fila del log leido
+
+        Returns: La insercion de la informacion del campo del log en la BD
+
         """
 
         if "IP" in db_column_name:
-            return self.get_ip(source, values)
+            return self.get_ip(source_field, values)
         elif "PORT" in db_column_name:
-            return self.get_port(source, values)
+            return self.get_port(source_field, values)
         elif "MAC" in db_column_name:
-            return self.get_mac(source, values)
+            return self.get_mac(source_field, values)
         else:
-            return (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+            return (((re.compile(source_field + '=\S+')).search(values)).group(0)).split(source_field + '=')[1].strip("',")
 
     @staticmethod
-    def get_ip(source, values):
+    def get_ip(source_field, values):
         """
         Método que permite extraer información de la ip del log desde el propio sistema
         o obteniendola de la red.
-        :param source:
-        :param values:
-        :return: """
+        Args:
+            source_field: Parametro que concierne al tipo de campo (IP,MAC,PORT,MSG)
+            values: Objeto string que representa una fila del log leido
+
+        Returns: La insercion de la informacion de IP en la BD y como resultado el identificador de la fila insertada
+
+        """
 
         ips_objects = Ips.objects.all()
-        ip = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        ip = (((re.compile(source_field + '=\S+')).search(values)).group(0)).split(source_field + '=')[1].strip("',")
         id_ip = 0
 
         for it in ips_objects:
@@ -256,8 +310,7 @@ class Iptables(source.Source):
         if not id_ip:
 
             hostname = '-'
-            aliaslist = '-'
-            ipaddrlist = ""
+
             try:
                 hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ip)
             except socket.error as msg:
@@ -288,23 +341,29 @@ class Iptables(source.Source):
         return id_ip
 
     @staticmethod
-    def get_port(source, values):
+    def get_port(source_field, values):
         """
         Método que permite extraer información de los puertos con los que iptables
         está trabajando desde el sistema (si es que hay información asociada a ellos)
-        :param source:
-        :param values:
-        :return:
+        Args:
+            source_field: Parametro que concierne al tipo de campo (IP,MAC,PORT,MSG)
+            values: Objeto string que representa una fila del log leido
+
+        Returns: La insercion de la informacion de PORT en la BD y como resultado el identificador del
+        puerto insertado
+
         """
 
         ports = Ports.objects.all()
-
-        port_regex = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        # Realizamos una comprobacion previa sobre el modelo por si existiera un puerto similar anteriormente
+        # insertado, sino se crea con todos los campos relacionados.
+        port_regex = (((re.compile(source_field + '=\S+')).search(values)).group(0)).split(source_field + '=')[1].strip("',")
         id_ports = 0
         for it in ports:
             if it.id == port_regex:
                 id_ports = it
 
+        # Extraemos el tipo de servicio que presta el puerto en nuestra maquina (para sistemas unix)
         p = subprocess.Popen(["grep -w " + port_regex + " /etc/services"], stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         grep_port = (output.split('\n'))
@@ -319,7 +378,7 @@ class Iptables(source.Source):
                 new_port.save()
                 id_ports = new_port
 
-            # TCP
+            # Si el puerto es para tráfico TCP
             if len(grep_port[0]) != 0:
                 port_1 = grep_port[0].split('\t')
                 port_number = (grep_port[0].split('\t'))[2].split('/')[0]
@@ -351,7 +410,7 @@ class Iptables(source.Source):
                     )
                     new_tcp.save()
 
-                # UDP
+                # Si el puerto es para tráfico UDP
                 if len(grep_port) > 1:
                     if len(grep_port[1]) != 0:
                         port_2 = grep_port[1].split('\t')
@@ -383,17 +442,19 @@ class Iptables(source.Source):
         return id_ports
 
     @staticmethod
-    def get_mac(source, values):
+    def get_mac(source_field, values):
         """
-        Método que establece el contenido de la tabla macs
-        a través de la información proporcionada por iptables.
-        :param source:
-        :param values:
-        :return:
+        Método que establece el contenido de la tabla macs a través de la información proporcionada por iptables.
+        Args:
+            source_field: Parametro que concierne al tipo de campo (IP,MAC,PORT,MSG)
+            values: Objeto string que representa una fila del log leido
+
+        Returns: La insercion de la informacion de MAC en la BD y como resultado el identificador de la MAC insertada
+
         """
 
         macs = Macs.objects.all()
-        mac = (((re.compile(source + '=\S+')).search(values)).group(0)).split(source + '=')[1].strip("',")
+        mac = (((re.compile(source_field + '=\S+')).search(values)).group(0)).split(source_field + '=')[1].strip("',")
 
         id_macs = 0
         for it in macs:
@@ -412,9 +473,10 @@ class Iptables(source.Source):
 
     def set_tags(self):
         """
-        Método que establece el contenido de la tabla tags una vez
-        ha comenzado el procesamiento del log de iptables. Dicho contenido
-        lo extraemos del archivo de configuración.
+        Método que establece el contenido de la tabla tags una vez ha comenzado el procesamiento del log de
+        iptables. Dicho contenido lo extraemos del archivo de configuración.
+        Returns: None
+
         """
 
         for it in self.info_config_file:
@@ -430,7 +492,10 @@ class Iptables(source.Source):
         """
         Método que establece el contenido de la tabla log_sources una
         vez ha comenzado el procesamiento del log de iptables.
+        Returns: None
+
         """
+
         log_sources_objects = LogSources.objects.all()
         validation = True
 
@@ -467,10 +532,14 @@ class Iptables(source.Source):
 
     def set_packet_additional_info(self, values, id_packet_event):
         """
-        Método que procesa la información necesaria para almacenarla
-        en la tabla packet_additional_info desde el log.
-        :param values:
-        :param id_packet_event:
+        Método que procesa la información necesaria para almacenarla en la tabla packet_additional_info desde el log.
+        Args:
+            values: Objeto string que representa una fila del log leido
+            id_packet_event: Identificador del objeto PacketEvents que se relaciona con su informacion de paquete
+        adicional
+
+        Returns:
+
         """
 
         tags_objects = Tags.objects.all()
@@ -515,8 +584,11 @@ class Iptables(source.Source):
         """
         Método que permite almacenar el mensaje asignado a la línea de log
         de iptables.
-        :param values:
-        :return:
+        Args:
+            values: Objeto string que representa una fila del log leido
+
+        Returns: Se devuelve un objeto string con la cadena de texto del campo MSG del log procesado
+
         """
 
         string = " ".join(values)

@@ -3,14 +3,14 @@
 
 from iptables import Iptables
 
-# Author: Moisés Gautier Gómez
-# Proyecto fin de carrera - Ing. en Informática
+# Author: Moises Gautier Gomez
+# Proyecto fin de carrera - Ing. en Informatica
 # Universidad de Granada
 
 # Creamos un objeto del tipo Source y operamos con él
 
 test = Iptables(args=(1,),
-                source={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
+                source_info={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
                         'C': '/kernel/conf/iptables-conf.conf'})
 test.start()
 
