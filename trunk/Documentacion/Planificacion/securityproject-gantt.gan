@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-04-22" view-index="0" gantt-divider-location="257" resource-divider-location="300" version="2.7.2" locale="es">
+<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-05-03" view-index="0" gantt-divider-location="544" resource-divider-location="300" version="2.7.2" locale="es">
     <description><![CDATA[Éste software se enmarca dentro del desarrollo del proyecto fin de carrera para la titulación Ingeniería en Informática de la ETSIIT (UGR). Se trata de una herramienta de procesado de softwares de seguridad dentro de nuestro sistema y su posterior manipulación en pros de obtener eventos críticos o vulnerabilidades.]]></description>
     <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Nombre" width="44" order="0"/>
-        <field id="tpd4" name="Fecha de inicio" width="26" order="1"/>
-        <field id="tpd5" name="Fecha de fin" width="28" order="2"/>
+        <field id="tpd3" name="Nombre" width="38" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="30" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="31" order="2"/>
         <option id="color.recent"><![CDATA[#000000 #cc3300 #ffff00 #00cc33]]></option>
     </view>
     <view id="resource-table">
@@ -141,11 +141,12 @@ Usando estas dos lista tengo cubierto la semana de abril que no sea cero y la se
         </task>
         <task id="137" name="[LATEST] Proceso de generación visual - Reactjs - C3js" color="#000000" meeting="false" start="2016-04-25" duration="14" complete="0" expand="true"/>
         <task id="138" name="[NEXT] Memoria pfc" color="#8cb6ce" meeting="false" start="2016-05-16" duration="9" complete="0" expand="true"/>
-        <task id="142" name="[NEXT] Usar el paquete de configuración para iptables" color="#8cb6ce" meeting="false" start="2016-05-27" duration="1" complete="0" expand="true">
+        <task id="142" name="[NEXT] Usar el paquete de configuración para iptables" color="#8cb6ce" meeting="false" start="2016-05-27" duration="2" complete="0" expand="true">
             <notes><![CDATA[Configuración y uso del paquete configparser para la lectura de archivos de configuración de iptables en este supuesto.
 
 ]]></notes>
         </task>
+        <task id="143" name="[NEXT] Refactorizar el código" color="#8cb6ce" meeting="false" start="2016-05-30" duration="10" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
@@ -156,9 +157,9 @@ Usando estas dos lista tengo cubierto la semana de abril que no sea cero y la se
         <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd12" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="105" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="64" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="69" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="201" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="160" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="164" visible="true"/>
         <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
