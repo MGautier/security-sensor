@@ -11,7 +11,7 @@ from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
 from types import *
-import threading
+
 
 
 class JSONResponse(HttpResponse):
@@ -738,22 +738,6 @@ def index(request):
     Returns: Informacion en formato html (plantilla index.html) de la vista inicial de la aplicacion
 
     """
-
-    exist_thread = False
-
-    for threads in threading.enumerate():
-
-        test = Iptables(args=(1,),
-                        source_info={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
-                                     'C': './secapp/kernel/conf/iptables-conf.conf'})
-        if type(threads) == type(test):
-            exist_thread = True
-
-    if not exist_thread:
-        thread_iptables = Iptables(args=(1,),
-                                   source_info={'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
-                                                'C': './secapp/kernel/conf/iptables-conf.conf'})
-        thread_iptables.start()
 
     latest_source_list = LogSources.objects.order_by('id')[:3]
     context = {'latest_source_list': latest_source_list}
