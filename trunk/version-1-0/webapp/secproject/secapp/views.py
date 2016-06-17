@@ -6,12 +6,10 @@ from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from .models import LogSources, Events, PacketEventsInformation, PacketAdditionalInfo, Visualizations
-from iptables import Iptables
 from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
 from types import *
-
 
 
 class JSONResponse(HttpResponse):
