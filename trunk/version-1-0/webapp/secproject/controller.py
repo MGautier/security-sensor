@@ -26,8 +26,8 @@ class Controller(object):
     id_thread = []
     args = ()
     source_info = {}
-    parent_pid = os.getpid()
-    child_pid = os.getpid()
+    parent_pid = str(os.getpid())
+    child_pid = str(os.getpid())
 
     def get_source(self):
         return self.source
@@ -63,9 +63,8 @@ class IptablesController(Controller):
                    'C': './kernel/conf/iptables-conf.conf'}
     args = (1,)
     thread_iptables = Iptables(
-        args=(1,),
-        source_info = {'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
-                           'C': './kernel/conf/iptables-conf.conf'}
+        args=args,
+        source_info=source_info
     )
     thread_iptables.start()
     print "HOLA HOLA : ", thread_iptables.getName()

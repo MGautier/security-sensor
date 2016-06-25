@@ -15,9 +15,9 @@ if __name__ == "__main__":
     print "IPTABLES - GET LOG: ", iptables.get_log_processing()
 
     if not iptables.get_child_pid() == iptables.get_parent_pid():
-        set_threads = [ str(iptables.get_child_pid()), str(iptables.get_parent_pid())  ]
+        set_threads = [ iptables.get_child_pid(), iptables.get_parent_pid()  ]
     else:
-        set_threads = [ str(iptables.get_parent_pid()) ]
+        set_threads = [ iptables.get_parent_pid() ]
 
     while True:
 
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
         if data_input == 'exit':
             for pid in set_threads:
-                # Primero matamas al proceso hijo y luego al padre
+                # Primero matamos al proceso hijo y luego al padre
                 # para que el hijo no entre en inanicion
                 print "Matando al proceso: ", pid
                 os.kill(int(pid),signal.SIGKILL)
