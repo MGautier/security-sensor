@@ -54,7 +54,11 @@ class Controller(object):
 class IptablesController(Controller):
 
     source = "iptables"
-    child_pid = os.fork()
+    # Si hago uso del fork da el error del Runtime y ejecuta otro pid igual a este
+    # si comento el fork funciona correctamente pero al finalizar este proceso Main
+    # finaliza toda la ejecucion de procesamiento
+
+    #child_pid = os.fork()
     source_info = {'T': 'Firewall', 'M': 'iptables', 'P': '/var/log/iptables.log',
                    'C': './kernel/conf/iptables-conf.conf'}
     args = (1,)
