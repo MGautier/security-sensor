@@ -57,15 +57,17 @@ class Source(threading.Thread):
         # de la misma que introducir en la BD a la hora de la carga de valores de logs.
 
         self.read_config_file()
-        self.raw_line = Pygtail(self.path_source)
+        #self.raw_line = Pygtail(self.path_source)
+
+        # Voy a usar estas variables para llevar el conteo del archivo offset a la hora de modificar
+        # su informacion con respecto al archivo .log
+
+        obj = Pygtail(self.path_source)
 
         while True:
-
-            if not self.raw_line.read() == None:
                 try:
-                    for line in Pygtail(self.path_source):
+                    for line in obj:
                         if len(line) > 1:
-                            print "\n Procesando línea --> " + str(line)
                             self.process_line(line)
                 except Exception as ex:
                     print "Pygtail processing -> ", ex

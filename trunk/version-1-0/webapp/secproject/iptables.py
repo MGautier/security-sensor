@@ -161,6 +161,8 @@ class Iptables(Source):
         Returns: Muestra informacion por linea de comando de los eventos procesados y almacenados en la bd
 
         """
+        # Linea en formato crudo
+        raw_line = line
 
         # Se trocea por palabras el log leido
         line = re.split("\W? ", line)
@@ -170,9 +172,9 @@ class Iptables(Source):
         try:
             exist_events = Events.objects.filter(Timestamp=parse(line[0]))
             if exist_events:
-                print "---> Este evento ya se encuentra procesado en el sistema."
-
-            if not exist_events:
+                #print "---> Este evento ya se encuentra procesado en el sistema."
+                pass
+            elif not exist_events:
                 try:
 
                     # timestamp tendrá cómo year el valor 1990 ya que el log no proporciona dicho valor y este lo toma
@@ -261,7 +263,7 @@ class Iptables(Source):
                     id_packet_events = packet_events_information
 
                     self.set_packet_additional_info(line, id_packet_events)
-
+                    print "\n Procesando línea --> " + str(raw_line)
                     print "---> Insertado registro: " + str(register) + "\n"
                     print "---> Fin de procesado de linea \n"
                 except Exception as ex:
