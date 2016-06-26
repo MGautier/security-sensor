@@ -174,7 +174,6 @@ class Iptables(Source):
         try:
             exist_events = Events.objects.filter(Timestamp=parse(line[0]))
             if exist_events:
-                #print "---> Este evento ya se encuentra procesado en el sistema."
                 pass
             elif not exist_events:
                 try:

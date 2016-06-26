@@ -1,25 +1,33 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Author: Moises Gautier Gomez
+# Proyecto fin de carrera - Ing. en Informatica
+# Universidad de Granada
+
 import signal
 import os
 import manager
 import re
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
+    
+    # Instanciamos la clase Manager para la ejecucion de las distintas fuentes
     manager_obj = manager.Manager()
+
+    # Obtenemos la instancia de la fuente iptables para su ejecucion devuelta por el controlador asociado
     iptables = manager_obj.create_controller('iptables')
-    print "IPTABLES - GET PARENT PID: ", iptables.get_parent_pid()
-    print "IPTABLES - GET CHILD PID: ", iptables.get_child_pid()
-    print "IPTABLES - GET SOURCE: ", iptables.get_source()
-    print "IPTABLES - GET CONFIGURATION: ", iptables.get_configuration()
-    print "IPTABLES - GET TYPE: ", iptables.get_type_source()
-    print "IPTABLES - GET MODEL: ", iptables.get_model_source()
-    print "IPTABLES - GET LOG: ", iptables.get_log_processing()
+
+    # Si establecemos iptables como un pid independiente tendremos que hacer uso de fork para esto y
+    # asi el hilo Main sera sobre el cual se haran los operaciones
 
     if not iptables.get_child_pid() == iptables.get_parent_pid():
-        threads = { 'Main thread' : iptables.get_parent_pid(), 'Thread-1' : iptables.get_child_pid() }
+        threads = {'Main thread': iptables.get_parent_pid(), 'Thread-1': iptables.get_child_pid()}
     else:
-        threads = { 'Main thread' : iptables.get_parent_pid() }
+        threads = {'Main thread': iptables.get_parent_pid()}
 
+    # Bucle para la informacion sobre la fuente y la ejecucion de la misma
     while True:
 
         data_input = raw_input('> ')
@@ -30,7 +38,7 @@ if __name__ == "__main__":
                 # para que el hijo no entre en inanicion
                 print "--------------------------------------------------"
                 print "Matando al proceso: ", int(threads[pid])
-                os.kill(int(threads[pid]),signal.SIGKILL)
+                os.kill(int(threads[pid]), signal.SIGKILL)
             os._exit(0)
         elif data_input == 'commands':
             print "-------------------------------------------------"

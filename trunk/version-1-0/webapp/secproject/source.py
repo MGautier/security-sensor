@@ -59,8 +59,6 @@ class Source(threading.Thread):
 
         self.read_config_file()
 
-        #self.raw_line = Pygtail(self.path_source)
-
         # Voy a usar estas variables para llevar el conteo del archivo offset a la hora de modificar
         # su informacion con respecto al archivo .log
 
