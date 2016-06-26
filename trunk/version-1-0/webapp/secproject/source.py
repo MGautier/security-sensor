@@ -32,6 +32,7 @@ class Source(threading.Thread):
         Returns: Objeto de la clase Source inicializado que hereda funcionalidad de la clase Thread
 
         """
+
         threading.Thread.__init__(self, group=group, target=target, name=name, args=args, verbose=verbose)
 
         self._source_ = source
@@ -57,6 +58,7 @@ class Source(threading.Thread):
         # de la misma que introducir en la BD a la hora de la carga de valores de logs.
 
         self.read_config_file()
+
         #self.raw_line = Pygtail(self.path_source)
 
         # Voy a usar estas variables para llevar el conteo del archivo offset a la hora de modificar
