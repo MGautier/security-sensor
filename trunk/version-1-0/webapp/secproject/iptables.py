@@ -46,8 +46,10 @@ class Iptables(Source):
         Returns: Objeto de la clase Iptables inicializado que hereda funcionalidades de la clase Source
 
         """
+
         super(Iptables, self).__init__(group=group, target=target, name=name, args=args, source=source_info,
                                        verbose=verbose)
+
         # Inicializamos la clase con los parametros que se pasa como argumento al constructor y a su vez instanciamos
         # un objeto temporal para la realizacion de tareas en la clase
         # Lista que contiene las etiquetas procesadas del log de iptables
@@ -263,9 +265,14 @@ class Iptables(Source):
                     id_packet_events = packet_events_information
 
                     self.set_packet_additional_info(line, id_packet_events)
+                    print "--------------------------------------------------"
                     print "\n Procesando línea --> " + str(raw_line)
+                    print "--------------------------------------------------"
+                    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
                     print "---> Insertado registro: " + str(register) + "\n"
+                    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
                     print "---> Fin de procesado de linea \n"
+                    print "++++++++++++++++++++++++++++++++++++++++++++++++++"
                 except Exception as ex:
                     print "process_line -> ", ex
                     print sys.exc_traceback.tb_lineno
