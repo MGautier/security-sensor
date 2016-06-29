@@ -132,12 +132,12 @@ class IptablesController(Controller):
     de la clase Iptables para la ejecucion de los eventos asociados.
     """
 
-    def set_source_info(self):
+    def set_source_info(source_info):
         """
         Metodo interno de la clase IptablesController que sirve para la modificacion de los parametros
         de configuracion previos a la inicializacion del hilo de procesado iptables
         Args:
-            self: Diccionario con la informacion previa de configuracion para la ejecucion de iptables
+            source_info: Diccionario con la informacion previa de configuracion para la ejecucion de iptables
 
         Returns: Devuelve la configuracion a aplicar sobre la ejecucion de iptables
 
@@ -172,30 +172,30 @@ class IptablesController(Controller):
                 print "--------------------------------------------------"
                 path_source = str(raw_input('Ruta de procesamiento de logs Ejemplo(/var/log/iptables.log): '))
                 print "--------------------------------------------------"
-                if not self['P'] == path_source:
+                if not source_info['P'] == path_source:
                     if not path_source:
                         set_config['P'] = path_source
                 else:
-                    set_config['P'] = self['P']
+                    set_config['P'] = source_info['P']
 
             elif choose == str(2):
                 print "--------------------------------------------------"
                 config_source = str(
                     raw_input('Archivo de configuración fuente Ejemplo(./kernel/conf/iptables-conf.conf): '))
                 print "--------------------------------------------------"
-                if not self['C'] == config_source:
+                if not source_info['C'] == config_source:
                     if not config_source:
                         set_config['C'] = config_source
                 else:
-                    set_config['C'] = self['C']
+                    set_config['C'] = source_info['C']
 
             elif choose == str(3):
                 if not path_source and not config_source:
-                    return self
+                    return source_info
                 else:
                     set_config = {
-                        'T': self['T'],
-                        'M': self['M'],
+                        'T': source_info['T'],
+                        'M': source_info['M'],
                         'P': path_source,
                         'C': config_source
                     }

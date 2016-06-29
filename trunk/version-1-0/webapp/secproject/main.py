@@ -12,7 +12,7 @@ import re
 
 
 if __name__ == "__main__":
-    
+
     # Instanciamos la clase Manager para la ejecucion de las distintas fuentes
     manager_obj = manager.Manager()
 
