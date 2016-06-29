@@ -1,7 +1,34 @@
 \chapter{Especificación y análisis de requisitos}
 \label{chap:requisitos}
 
-Análisis de requisitos en el plan se necesita desarrollar una aplicación para solventar éste problema y se ha planteado con estas premisas (source, controller, manager, etc) que a su vez han necesitado de un aprendizaje, explicar porque se ha hecho una cosa de una manera (sqlite3 vs mysql), etc.\\
+Los requisitos funcionales y especificación de los mismos son los que a continuación se decriben.
 
-Especificacion de los requisitos\\
-Análisis (Justificacion de la especificacion)\\
+Actualmente existen muchas tecnologías de monitorización de redes que a su vez tiene formato hardware, cómo controladores de sesiones de navegación de usuarios, firewall, proxys que enrutan el tráfico de una compañía hacia las redes externas, autenticación en sistemas VPN para acceso seguro sobre máquinas remotas, etc. El principal problema de estas tecnologías es que cada una pertenece a un ámbito distinto dentro del mismo departamento, es decir, pertenecen a las redes y a tráfico o flujo de comunicaciones pero se enmarcan en diferentes aspectos de cada uno de estos. \\
+
+Para el caso que nos concierte en el proyecto, dentro del marco de investigación que define la totalidad de la infraestructura, la funcionalidad principal del mismo será:
+
+\begin{itemize}
+\item Definir los pasos para obtener recolección de logs de una fuente de seguridad. Configuración de rsyslog, logrotate y supervisord (este último en el caso de que sea necesario).
+\item Una vez configurada la máquina, configurar la instalación para cada fuente en particular. El ámbito del proyecto se enfoca sobre iptables.
+\item Realizar un sistema de parseo de logs para extraer la información necesaria para cada evento que se registre en el sistema.
+\item Extracción de características de dichos eventos y procesamiento mediante un algoritmo de frecuencias para detectar las anomalías más comunes.
+\item Sistema de gestión de base de datos en dónde se encuentren los datos en crudo recogidos, los procesados y los dispuestos para su visualización.
+\item Panel de control dónde visualizar la información de ese nodo con total detalle de la información.
+\item Compresión y envio de los datos a la capa superior dónde se alojará el SIEM.
+\end{itemize}
+
+\section{Configuración local de máquina para procesamiento}
+
+\section{Recogida y almacenamiento de logs para una fuente}
+
+\section{Iptables}
+
+\section{Transformación de log en información útil: Parser}
+
+\section{Workflow}
+
+\section{Extracción de características}
+
+\section{Visualización de eventos}
+
+\section{Compresión}
