@@ -146,9 +146,17 @@ Son estas razones por las que a veces un sistema tan complejo y gigantesco puede
 
 La idea principal de mi proyecto surge fruto de la necesidad de monitorizar un red corporativa a través de un mecanismo de gestión automatizada de eventos, o lo que viene siendo un SIEM. Los pasos para la realización de este sistema se han modularizado y dividido en diferentes etapas que se acometarán cómo un todo dentro de un proyecto de investigación del grupo de ciberseguridad de la universidad de granada (UCyS - \url{http://ucys.ugr.es/}).\\
 
-Dicho proyecto consistirá en la monitorización de la red corporativa de Mercagranada y todo lo que ello conlleva: sistemas informáticos, gestión de bases de datos, sistemas pci, sistemas perimetrales, etc. \\
+Dicho proyecto consistirá en el diseño, implementación y evaluación de una metodología basada en el análisis multivariante para la detección y diagnóstico distribuido de anomalías en red, que permita:
+\begin{itemize}
+\item Detección temprana de vulnerabilidades o incidencias en dispositivos de monitorización.
+\item Gestión a nivel de capas, para el procesamiento y tratamiento entre los distintos niveles y su posterior comunicación con un gestor de amenazas cómo podría ser un SIEM.
+\item Empleo de algoritmos de análisis multivariante y su posterior compresión para envio entre las redes internas al SIEM.
+\item Visualización de las incidencias detectadas para su análisis por un ente humano.
+\end{itemize}
 
-[Explicar que es lo que diferencia mi pfc de las anteriores herramientas analizadas: lookwise, ELK y un SIEM. Hay otras herramientas cómo splunk o sumologic - \url{http://blog.takipi.com/log-management-tools-face-off-splunk-vs-logstash-vs-sumo-logic/}]
+La principal diferencia que existe entre mi proyecto final de carrera y las herramientas anteriormente analizadas es que el desarrollo y gestión de la información no se hace de forma analítica sino que se gestionan cantidades de datos (en la fase de recolección de logs de dispositivos) y estos no reciben ningún tipo de filtro o procesamiento previo. Se transportan desde el dispositivo monitorizado a otro en dónde se correlan los distintos logs o recolecciones según patrones definidos por los ingenieros de seguridad de la compañía encargada de detectar anomalías en los mismos. \\
+
+No existe ningún tipo de mecanismo analítico de esta información dado que el punto de inflexión o la inteligencia esta en las etapas finales y no en las previas del tratamiento de la información. Para dotar de una mayor funcionalidad a estos sistemas hay extensiones o módulos que desarrollan las compañías que amplian la capacidad analítica de la misma por una cantidad económica bastante alta y su uso suele estar supeditado a licencia. \\
 
 \section{Tecnologías implementadas}
 
