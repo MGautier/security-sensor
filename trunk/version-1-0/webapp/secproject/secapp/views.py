@@ -243,13 +243,12 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                         if events_per_day:
                                             print "EVENTS-PER-DAY (1): ", events_per_day
                                             try:
-                                                if not list_events.index(events_per_day):
+                                                if list_events.index(events_per_day):
                                                     print "EVENTS-PER-DAY (2): ", events_per_day
-                                                    list_events.append(events_per_day)
+                                                    pass
                                             except ValueError:
                                                 print "EVENTS-PER-DAY (NOT): ", events_per_day
                                                 list_events.append(events_per_day)
-                                                pass
 
                                         events_per_day = {
                                             "events": it_list['Process_Events'],
