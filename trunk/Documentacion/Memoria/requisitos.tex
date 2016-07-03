@@ -1,6 +1,8 @@
 \chapter[Requisitos]{Especificación y análisis de requisitos}
 \label{chap:requisitos}
 
+\section[Especificación]{Especificación de los requisitos}
+
 Los requisitos funcionales y especificación de los mismos son los que a continuación se decriben.
 
 Actualmente existen muchas tecnologías de monitorización de redes que a su vez tiene formato hardware, cómo controladores de sesiones de navegación de usuarios, firewall, proxys que enrutan el tráfico de una compañía hacia las redes externas, autenticación en sistemas VPN para acceso seguro sobre máquinas remotas, etc. El principal problema de estas tecnologías es que cada una pertenece a un ámbito distinto dentro del mismo departamento, es decir, pertenecen a las redes y a tráfico o flujo de comunicaciones pero se enmarcan en diferentes aspectos de cada uno de estos. \\
@@ -17,7 +19,9 @@ Para el caso que nos concierte en el proyecto, dentro del marco de investigació
 \item Compresión y envio de los datos a la capa superior dónde se alojará el SIEM.
 \end{itemize}
 
-\section[Configuración local]{Configuración local para procesamiento}
+\section[Análisis]{Análisis: Justificación de la especificación}
+
+\subsection[Configuración local]{Configuración local para procesamiento}
 Los primeros pasos la la obtención de logs o eventos generados por la fuente de seguridad, iptables, serán los de configurar al sistema interno de correlación de logs rsyslog junto con el sistema de rotacion de logs logrotate. Para el caso de rsyslog tenemos que definir un filtro para que cualquier evento que genere el sistema con un determinado mensaje definido en las reglas de iptables, sea capturado y almacenado en un determinado directorio. También hemos dotado a los logs del sistema de timestamp con mayor precisión para poder diferenciar eventos con mayor afinamiento y cambiado la tupla de permisos a la hora de crear un archivo con \textbf{FileCreateMode}.
 
 \begin{figure}[H]
@@ -84,7 +88,7 @@ then    -/var/log/iptables.log
 Estos tres paso o configuraciones nos permiten redireccionar un log de iptables al directorio \textbf{/var/log/} y en conreto para el archivo \textbf{iptables.log}. Esta configuración entrará en efecto una vez hayamos reiniciado el servico rsyslog o en el próximo inicio de sesión sobre la máquina.
 
 \pagebreak
-\section[Logs]{Recogida y almacenamiento de logs}
+\subsection[Logs]{Recogida y almacenamiento de logs}
 Para el caso que nos ocupa, iptables tiene una forma de definir reglas internas para el filtrado de paquetes según el tipo de comunicación que se establezca contra la máquina o desde la máquina hacia el exterior.
 
 \begin{figure}[H]
@@ -96,7 +100,7 @@ iptables -A INPUT -p tcp -m tcp --dport 22 -j LOG --log-prefix "IPTMSG=Connectio
 
 En la siguiente sección explicaremos en profundidad cada una de las opciones de la regla, pero a simple vista podemos observar que el mensaje asociado a la regla coincide con la palabra clave del filtro empleado en rsyslog: \textbf{IPTMSG=}. Así pues, una vez dicho evento se genere el sistema y syslog lo procese como un mensaje de un servicio determinado, en este caso iptables, rsyslog filtrará dicho mensaje según su configuración para almacenarlo posteriormente en \textbf{/var/log/iptables.log}.
 
-\section{Iptables}
+\subsection{Iptables}
 
 El servicio de firewall del kernel de GNU Linux, iptables, nos proporciona una interfaz de reglas y tablas en dónde podemos definir patrones o reglas que actuen sobre el tráfico que llega o sale desde nuestra máquina. Las reglas que se han definido por defecto son las siguientes (si queremos más filtros hay que implicar al protocolo y su puerto asociado con un mensaje):
 
@@ -178,7 +182,7 @@ Lo anterior corresponde con la manipulación por parte de rsyslog del mensaje ob
 \end{figure}
 \pagebreak
 
-\section[Parser]{Transformación de log en información útil: Parser}
+\subsection[Parser]{Transformación de log en información útil: Parser}
 
 Una vez hemos descrito los pasos a seguir para obtener un log para un evento iptables, llega la hora de procesar y hacer útil todos esos datos que tenemos. Para esta finalidad tenemos que usar expresiones regulares para generar un parser con el que ser capaz de traducir todos esos datos en información útil para nuestra aplicación.\\
 
@@ -221,10 +225,34 @@ Ya tenemos todas las etiquetas de los campos del log y ahora nos toca extraer su
 Los siguientes pasos de comprobación de integridad de valores y demás se relegan a la visualización del interesado en el método process\_line del archivo código fuente iptables.py\\
 
 \pagebreak
-\section{Workflow}
+\subsection{Workflow}
+Ahora vamos a detallar los pasos que seguirá la aplicación a la hora de la visualización de información en la web mediante el framework Django. Pero primero cómo se procesan y almacenan los datos de los logs:\\
 
-\section{Extracción de características}
+\begin{itemize}
+\item Primera instancia a ejecutar main.py: Se definen las llamadas al sistema Manager que se encargará a su vez de llamar al controlador que se asocia con la fuente encargada (iptables).
+\item Segunda instancia a ejecutar manager.py: Gestión de los controladores que hacen uso de la herramienta. Cada controlador tendrá asociada su fuente.
+\item Tercera instancia a ejecutar controller.py: Esta clase contiene unas características que herederán los controladores de cada fuente y a su vez lanza la ejecución de los hilos para cada una de las fuentes. Aquí se define o exporta la variable de entorno de Django para utilizar el ORM del mismo.
+\item Cuarta instancia a ejecutar source.py: Aunque se vaya directamente al siguiente punto, primero se pasa el control a esta clase de la cuál hereda iptables y se crean los fragmentos de código para la ejecución en iptables.
+\item Quinta instancia a ejecutar iptables.py: Ejecución y configuración de todo el entramado de iptables, de la insercción de datos en la BD y de la extracción de características de los logs.
+\end{itemize}
 
-\section{Visualización de eventos}
+Ahora corresponde el turno al flujo de ejecución para la visualización web:\\
 
-\section{Compresión}
+\begin{itemize}
+\item Primera instancia a ejecutar manage.py: Aquí se cargan las configuraciones por defecto del proyecto Django para la aplicación definida.
+\item Segunda instancia a ejecutar wsgi.py: Se usa la biblioteca wsgi para poder lanzar la aplicación por su nombre dentro del namespace definido por Django.
+\item Tercera instancia a ejecutar settings.py: Se cargan todas las configuraciones establecidas por el usuario para el proyecto y que a su vez usarán cómo configuración base para las aplicaciones derivdas del mismo.
+\item Cuarta instancia a ejecutar urls.py (archivo que pertenece al proyecto Django): Aquí se encamina la visualización entre la aplicación o la parte de administración del proyecto.
+\item Quinta instancia a ejecutar urls.py (archivo que pertenece a la aplicación): Aquí es dónde se define el router de la aplicación web y los métodos que se lanzarán una vez se hagan las peticiones sobre el servidor web Django.
+\item Sexta instancia a ejecutar views.py: Se ejecuta el método asociado a la renderización de la vista, que por defecto, sino hay ninguna ruta será index. Dependiendo del método a ejecutar sólo mostrará contenido estático o dinámico (JSON) obtenido de la base de datos.
+\item Séptima instancia a ejecutar aplicacion/index.html (Paso previo de MasterPage.html): Se carga el trozo de esta plantilla o template (que en nuestro caso es una vista) que contiene el esqueleto principal de la parte web para todas las vistas/plantillas que heredan de esta general.
+\item Octava instancia a ejecutar aplicacion/index.html (Carga de la plantilla index.html): Se carga el trozo de esta plantilla dentro del bloque definido en la plantilla MasterPage que anteriormente se proceso.
+\end{itemize}
+
+\subsection{Extracción de características}
+[TO DO]
+\subsection{Visualización de eventos}
+[TO DO]
+\subsection{Compresión}
+
+[TO DO]
