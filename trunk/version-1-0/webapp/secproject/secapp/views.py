@@ -104,6 +104,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                             if serializer.data:
                                 for it_list in serializer.data:
+
                                     events_day_week.append(it_list)
 
                         except Visualizations.DoesNotExist:
@@ -117,11 +118,13 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             for it in week:
                 if not it == 0:
                     date_week = datetime(today.year, today.month, it)
+
                     try:
                         serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
 
                         if serializer.data:
                             for it_list in serializer.data:
+
                                 events_day_week.append(it_list)
 
                     except Visualizations.DoesNotExist:
@@ -155,7 +158,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             calendary = Calendar(0)
             today = timezone.localtime(timezone.now())
             week = []
-            events_day_week = []
             events_per_day = {}
             list_events = []
 
@@ -164,6 +166,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                 len_month = len(calendary.monthdayscalendar(today.year, today.month - 1))
 
                 for it in calendary.monthdayscalendar(today.year, today.month - 1)[len_month - 1]:
+
                     if not it == 0:
                         date_week = datetime(today.year, today.month - 1, it)
 
@@ -173,7 +176,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                             if serializer.data:
                                 for it_list in serializer.data:
-                                    events_day_week.append(it_list)
+
                                     try:
 
                                         if events_per_day['day'] == it_list['Name_Day']:
@@ -213,13 +216,16 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                     week = it
 
             for it in week:
+
                 if not it == 0:
                     date_week = datetime(today.year, today.month, it)
+
                     try:
                         serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
                         if serializer.data:
                             for it_list in serializer.data:
-                                events_day_week.append(it_list)
+
+
                                 try:
 
                                     if events_per_day['day'] == it_list['Name_Day']:
@@ -232,7 +238,13 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                         }
                                     else:
                                         if events_per_day:
-                                            list_events.append(events_per_day)
+
+                                            try:
+                                                if not list_events.index(events_per_day):
+                                                    list_events.append(events_per_day)
+                                            except ValueError:
+                                                list_events.append(events_per_day)
+                                                pass
 
                                         events_per_day = {
                                             "events": it_list['Process_Events'],
@@ -250,7 +262,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                     except Visualizations.DoesNotExist:
                         pass
-
+            
             list_events.append(events_per_day)
 
         return JSONResponse([result for result in list_events])
