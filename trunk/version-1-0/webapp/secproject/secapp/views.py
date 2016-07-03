@@ -158,7 +158,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             calendary = Calendar(0)
             today = timezone.localtime(timezone.now())
             week = []
-            #events_day_week = []
             events_per_day = {}
             list_events = []
 
@@ -177,7 +176,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                             if serializer.data:
                                 for it_list in serializer.data:
-                                    #events_day_week.append(it_list)
 
                                     try:
 
@@ -191,7 +189,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                             }
                                         else:
                                             if events_per_day:
-                                                print "EVENTS-PER-DAY 1: ", events_per_day
                                                 list_events.append(events_per_day)
 
                                             events_per_day = {
@@ -210,7 +207,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                         except Visualizations.DoesNotExist:
                             pass
-                print "EVENTS-PER-DAY 2: ", events_per_day
+
                 list_events.append(events_per_day)
 
             for it in calendary.monthdayscalendar(today.year, today.month):
@@ -227,7 +224,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                         serializer = VisualizationsSerializer(Visualizations.objects.filter(Date=date_week), many=True)
                         if serializer.data:
                             for it_list in serializer.data:
-                                #events_day_week.append(it_list)
 
                                 try:
 
@@ -241,13 +237,14 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                         }
                                     else:
                                         if events_per_day:
-                                            print "EVENTS-PER-DAY (1): ", events_per_day
+
                                             try:
+                                                # Este if sirve para condicionar si existe un indice que
+                                                # sea identico al dia que se va a introducir, es decir,
+                                                # que ya existe una referencia en la lista para el nuevo dia.
                                                 if list_events.index(events_per_day):
-                                                    print "EVENTS-PER-DAY (2): ", events_per_day
                                                     pass
                                             except ValueError:
-                                                print "EVENTS-PER-DAY (NOT): ", events_per_day
                                                 list_events.append(events_per_day)
 
                                         events_per_day = {
@@ -266,7 +263,7 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                     except Visualizations.DoesNotExist:
                         pass
-            print "EVENTS-PER-DAY (3): ", events_per_day
+
             list_events.append(events_per_day)
 
         return JSONResponse([result for result in list_events])
