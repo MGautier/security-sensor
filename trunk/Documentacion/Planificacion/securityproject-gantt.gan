@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-05-30" view-index="0" gantt-divider-location="815" resource-divider-location="300" version="2.7.2" locale="es">
+<?xml version="1.0" encoding="UTF-8"?><project name="Security Project Gantt" company="UGR" webLink="" view-date="2016-05-30" view-index="0" gantt-divider-location="702" resource-divider-location="300" version="2.7.2" locale="es">
     <description><![CDATA[Éste software se enmarca dentro del desarrollo del proyecto fin de carrera para la titulación Ingeniería en Informática de la ETSIIT (UGR). Se trata de una herramienta de procesado de softwares de seguridad dentro de nuestro sistema y su posterior manipulación en pros de obtener eventos críticos o vulnerabilidades.]]></description>
     <view zooming-state="default:3" id="gantt-chart">
         <field id="tpd3" name="Nombre" width="54" order="0"/>
@@ -150,7 +150,7 @@ Usando estas dos lista tengo cubierto la semana de abril que no sea cero y la se
         <task id="144" name="[NEXT] Separar la ejecución de iptables del resto." color="#8cb6ce" meeting="false" start="2016-06-13" duration="10" complete="0" expand="true"/>
         <task id="145" name="[NEXT] [NEXT] Implementar la clase MANAGER, y monitorizar el número de hebras que se están ejecutando de los monitores (por fuente)." color="#8cb6ce" meeting="false" start="2016-06-13" duration="10" complete="0" expand="true"/>
         <task id="147" name="[NEXT] Implementar Iptables cómo heredada de una clase Controller" color="#8cb6ce" meeting="false" start="2016-06-13" duration="10" complete="0" expand="true"/>
-        <task id="149" name="[NEXT] Hacer diagrama de flujo de ejecución de la aplicación Django" color="#8cb6ce" meeting="false" start="2016-06-27" duration="4" complete="0" expand="true"/>
+        <task id="149" name="[NEXT] Hacer diagrama de flujo de ejecución de la aplicación Django" color="#8cb6ce" meeting="false" start="2016-06-27" duration="6" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
@@ -161,9 +161,9 @@ Usando estas dos lista tengo cubierto la semana de abril que no sea cero y la se
         <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd12" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="434" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="108" visible="true"/>
-        <displaycolumn property-id="tpd5" order="2" width="254" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="371" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="94" visible="true"/>
+        <displaycolumn property-id="tpd5" order="2" width="218" visible="true"/>
         <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
