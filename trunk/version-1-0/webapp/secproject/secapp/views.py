@@ -84,13 +84,21 @@ class VisualizationsInformation(generics.RetrieveAPIView):
             today = timezone.localtime(timezone.now())
             # Lista de la semana actual que coincide con el dia actual
             week = []
+            # Lista de la primera semana del mes actual
+            first_week = []
+            for it in calendary.monthdayscalendar(today.year, today.month):
+                if it.count(1) == 1:
+                    first_week = it
+                if it.count(today.day) == 1:
+                    week = it
+
             # Lista de la semana actual con los eventos que se relacionan
             events_day_week = []
 
             # Compruebo si el dia de la semana esta entre los 7 primeros por si es necesario obtener los dias
             # del mes anterior para la visualizacion de eventos en la grafica
 
-            if 1 <= today.day <= 7:
+            if 1 <= today.day <= 7 and week == first_week:
 
                 len_month = len(calendary.monthdayscalendar(today.year, today.month - 1))
 
@@ -109,11 +117,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                         except Visualizations.DoesNotExist:
                             pass
-
-            for it in calendary.monthdayscalendar(today.year, today.month):
-
-                if it.count(today.day) == 1:
-                    week = it
 
             for it in week:
                 if not it == 0:
@@ -155,13 +158,28 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
         if request.method == 'GET':
 
+            # Almacenamos un objeto de la clase Calendar que representa todos los días del year.
             calendary = Calendar(0)
+
+            # Almacenamos el dia actual en formato date mediante un paquete del framework Django
             today = timezone.localtime(timezone.now())
+            # Lista de la semana actual que coincide con el dia actual
             week = []
+            # Lista de la primera semana del mes actual
+            first_week = []
+            for it in calendary.monthdayscalendar(today.year, today.month):
+                if it.count(1) == 1:
+                    first_week = it
+                if it.count(today.day) == 1:
+                    week = it
+
+            # Diccionario con los eventos generados por dia
             events_per_day = {}
             list_events = []
 
-            if 1 <= today.day <= 7:
+            # Compruebo si el dia de la semana esta entre los 7 primeros por si es necesario obtener los dias
+            # del mes anterior para la visualizacion de eventos en la grafica
+            if 1 <= today.day <= 7 and week == first_week:
 
                 len_month = len(calendary.monthdayscalendar(today.year, today.month - 1))
 
@@ -210,10 +228,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                 list_events.append(events_per_day)
 
-            for it in calendary.monthdayscalendar(today.year, today.month):
-
-                if it.count(today.day) == 1:
-                    week = it
 
             for it in week:
 
