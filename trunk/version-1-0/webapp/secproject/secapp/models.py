@@ -100,7 +100,7 @@ class Tags(models.Model):
     Tag = models.CharField(max_length=255, default='-')
 
     def __str__(self):
-        return '%s' % self.Tag
+        return '%s - %s' % (self.Tag, self.Description)
 
 
 # Clase que alberga los campos MAC extraidos del log
@@ -141,4 +141,4 @@ class PacketAdditionalInfo(models.Model):
     Value = models.CharField(max_length=255, default='-')
 
     def __str__(self):
-        return '%s %s ' % (self.ID_Tag, self.Value)
+        return '%s - %s ' % (self.ID_Tag, self.Value)

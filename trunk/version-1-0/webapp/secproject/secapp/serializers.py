@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Events, Visualizations
+from models import Events, Visualizations, PacketAdditionalInfo, Tags
 from django.utils import timezone
 
 # Author: Moises Gautier Gomez
