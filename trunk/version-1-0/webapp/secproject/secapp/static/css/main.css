@@ -107,15 +107,20 @@ ol ol {
     overflow-y: scroll;
 }
 
-.eventsComponent {
-    height: 500px;
-    position: relative;
-    width: 50%;
+div#sub-content {
+    margin: auto;
+    padding: 1em;
+    display: inline-block;
     fontSize: 18px;
 }
-.infoComponent {
-    height: 250px;
-    position: relative;
-    width: 50%;
-    fontSize: 18px;
+
+div#eventComponent {
+    height: 500px;
+    width: auto;
+    display: inline-block;
+
+}
+div#infoComponent {
+    width: auto;
+    display: inline-block;
 }

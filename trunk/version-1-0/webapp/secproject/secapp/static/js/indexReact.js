@@ -1,3 +1,143 @@
+var Info = React.createClass({
+  render: function() {
+    return (
+        <div className="info">
+        <p>Tag: {this.props.data.Tag} Value: {this.props.data.Value} Description: {this.props.data.Description}</p>
+        </div>
+    );
+  }
+});
+
+var InfoComponent = React.createClass({
+  loadInfoFromServer: function(){
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: true,
+      success: function(data) {
+        if(this.isMounted())
+        {
+          this.setState({data: data});
+
+        }
+      }.bind(this),
+      error: function(xhr, status, err){
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function(){
+    return {data: []};
+  },
+  componentDidMount: function(){
+    this.loadInfoFromServer();
+    setInterval(this.loadInfoFromServer, this.props.pollInterval);
+  },
+  render: function(){
+    return (
+        <div className="infoComponent">
+        <h1>Info</h1>
+        <p>ID: {this.props.data.id}</p>
+        <InfoList key={this.props.id} data={this.state.data}/>
+        </div>
+    );
+  }
+});
+
+var InfoList = React.createClass({
+  render: function(){
+    var infoNodes = this.props.data.map(function(event){
+      return (
+          <li><Info key={event.id} data={event} /></li>
+      );
+    });
+    return (
+        <div className="infoList">
+        <ol>
+        {infoNodes}
+      </ol>
+        </div>
+    );
+  }
+});
+
+var Event = React.createClass({
+  handleClick: function(event){
+    console.log("ON CLICK");
+    console.log("Timestamp: ", this.props.data.Local_Timestamp);
+    console.log("ID: ", this.props.data.id);
+    var additional_info = "api/events/" + this.props.data.id + "/additional";
+    ReactDOM.render(
+        <InfoComponent url={additional_info} data={this.props.data} pollInterval={60000} />,
+      document.getElementById('infoComponent')
+    );
+
+
+  },
+  render: function() {
+    return (
+        <div className="event">
+        <a onClick={this.handleClick}><u><p> ID-Event: {this.props.data.id} - Timestamp: {this.props.data.Local_Timestamp} - Comment: {this.props.data.Comment} </p></u></a>
+        </div>
+    );
+  }
+});
+
+var EventsComponent = React.createClass({
+  loadEventsFromServer: function(){
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: true,
+      success: function(data) {
+        console.log("IS-MOUNTED: ", this.isMounted());
+        if(this.isMounted())
+        {
+          console.log("HERE");
+          this.setState({data: data});
+
+        }
+      }.bind(this),
+      error: function(xhr, status, err){
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function(){
+    return {data: []};
+  },
+  componentDidMount: function(){
+    this.loadEventsFromServer();
+    setInterval(this.loadEventsFromServer, this.props.pollInterval);
+  },
+  render: function(){
+    return (
+        <div className="eventsComponent">
+        <h1>Events</h1>
+        <EventsList key={this.props.id} data={this.state.data}/>
+        </div>
+    );
+  }
+});
+
+var EventsList = React.createClass({
+  render: function(){
+    var eventNodes = this.props.data.map(function(event){
+      return (
+          <li><div><Event key={event.id} data={event} /></div></li>
+      );
+    });
+    return (
+        <div className="eventsList">
+        <ol className="rectangle-list">
+        {eventNodes}
+      </ol>
+        </div>
+    );
+  }
+});
+
+
 var Visualization = React.createClass({
   componentDidMount: function() {
     var days = Array.from(this.props.set);
@@ -21,103 +161,11 @@ var Visualization = React.createClass({
         onclick: function (d, element){
           var events_per_day = "api/events/day/" + source + "/" + days[d.index];
 
-          var Event = React.createClass({
-            handleClick: function(event){
-              console.log("ON CLICK");
-              console.log("Timestamp: ", this.props.data.Local_Timestamp);
-              console.log("ID: ", this.props.data.id);
-              var additional_info = "api/events/" + this.props.data.id + "/additional";
-              $.ajax({
-                url: additional_info,
-                dataType: 'json',
-                cache: true,
-                success: function(data) {
-                  if(this.isMounted())
-                  {
-                    this.setState({data: data});
-                    function iteration(element, index, array){
-
-                      console.log("Tag:" + element.Tag + "Value: " + element.Value + "Description: " + element.Description);
-                      $("#info").html(<div className="infoComponent"><p>"Tag:" + element.Tag + "Value: " + element.Value + "Description: " + element.Description</p></div>)
-
-                    }
-                    data.forEach(iteration);
-                  }
-                }.bind(this),
-                error: function(xhr, status, err){
-                  console.error(this.props.url, status, err.toString());
-                }.bind(this)
-              });
-
-            },
-            render: function() {
-              return (
-                  <div className="event">
-                  <p onClick={this.handleClick} >ID-Event: {this.props.data.id} - Timestamp: {this.props.data.Local_Timestamp} - Comment: {this.props.data.Comment} </p>
-                  </div>
-                  <div className="infoComponent">
-
-                  </div>
-              );
-            }
-          });
-
-          var EventsComponent = React.createClass({
-            loadEventsFromServer: function(){
-              $.ajax({
-                url: this.props.url,
-                dataType: 'json',
-                cache: true,
-                success: function(data) {
-                  if(this.isMounted())
-                  {
-                    this.setState({data: data});
-
-                  }
-                }.bind(this),
-                error: function(xhr, status, err){
-                  console.error(this.props.url, status, err.toString());
-                }.bind(this)
-              });
-            },
-            getInitialState: function(){
-              return {data: []};
-            },
-            componentDidMount: function(){
-              this.loadEventsFromServer();
-              setInterval(this.loadEventsFromServer, this.props.pollInterval);
-            },
-            render: function(){
-              return (
-                  <div className="eventsComponent">
-                  <h1>Events</h1>
-                  <EventsList key={this.props.id} data={this.state.data}/>
-                  </div>
-              );
-            }
-          });
-
-          var EventsList = React.createClass({
-            render: function(){
-              var eventNodes = this.props.data.map(function(event){
-                return (
-                    <li><a><div><Event key={event.id} data={event} /></div></a></li>
-                );
-              });
-              return (
-                  <div className="eventsList">
-                  <ol className="rectangle-list">
-                  {eventNodes}
-                </ol>
-                  </div>
-              );
-            }
-          });
-
-          ReactDOM.render(
-            <EventsComponent url={events_per_day} pollInterval={60000} />,
-            document.getElementById('sub-content')
-          );
+          ReactDOM.unmountComponentAtNode(document.getElementById('eventComponent'));
+          ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
+          ReactDOM.render(<EventsComponent url={events_per_day} pollInterval={60000}/>,
+            document.getElementById('eventComponent')
+                         );
 
         },
         type: 'area-spline'
