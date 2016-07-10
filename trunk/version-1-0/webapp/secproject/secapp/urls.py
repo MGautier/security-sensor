@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)$', views.event_information,
         name='event_information'),
 
-    # Informacion adicional de un paquete asociado a un evento segun la fuente
+    # Informacion adicional de un paquete asociado a un evento
 
     url(r'^(?P<id_log_source>[0-9]+)/event/(?P<id_event>[0-9]+)/additional_info/$',
         views.additional_info,
