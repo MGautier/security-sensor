@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from .models import LogSources, Events, PacketEventsInformation, PacketAdditionalInfo, Visualizations
+from .models import LogSources, Events, PacketEventsInformation, PacketAdditionalInfo, Visualizations, Tags
 from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
@@ -329,6 +329,41 @@ class EventsInformation(generics.RetrieveAPIView):
 
         if request.method == 'GET':
             return EventsInformation().event_detail(request, fk, format)
+
+
+    @csrf_exempt
+    def events_detail_additional(self, request, pk, format=None):
+        """
+        Muestra la informacion adicional de un evento almacenado en el sistema
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador del evento del cual queremos obtener mas informacion
+            format:
+
+        Returns: JSON con la informacion adicional del evento almacenado
+        """
+
+        try:
+            event = Events.objects.get(pk=pk)
+            packet_event = PacketEventsInformation.objects.get(id=event)
+            packet_event_additional = PacketAdditionalInfo.objects.filter(ID_Packet_Events=packet_event)
+
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+        except PacketEventsInformation.DoesNotExist:
+            return HttpResponse(status=404)
+        except PacketAdditionalInfo.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            list_additional_info = []
+            for it in packet_event_additional:
+                fields = str(it).split('-')
+                info = {"Tag" : fields[0], "Description" : fields[1], "Value" : fields[2]}
+                list_additional_info.append(info)
+
+            return JSONResponse([result for result in list_additional_info])
 
     @csrf_exempt
     def events_list(self, request):

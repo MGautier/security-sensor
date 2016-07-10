@@ -40,6 +40,11 @@ urlpatterns = [
     url(r'^api/events/by_source/(?P<pk>[0-9]+)/(?P<fk>[0-9]+)/$', views.EventsInformation().events_by_source_detail,
         name='events_by_source_detail'),
 
+    # Descripcion adicional de un evento en formato json
+
+    url(r'^api/events/(?P<pk>[0-9]+)/additional$', views.EventsInformation().events_detail_additional,
+        name='event_detail_additional'),
+
     # Descripcion detallada de un evento en formato json
 
     url(r'^api/events/(?P<pk>[0-9]+)/json$', views.EventsInformation().event_detail, name='event_detail'),
