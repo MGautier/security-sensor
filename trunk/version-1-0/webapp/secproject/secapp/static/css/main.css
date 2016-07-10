@@ -110,5 +110,12 @@ ol ol {
 .eventsComponent {
     height: 500px;
     position: relative;
+    width: 50%;
+    fontSize: 18px;
+}
+.infoComponent {
+    height: 250px;
+    position: relative;
+    width: 50%;
     fontSize: 18px;
 }

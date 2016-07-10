@@ -20,14 +20,43 @@ var Visualization = React.createClass({
         },
         onclick: function (d, element){
           var events_per_day = "api/events/day/" + source + "/" + days[d.index];
+
           var Event = React.createClass({
             handleClick: function(event){
               console.log("ON CLICK");
+              console.log("Timestamp: ", this.props.data.Local_Timestamp);
+              console.log("ID: ", this.props.data.id);
+              var additional_info = "api/events/" + this.props.data.id + "/additional";
+              $.ajax({
+                url: additional_info,
+                dataType: 'json',
+                cache: true,
+                success: function(data) {
+                  if(this.isMounted())
+                  {
+                    this.setState({data: data});
+                    function iteration(element, index, array){
+
+                      console.log("Tag:" + element.Tag + "Value: " + element.Value + "Description: " + element.Description);
+                      $("#info").html(<div className="infoComponent"><p>"Tag:" + element.Tag + "Value: " + element.Value + "Description: " + element.Description</p></div>)
+
+                    }
+                    data.forEach(iteration);
+                  }
+                }.bind(this),
+                error: function(xhr, status, err){
+                  console.error(this.props.url, status, err.toString());
+                }.bind(this)
+              });
+
             },
             render: function() {
               return (
                   <div className="event">
                   <p onClick={this.handleClick} >ID-Event: {this.props.data.id} - Timestamp: {this.props.data.Local_Timestamp} - Comment: {this.props.data.Comment} </p>
+                  </div>
+                  <div className="infoComponent">
+
                   </div>
               );
             }
@@ -72,7 +101,7 @@ var Visualization = React.createClass({
             render: function(){
               var eventNodes = this.props.data.map(function(event){
                 return (
-                    <li><a href="#"><Event key={event.id} data={event} /></a></li>
+                    <li><a><div><Event key={event.id} data={event} /></div></a></li>
                 );
               });
               return (
@@ -84,8 +113,9 @@ var Visualization = React.createClass({
               );
             }
           });
+
           ReactDOM.render(
-              <EventsComponent url={events_per_day} pollInterval={60000} />,
+            <EventsComponent url={events_per_day} pollInterval={60000} />,
             document.getElementById('sub-content')
           );
 
