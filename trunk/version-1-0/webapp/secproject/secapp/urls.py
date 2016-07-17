@@ -74,7 +74,6 @@ urlpatterns = [
         name='events_source_in_week'),
 
     # Lista todos los eventos almacenados para el mes actual para una determinada fuente
-
     url(r'^api/events/month/(?P<pk>[0-9]+)/$', views.EventsInformation().events_source_in_month,
         name='events_source_in_month'),
 
