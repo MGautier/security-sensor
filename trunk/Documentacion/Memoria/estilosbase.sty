@@ -4,13 +4,18 @@
 
 \ProvidesPackage{estilosbase}
 
+% -- Paquete para usar diferentes clases de documentos en la
+% -- memoria
+
+\usepackage{pdfpages}
+
 % -- Paquetes de estilo del documento.
 \usepackage[utf8]{inputenc} % Codificación de los ficheros de entrada
 \usepackage[T1]{fontenc}
 \usepackage{charter}
 \usepackage{framed}
 
-\usepackage[spanish]{babel} % Traducción al español
+\usepackage[english,spanish]{babel} % Traducción al español
 
 
 
@@ -67,7 +72,6 @@
 \usetikzlibrary{arrows,matrix,shapes,snakes,automata,backgrounds,petri}
 \tikzstyle{information text}=[rounded corners, fill=gris]
 \usepackage{rotating}
-\usepackage{charter}
 \usepackage{hyphenat}
 \usepackage{makeidx}
 \usepackage{tocbibind}
