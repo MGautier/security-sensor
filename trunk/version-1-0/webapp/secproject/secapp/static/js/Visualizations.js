@@ -1,3 +1,13 @@
+function listings()
+{
+  var element = document.getElementById("list-events");
+  var size_element = element.children.length;
+
+  console.log("Element: ", element);
+  console.log("Size: ", size_element);
+
+}
+
 var Info = React.createClass({
   render: function() {
     return (
@@ -67,6 +77,8 @@ var Event = React.createClass({
     console.log("Timestamp: ", this.props.data.Local_Timestamp);
     console.log("ID: ", this.props.data.id);
     var additional_info = "api/events/" + this.props.data.id + "/additional";
+    listings();
+
     ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
     ReactDOM.render(
         <InfoComponent url={additional_info} data={this.props.data} pollInterval={60000} />,
@@ -78,7 +90,7 @@ var Event = React.createClass({
   render: function() {
     return (
         <div className="event">
-        <a onClick={this.handleClick}><u><p> ID-Event: {this.props.data.id} - Timestamp: {this.props.data.Local_Timestamp} - Comment: {this.props.data.Comment} </p></u></a>
+        <a onClick={this.handleClick}><u><p className="event-description"> ID-Event: {this.props.data.id} - Timestamp: {this.props.data.Local_Timestamp} - Comment: {this.props.data.Comment} </p></u></a>
         </div>
     );
   }
@@ -130,7 +142,7 @@ var EventsList = React.createClass({
     });
     return (
         <div className="eventsList">
-        <ol className="rectangle-list">
+        <ol id="list-events" className="rectangle-list">
         {eventNodes}
       </ol>
         </div>
