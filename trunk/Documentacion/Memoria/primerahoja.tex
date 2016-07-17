@@ -1,36 +1,25 @@
-\pagestyle{empty}
+\documentclass{article}
+\usepackage{estilosbase}
+\begin{document}
+\pagenumbering{gobble}
+\title{Sensor para recopilación y visualización de información de seguridad en nodos de una red}
+\author{Moisés Gautier Gómez}
+\date{ }
+\maketitle
 \begin{center}
-
-  \includegraphics[scale=.5]{logo_ugr.png} \\
-
-  \vspace{2.0cm}
-
-  \Large{ESCUELA TÉCNICA SUPERIOR DE INGENIERÍAS INFORMÁTICA Y DE TELECOMUNICACIÓN} \\
-
-  \vspace{1.0cm}
-
-  \large{INGENIERO EN INFORMÁTICA} \\
-
-  \vspace{2.0cm}
-
-  \large{Security Sensor}
-
-  \vspace{1.0cm}
-
+\small{\textbf{Palabras clave}}
 \end{center}
+\hspace*{.525in}{\small{Iptables, Seguridad informática, Paquetes, Eventos, Python, Sonda, Django, Web, Visualizacion}}
+\begin{abstract}
+El objetivo principal del proyecto es desarrollar un software que permita recopilar y visualizar la información generada por las aplicaciones de monitorización y control de seguridad que se ejecutan en una máquina.\\
 
-\begin{itemize}
-\item \large{Departamento: Teoría de la señal, Telemática y Comunicaciones}
-\item \large{Director del proyecto: Gabriel Maciá Fernández}
-\item \large{Autor del proyecto: Moisés Gautier Gómez}
-\end{itemize}
+La motivación del mismo surge fruto de la necesidad de monitorizar un red corporativa a través de un mecanismo de gestión automatizada de eventos (SIEM). Los pasos para la realización de este sistema se han modularizado y dividido en diferentes etapas que se desarrollarán como un todo dentro del proyecto de investigación VERITAS (\url{http://nesg.ugr.es/veritas/}) del Network Engineering \& Security Group (NESG - \url{http://nesg.ugr.es/}) perteneciente al área de Ingeniería Telemática de la Universidad de Granada.\\
 
-\vspace{1.0cm}
+Para esta finalidad será necesario definir los pasos para la obtención de logs de una fuente de seguridad, configurar la instalación para dicha fuente, realizar un sistema de parseo de logs para extraer la información, almacenarla en un sistema persistente (base de datos) y visualizarla mediante una interfaz web en la sonda desplegada.\\
 
-\begin{flushright}
-  \large{Granada, \today} \\
+Por último, para comprobar la efectividad y analizar el funcionamiento de la solución software, se realizaría una demostración en directo con procesamiento real de eventos para la fuente de seguridad cuyo ámbito tiene este proyecto, que será Iptables. \\
 
-  \vspace{2.5cm}
+\end{abstract}
 
-  \large{Fdo: Moisés Gautier Gómez}
-\end{flushright}
+
+\end{document}
