@@ -1,5 +1,6 @@
 h1, h2, h3 {
- color: steelblue;
+    color: steelblue;
+    text-align: center;
 }
 
 .chart rect {
@@ -33,13 +34,6 @@ h1, h2, h3 {
 
 .x.axis path {
   display: none;
-}
-
-div {
-  font-size: 16px;
-  text-align: center;
-  line-height: 1.73;
-  letter-spacing: 1.5px;
 }
 
 ol {
@@ -102,25 +96,17 @@ ol ol {
     border-left-color: steelblue;
 }
 
-.eventsList {
-    max-height: 60%;
-    overflow-y: scroll;
+div#content {
+    margin: auto;
+    padding: 1em;
+    fontSize: 18px;
+    font: sans-serif;
+    color: steelblue;
 }
-
 div#sub-content {
     margin: auto;
     padding: 1em;
-    display: inline-block;
     fontSize: 18px;
-}
-
-div#eventComponent {
-    height: 500px;
-    width: auto;
-    display: inline-block;
-
-}
-div#infoComponent {
-    width: auto;
-    display: inline-block;
+    font: sans-serif;
+    color: steelblue;
 }
