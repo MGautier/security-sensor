@@ -67,6 +67,7 @@ var Event = React.createClass({
     console.log("Timestamp: ", this.props.data.Local_Timestamp);
     console.log("ID: ", this.props.data.id);
     var additional_info = "api/events/" + this.props.data.id + "/additional";
+    ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
     ReactDOM.render(
         <InfoComponent url={additional_info} data={this.props.data} pollInterval={60000} />,
       document.getElementById('infoComponent')
@@ -146,17 +147,17 @@ var Visualization = React.createClass({
     var auxiliar_element;
     c3.generate({
       data: {
-        url: 'api/visualizations/chart.json/',
+        url: 'api/visualizations/1/chart_all.json/',
         mimeType: 'json',
         selection: {
           enabled: true
         },
         keys: {
-          x: 'day',
-          value: ['events']
+          x: 'Date',
+          value: ['Events']
         },
         names: {
-          events: 'Iptables Events'
+          Events: 'Iptables Events'
         },
         onclick: function (d, element){
           var events_per_day = "api/events/day/" + source + "/" + days[d.index];
@@ -175,7 +176,12 @@ var Visualization = React.createClass({
       },
       axis: {
         x: {
-          type: 'category'
+          type: 'category',
+          tick: {
+            rotate: -80,
+            multiline: false
+          },
+          height: 68
         }
       }
     });
@@ -273,6 +279,6 @@ var VisualizationsList = React.createClass({
 
 
 ReactDOM.render(
-    <VisualizationsComponent url="api/visualizations/week/" pollInterval={60000} />,
+    <VisualizationsComponent url="api/visualizations/1/chart_all/" pollInterval={60000} />,
   document.getElementById('content')
 );
