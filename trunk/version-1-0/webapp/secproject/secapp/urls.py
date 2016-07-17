@@ -97,10 +97,15 @@ urlpatterns = [
     url(r'^api/visualizations/week/$', views.VisualizationsInformation().list_of_visualizations_week,
         name='visualizations_list_week'),
 
-    # Lista de todas las entradas de eventos por dia almacenados para mostrar en la grafica principal
+    # Lista de todas las entradas de eventos por dia (semana actual) almacenados para mostrar en la grafica principal
 
     url(r'^api/visualizations/chart/$', views.VisualizationsInformation().visualizations_chart,
-        name='visualizations_chart')
+        name='visualizations_chart'),
+
+    # Lista de todas las entradas de eventos por dia almacenados para mostrar en la grafica principal
+
+    url(r'^api/visualizations/(?P<pk>[0-9]+)/chart_all/$', views.VisualizationsInformation().visualizations_chart_all,
+        name='visualizations_chart_all')
 
 ]
 

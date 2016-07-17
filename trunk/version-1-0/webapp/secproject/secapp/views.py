@@ -13,7 +13,6 @@ from types import *
 
 
 class JSONResponse(HttpResponse):
-
     """
     Clase que recibe como parametro un objeto HttpResponse cuyo contenido se renderiza o transforma en formato
     JSON.
@@ -26,7 +25,6 @@ class JSONResponse(HttpResponse):
 
 
 class VisualizationsInformation(generics.RetrieveAPIView):
-
     """
     Clase que se emplea para la renderización de datos extraidos del modelo (Base de datos) junto con informacion
     pasada por protocolo Http (peticion GET/POST) para visualizar contenido en formato JSON en la web.
@@ -112,7 +110,6 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                             if serializer.data:
                                 for it_list in serializer.data:
-
                                     events_day_week.append(it_list)
 
                         except Visualizations.DoesNotExist:
@@ -127,13 +124,89 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                         if serializer.data:
                             for it_list in serializer.data:
-
                                 events_day_week.append(it_list)
 
                     except Visualizations.DoesNotExist:
                         pass
 
         return JSONResponse([result for result in events_day_week])
+
+    @csrf_exempt
+    def visualizations_chart_all(self, request, pk, format=None):
+        """
+        Lista de todas las entradas de la tabla visualizations en formato json. Esto me será
+        útil para la generación de la tabla de eventos por día, de la cuál luego podré extraer información con
+        api/events o similares.
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador de la fuente de la que queremos extraer los eventos
+            format:
+
+        Returns: Muestra en formato JSON todos los items del modelo Visualization
+        Ejemplo
+        {
+        "date":"2016-06-08",
+        "id_source":1,
+        "events":68,
+        "day":"Wednesday"
+        }
+
+        """
+        if request.method == 'GET':
+
+            # Diccionario con los eventos generados por dia
+            events_per_day = {}
+            list_events = []
+
+            try:
+                serializer = VisualizationsSerializer(Visualizations.objects.filter(ID_Source=pk), many=True)
+                if serializer.data:
+                    for it_list in serializer.data:
+                        try:
+
+                            if events_per_day['Day'] == it_list['Name_Day']:
+                                events_sum = it_list['Process_Events'] + events_per_day['Events']
+                                events_per_day = {
+                                    "Events": events_sum,
+                                    "Day": it_list['Name_Day'],
+                                    "Date": it_list['Date'],
+                                    "ID_Source": it_list['ID_Source'],
+                                    "id": it_list['id']
+                                }
+                            else:
+                                if events_per_day:
+
+                                    try:
+                                        # Este if sirve para condicionar si existe un indice que
+                                        # sea identico al dia que se va a introducir, es decir,
+                                        # que ya existe una referencia en la lista para el nuevo dia.
+                                        if list_events.index(events_per_day):
+                                            pass
+                                    except ValueError:
+                                        list_events.append(events_per_day)
+
+                                    events_per_day = {
+                                        "Events": it_list['Process_Events'],
+                                        "Day": it_list['Name_Day'],
+                                        "Date": it_list['Date'],
+                                        "ID_Source": it_list['ID_Source'],
+                                        "id": it_list['id']
+                                    }
+                        except KeyError:
+                            events_per_day = {
+                                "Events": it_list['Process_Events'],
+                                "Day": it_list['Name_Day'],
+                                "Date": it_list['Date'],
+                                "ID_Source": it_list['ID_Source'],
+                                "id": it_list['id']
+                            }
+
+            except Visualizations.DoesNotExist:
+                pass
+
+            list_events.append(events_per_day)
+
+        return JSONResponse([result for result in list_events])
 
     @csrf_exempt
     def visualizations_chart(self, request, format=None):
@@ -197,37 +270,39 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                                     try:
 
-                                        if events_per_day['day'] == it_list['Name_Day']:
-                                            events_sum = it_list['Process_Events'] + events_per_day['events']
+                                        if events_per_day['Day'] == it_list['Name_Day']:
+                                            events_sum = it_list['Process_Events'] + events_per_day['Events']
                                             events_per_day = {
-                                                "events": events_sum,
-                                                "day": it_list['Name_Day'],
-                                                "date": it_list['Date'],
-                                                "id_source": it_list['ID_Source']
+                                                "Events": events_sum,
+                                                "Day": it_list['Name_Day'],
+                                                "Date": it_list['Date'],
+                                                "ID_Source": it_list['ID_Source'],
+                                                "id": it_list['id']
                                             }
                                         else:
                                             if events_per_day:
                                                 list_events.append(events_per_day)
 
                                             events_per_day = {
-                                                "events": it_list['Process_Events'],
-                                                "day": it_list['Name_Day'],
-                                                "date": it_list['Date'],
-                                                "id_source": it_list['ID_Source']
+                                                "Events": it_list['Process_Events'],
+                                                "Day": it_list['Name_Day'],
+                                                "Date": it_list['Date'],
+                                                "ID_Source": it_list['ID_Source'],
+                                                "id": it_list['id']
                                             }
                                     except KeyError:
                                         events_per_day = {
-                                            "events": it_list['Process_Events'],
-                                            "day": it_list['Name_Day'],
-                                            "date": it_list['Date'],
-                                            "id_source": it_list['ID_Source']
+                                            "Events": it_list['Process_Events'],
+                                            "Day": it_list['Name_Day'],
+                                            "Date": it_list['Date'],
+                                            "ID_Source": it_list['ID_Source'],
+                                            "id": it_list['id']
                                         }
 
                         except Visualizations.DoesNotExist:
                             pass
 
                 list_events.append(events_per_day)
-
 
             for it in week:
 
@@ -241,13 +316,14 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                                 try:
 
-                                    if events_per_day['day'] == it_list['Name_Day']:
-                                        events_sum = it_list['Process_Events'] + events_per_day['events']
+                                    if events_per_day['Day'] == it_list['Name_Day']:
+                                        events_sum = it_list['Process_Events'] + events_per_day['Events']
                                         events_per_day = {
-                                            "events": events_sum,
-                                            "day": it_list['Name_Day'],
-                                            "date": it_list['Date'],
-                                            "id_source": it_list['ID_Source']
+                                            "Events": events_sum,
+                                            "Day": it_list['Name_Day'],
+                                            "Date": it_list['Date'],
+                                            "ID_Source": it_list['ID_Source'],
+                                            "id": it_list['id']
                                         }
                                     else:
                                         if events_per_day:
@@ -262,17 +338,19 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                                                 list_events.append(events_per_day)
 
                                         events_per_day = {
-                                            "events": it_list['Process_Events'],
-                                            "day": it_list['Name_Day'],
-                                            "date": it_list['Date'],
-                                            "id_source": it_list['ID_Source']
+                                            "Events": it_list['Process_Events'],
+                                            "Day": it_list['Name_Day'],
+                                            "Date": it_list['Date'],
+                                            "ID_Source": it_list['ID_Source'],
+                                            "id": it_list['id']
                                         }
                                 except KeyError:
                                     events_per_day = {
-                                        "events": it_list['Process_Events'],
-                                        "day": it_list['Name_Day'],
-                                        "date": it_list['Date'],
-                                        "id_source": it_list['ID_Source']
+                                        "Events": it_list['Process_Events'],
+                                        "Day": it_list['Name_Day'],
+                                        "Date": it_list['Date'],
+                                        "ID_Source": it_list['ID_Source'],
+                                        "id": it_list['id']
                                     }
 
                     except Visualizations.DoesNotExist:
@@ -330,7 +408,6 @@ class EventsInformation(generics.RetrieveAPIView):
         if request.method == 'GET':
             return EventsInformation().event_detail(request, fk, format)
 
-
     @csrf_exempt
     def events_detail_additional(self, request, pk, format=None):
         """
@@ -360,7 +437,7 @@ class EventsInformation(generics.RetrieveAPIView):
             list_additional_info = []
             for it in packet_event_additional:
                 fields = str(it).split('-')
-                info = {"Tag" : fields[0], "Description" : fields[1], "Value" : fields[2]}
+                info = {"Tag": fields[0], "Description": fields[1], "Value": fields[2]}
                 list_additional_info.append(info)
 
             return JSONResponse([result for result in list_additional_info])
