@@ -2,15 +2,18 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-<div id="content">
+<div id="content"></div>
+<div id="chart"><svg></svg></div>
+<br/>
+<br/>
+<br/>
+<br/>
 
-</div>
-<div id="chart">
-<svg></svg>
-</div>
-<div id="sub-content">
-<div id="eventComponent"></div>
-<div id="infoComponent"></div>
+<div class="row">
+    <div id="sub-content">
+        <div class="col-md-6" id="eventComponent"></div>
+        <div class="col-md-6" id="infoComponent"></div>
+    </div>
 </div>
 
 {% if latest_source_list %}
@@ -22,4 +25,5 @@
 {% else %}
 <p> No sources are available.</p>
 {% endif %}
+
 {% endblock %}

@@ -9,6 +9,8 @@
     {% if request.user.username == "pfc" %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css"/>
     <link rel="stylesheet" href="{% static 'bower_components/c3/c3.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}" type="text/css"/>
     {% else %}
     <link rel="stylesheet" href="{% static 'build/css/main.css' %}" type="text/css"/>
     {% endif %}
@@ -28,12 +30,13 @@
     <script src="{% static 'bower_components/d3/d3.min.js' %}" charset="utf-8"></script>
     <script src="{% static 'bower_components/c3/c3.min.js' %}"></script>
     <script src="{% static 'bower_components/react-d3/dist/public/js/react-d3.min.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
 
 
     {% if request.user.username == "pfc" %}
-    <script type="text/babel" src="{% static 'js/indexReact.js' %}"></script>
+    <script type="text/babel" src="{% static 'js/Visualizations.js' %}"></script>
     {% else %}
-    <script type="text/babel" src="{% static 'build/js/indexReact.js' %}"></script>
+    <script type="text/babel" src="{% static 'build/js/Visualizations.js' %}"></script>
     {% endif %}
 </body>
 </html>
