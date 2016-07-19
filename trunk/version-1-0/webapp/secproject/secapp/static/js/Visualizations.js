@@ -167,7 +167,7 @@ var Visualization = React.createClass({
           ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
 
           $(document).ready(function() {
-            $('#example').DataTable({
+            var table = $('#example').DataTable({
               ajax:{
                 url: events_per_day,
                 dataSrc: ''
@@ -178,6 +178,7 @@ var Visualization = React.createClass({
                 { data: 'Comment'}
               ]
             });
+            table.ajax.url( events_per_day ).load();
           } );
 
           ReactDOM.render(<EventsComponent url={events_per_day} pollInterval={60000}/>,
