@@ -1,10 +1,8 @@
 function listings()
 {
-  var element = document.getElementById("list-events");
-  var size_element = element.children.length;
-
-  console.log("Element: ", element);
-  console.log("Size: ", size_element);
+  $(document).ready(function() {
+        $('#table-events').DataTable();
+} );
 
 }
 
