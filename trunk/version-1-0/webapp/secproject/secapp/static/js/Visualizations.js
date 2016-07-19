@@ -1,11 +1,3 @@
-function listings()
-{
-  $(document).ready(function() {
-        $('#table-events').DataTable();
-} );
-
-}
-
 var Info = React.createClass({
   render: function() {
     return (
@@ -75,7 +67,6 @@ var Event = React.createClass({
     console.log("Timestamp: ", this.props.data.Local_Timestamp);
     console.log("ID: ", this.props.data.id);
     var additional_info = "api/events/" + this.props.data.id + "/additional";
-    listings();
 
     ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
     ReactDOM.render(
@@ -140,9 +131,9 @@ var EventsList = React.createClass({
     });
     return (
         <div className="eventsList">
-        <ol id="list-events" className="rectangle-list">
+        <ol className="rectangle-list">
         {eventNodes}
-      </ol>
+        </ol>
         </div>
     );
   }
@@ -174,6 +165,21 @@ var Visualization = React.createClass({
 
           ReactDOM.unmountComponentAtNode(document.getElementById('eventComponent'));
           ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
+
+          $(document).ready(function() {
+            $('#example').DataTable({
+              ajax:{
+                url: events_per_day,
+                dataSrc: ''
+              },
+              columns: [
+                { data: 'id' },
+                { data: 'Local_Timestamp' },
+                { data: 'Comment'}
+              ]
+            });
+          } );
+
           ReactDOM.render(<EventsComponent url={events_per_day} pollInterval={60000}/>,
             document.getElementById('eventComponent')
                          );
