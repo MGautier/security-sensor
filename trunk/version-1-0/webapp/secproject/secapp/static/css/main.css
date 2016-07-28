@@ -134,9 +134,9 @@ button.btn-sm{
 }
 
 td.details-control {
-    background: url("{% static 'resource/details_open.png' %}") no-repeat center center;
+    background: url('../resources/details_open.png') no-repeat center center;
     cursor: pointer;
 }
 tr.details td.details-control {
-    background: url("{% static 'resource/details_close.png' %}") no-repeat center center;
+    background: url('../resources/details_close.png') no-repeat center center;
 }
