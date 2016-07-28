@@ -110,3 +110,33 @@ div#sub-content {
     font: sans-serif;
     color: steelblue;
 }
+
+button.btn-sm{
+    margin-bottom: 1em;
+    margin-left: 1em;
+    padding: 0.5em;
+}
+
+.glyphicon-refresh-animate {
+   -webkit-animation-name: rotateThis;
+   -webkit-animation-duration: 2s;
+   -webkit-animation-iteration-count: infinite;
+   -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes "rotateThis" {
+ from {
+        -webkit-transform: rotate( 0deg );
+    }
+ to  {
+        -webkit-transform: rotate( 360deg );
+    }
+}
+
+td.details-control {
+    background: url("{% static 'resource/details_open.png' %}") no-repeat center center;
+    cursor: pointer;
+}
+tr.details td.details-control {
+    background: url("{% static 'resource/details_close.png' %}") no-repeat center center;
+}
