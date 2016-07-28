@@ -168,6 +168,7 @@ var Visualization = React.createClass({
 
           $(document).ready(function() {
             var table = $('#example').DataTable({
+              retrieve: true,
               ajax:{
                 url: events_per_day,
                 dataSrc: ''
@@ -179,11 +180,25 @@ var Visualization = React.createClass({
               ]
             });
             table.ajax.url( events_per_day ).load();
-          } );
 
-          ReactDOM.render(<EventsComponent url={events_per_day} pollInterval={60000}/>,
-            document.getElementById('eventComponent')
-                         );
+            $("#update-events").on( "click", function( event ){
+              var $glyphicon = $(this).find(".glyphicon.glyphicon-refresh"),
+                  animateClass = "glyphicon-refresh-animate";
+
+              $glyphicon.addClass( animateClass );
+              // Se establece el Timeout para indicar que sea asincrona
+              window.setTimeout( function(){
+                $glyphicon.removeClass( animateClass );
+                table.ajax.url( events_per_day ).load();
+              }, 2000 );
+
+            });
+
+            $('#update-events tbody tr td').on( 'click', function() {
+              console.log( this.data() );
+            });
+
+          } );
 
         },
         type: 'area-spline'
@@ -224,6 +239,9 @@ var VisualizationsComponent = React.createClass({
       success: function(data) {
         if (this.isMounted()){
           this.setState({data: data});
+        }
+        else{
+          ReactDOM.unmountComponentAtNode(document.getElementById('visualizationsComponent'));
         }
       }.bind(this),
       error: function(xhr, status, err){
