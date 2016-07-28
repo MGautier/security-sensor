@@ -1,3 +1,22 @@
+/* --- Extra functions --- */
+function format ( d ){
+  return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+    '<tr>'+
+    '<td>ID:</td>'+
+    '<td>'+d.id+'</td>'+
+    '</tr>'+
+    '<tr>'+
+    '<td>Timestamp:</td>'+
+    '<td>'+d.Local_Timestamp+'</td>'+
+    '</tr>'+
+    '<tr>'+
+    '<td>Comment:</td>'+
+    '<td>'+d.Comment+'</td>'+
+    '</tr>'+
+    '</table>';
+}
+/* ---                 --- */
+
 var Info = React.createClass({
   render: function() {
     return (
@@ -169,11 +188,18 @@ var Visualization = React.createClass({
           $(document).ready(function() {
             var table = $('#example').DataTable({
               retrieve: true,
+              order: [[1, 'asc']],
               ajax:{
                 url: events_per_day,
                 dataSrc: ''
               },
               columns: [
+                {
+                  className: 'details-control',
+                  data: 'id',
+                  render: "[, ]",
+                  defaulContent: null
+                },
                 { data: 'id' },
                 { data: 'Local_Timestamp' },
                 { data: 'Comment'}
@@ -194,6 +220,19 @@ var Visualization = React.createClass({
 
             });
 
+            $('#example tbody').on('click', 'td.details-control', function(){
+              var tr = $(this).closest('tr');
+              var row = table.row( tr );
+
+              if ( row.child.isShown() ){
+                row.child.hide();
+                tr.removeClass('shown');
+              }
+              else{
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+              }
+            })
             $('#update-events tbody tr td').on( 'click', function() {
               console.log( this.data() );
             });
