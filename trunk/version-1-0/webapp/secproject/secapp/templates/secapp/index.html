@@ -15,15 +15,18 @@
     </div>
 </div>
 
+<div id="update-events" style="display:none">
 <span style="margin-left:1em">Actualizar la tabla de eventos: </span>
-<button id="update-events" type="button" class="btn btn-default btn-sm">
+<button id="update-events-button" type="button" class="btn btn-default btn-sm">
     <span class="glyphicon glyphicon-refresh"></span>
 </button>
-
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+</div>
+<div class="row">
+    <div class="col-md-6">
+<table id="events-table" class="display" style="display:none" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th></th>
+                <th>Packet Info</th>
                 <th>ID-Events</th>
                 <th>Timestamp</th>
                 <th>Comment</th>
@@ -31,15 +34,15 @@
         </thead>
         <tfoot>
             <tr>
-                <th></th>
+                <th>Packet Info</th>
                 <th>ID-Events</th>
                 <th>Timestamp</th>
                 <th>Comment</th>
             </tr>
         </tfoot>
-
     </table>
-
+    </div>
+    </div>
 {% if latest_source_list %}
 <ul>
     {% for logsource in latest_source_list %}
