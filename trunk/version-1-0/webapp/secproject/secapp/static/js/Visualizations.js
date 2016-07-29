@@ -1,18 +1,15 @@
 /* --- Extra functions --- */
 function format ( d ){
-  return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-    '<tr>'+
-    '<td>ID:</td>'+
-    '<td>'+d.id+'</td>'+
-    '</tr>'+
-    '<tr>'+
-    '<td>Timestamp:</td>'+
-    '<td>'+d.Local_Timestamp+'</td>'+
-    '</tr>'+
-    '<tr>'+
-    '<td>Comment:</td>'+
-    '<td>'+d.Comment+'</td>'+
-    '</tr>'+
+  var rows = '';
+
+  d.Additional.forEach(function (item, index, array) {
+
+    var packet_information = '<tr><td>Tag:</td><td>'+item['Tag']+'</td><td>Description:</td><td>'+item['Description']+'</td><td>Value:</td><td>'+item['Value']+'</td></tr>';
+    rows = rows + packet_information;
+  });
+  console.log("ROW: ",rows);
+  return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width=100%>'+
+    rows+
     '</table>';
 }
 /* ---                 --- */
@@ -180,13 +177,18 @@ var Visualization = React.createClass({
           Events: 'Iptables Events'
         },
         onclick: function (d, element){
-          var events_per_day = "api/events/day/" + source + "/" + days[d.index];
+          var events_per_day = "api/packets/" + source + "/" + days[d.index];
 
           ReactDOM.unmountComponentAtNode(document.getElementById('eventComponent'));
           ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
 
           $(document).ready(function() {
-            var table = $('#example').DataTable({
+            var show_events_button = this.getElementById("update-events");
+            var show_events_table = this.getElementById("events-table");
+            show_events_button.style.display = "flex";
+            show_events_table.style.display = "table";
+
+            var table = $('#events-table').DataTable({
               retrieve: true,
               order: [[1, 'asc']],
               ajax:{
@@ -207,7 +209,7 @@ var Visualization = React.createClass({
             });
             table.ajax.url( events_per_day ).load();
 
-            $("#update-events").on( "click", function( event ){
+            $("#update-events-button").on( "click", function( event ){
               var $glyphicon = $(this).find(".glyphicon.glyphicon-refresh"),
                   animateClass = "glyphicon-refresh-animate";
 
@@ -220,7 +222,7 @@ var Visualization = React.createClass({
 
             });
 
-            $('#example tbody').on('click', 'td.details-control', function(){
+            $('#events-table tbody').on('click', 'td.details-control', function(){
               var tr = $(this).closest('tr');
               var row = table.row( tr );
 
@@ -233,9 +235,6 @@ var Visualization = React.createClass({
                 tr.addClass('shown');
               }
             })
-            $('#update-events tbody tr td').on( 'click', function() {
-              console.log( this.data() );
-            });
 
           } );
 
