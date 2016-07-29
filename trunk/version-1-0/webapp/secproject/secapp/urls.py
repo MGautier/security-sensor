@@ -45,6 +45,11 @@ urlpatterns = [
     url(r'^api/events/(?P<pk>[0-9]+)/additional$', views.EventsInformation().events_detail_additional,
         name='event_detail_additional'),
 
+    # Descripcion completa para un paquete de un evento en formato json
+
+    url(r'^api/packets/(?P<pk>[0-9]+)/(?P<year>[0-9][0-9][0-9][0-9]+)-(?P<month>[0-9][0-9]+)-(?P<day>[0-9][0-9]+)/$',
+        views.EventsInformation().packets, name='packets'),
+
     # Descripcion detallada de un evento en formato json
 
     url(r'^api/events/(?P<pk>[0-9]+)/json$', views.EventsInformation().event_detail, name='event_detail'),

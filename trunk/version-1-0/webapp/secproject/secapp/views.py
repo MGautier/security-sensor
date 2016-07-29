@@ -443,6 +443,73 @@ class EventsInformation(generics.RetrieveAPIView):
             return JSONResponse([result for result in list_additional_info])
 
     @csrf_exempt
+    def packets(self, request, pk, day, month, year):
+        """
+        Muestra toda la información del paquete de un evento almacenado en el sistema
+        Args:
+            request: Peticion http (normalmente GET)
+            pk: Identificador del evento del cual queremos obtener todo la informacion del paquete
+            day: Valor entero que representa al dia de la fecha y cuyo formato es [0-9][0-9]
+            month: Valor entero que representa al mes de la fecha y cuyo formato es [0-9][0-9]
+            year: Valor entero que representa al year de la fecha y cuyo formato es {4}[0-9]
+
+        Returns: JSON con la informacion del paquete completo del evento almacenado
+
+        """
+
+        events_list = []
+        packet_result = []
+
+        try:
+            events_list_in_day = Events.objects.filter(ID_Source=pk)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            for it in events_list_in_day:
+                if timezone.localtime(it.Timestamp).year == int(year) and \
+                                timezone.localtime(it.Timestamp).month == int(month) and \
+                                timezone.localtime(it.Timestamp).day == int(day):
+                    events_list.append(it)
+
+            serializer = EventsSerializer(events_list, many=True)
+
+        try:
+            event = Events.objects.get(pk=pk)
+            packet_event = PacketEventsInformation.objects.get(id=event)
+            packet_event_additional = PacketAdditionalInfo.objects.filter(ID_Packet_Events=packet_event)
+
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+        except PacketEventsInformation.DoesNotExist:
+            return HttpResponse(status=404)
+        except PacketAdditionalInfo.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            list_additional_info = []
+            for it in packet_event_additional:
+                fields = str(it).split('-')
+                info = {"Tag": fields[0], "Description": fields[1], "Value": fields[2]}
+                list_additional_info.append(info)
+
+            for it in serializer.data:
+                packet = {
+                    "id": it['id'],
+                    "Local_Timestamp": it['Local_Timestamp'],
+                    "Timestamp": it['Timestamp'],
+                    "Timestamp_Insertion": it['Timestamp_Insertion'],
+                    "Comment": it['Comment'],
+                    "ID_Source": it['ID_Source'],
+                    "Additional": list_additional_info
+                }
+                packet_result.append(packet)
+
+            return JSONResponse([result for result in packet_result])
+
+    @csrf_exempt
     def events_list(self, request):
         """
         Lista todos los eventos de la bd en formato JSON.
