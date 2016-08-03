@@ -9,6 +9,7 @@ from .models import LogSources, Events, PacketEventsInformation, PacketAdditiona
 from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
+import itertools
 from types import *
 
 
@@ -475,25 +476,7 @@ class EventsInformation(generics.RetrieveAPIView):
 
             serializer = EventsSerializer(events_list, many=True)
 
-        try:
-            event = Events.objects.get(pk=pk)
-            packet_event = PacketEventsInformation.objects.get(id=event)
-            packet_event_additional = PacketAdditionalInfo.objects.filter(ID_Packet_Events=packet_event)
-
-        except Events.DoesNotExist:
-            return HttpResponse(status=404)
-        except PacketEventsInformation.DoesNotExist:
-            return HttpResponse(status=404)
-        except PacketAdditionalInfo.DoesNotExist:
-            return HttpResponse(status=404)
-
         if request.method == 'GET':
-
-            list_additional_info = []
-            for it in packet_event_additional:
-                fields = str(it).split('-')
-                info = {"Tag": fields[0], "Description": fields[1], "Value": fields[2]}
-                list_additional_info.append(info)
 
             for it in serializer.data:
                 packet = {
@@ -502,9 +485,30 @@ class EventsInformation(generics.RetrieveAPIView):
                     "Timestamp": it['Timestamp'],
                     "Timestamp_Insertion": it['Timestamp_Insertion'],
                     "Comment": it['Comment'],
-                    "ID_Source": it['ID_Source'],
-                    "Additional": list_additional_info
+                    "ID_Source": it['ID_Source']
                 }
+
+                try:
+                    event = Events.objects.get(pk=it['id'])
+                    packet_event = PacketEventsInformation.objects.filter(id=event)
+
+                    for it_packet_data in packet_event:
+                        packet['IP_Source'] = str(it_packet_data.ID_IP_Source)
+                        packet['IP_Destination'] = str(it_packet_data.ID_IP_Dest)
+                        packet['Port_Source'] = str(it_packet_data.ID_Source_Port)
+                        packet['Port_Destination'] = str(it_packet_data.ID_Dest_Port)
+                        packet['Protocol'] = str(it_packet_data.Protocol)
+                        packet['MAC_Source'] = str(it_packet_data.ID_Source_MAC)
+                        packet['MAC_Destination'] = str(it_packet_data.ID_Dest_MAC)
+                        packet['TAG'] = str(it_packet_data.TAG)
+
+                except Events.DoesNotExist:
+                    return HttpResponse(status=404)
+                except PacketEventsInformation.DoesNotExist:
+                    return HttpResponse(status=404)
+                except PacketAdditionalInfo.DoesNotExist:
+                    return HttpResponse(status=404)
+
                 packet_result.append(packet)
 
             return JSONResponse([result for result in packet_result])
