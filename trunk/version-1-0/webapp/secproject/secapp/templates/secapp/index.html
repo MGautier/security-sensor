@@ -4,43 +4,66 @@
 
 <div id="content"></div>
 <div id="chart"><svg></svg></div>
-<br/>
-<br/>
-<br/>
-<br/>
 <div class="row">
     <div id="sub-content">
         <div class="col-md-6" id="eventComponent"></div>
         <div class="col-md-6" id="infoComponent"></div>
     </div>
 </div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
-<div id="update-events" style="display:none">
-<span style="margin-left:1em">Actualizar la tabla de eventos: </span>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<div class="row">
+    <div class="col-md-2"></div>
+<div class="col-md-3" id="update-events" style="display:none">
+<span style="margin-left:1em">Update events table: </span>
 <button id="update-events-button" type="button" class="btn btn-default btn-sm">
     <span class="glyphicon glyphicon-refresh"></span>
 </button>
 </div>
+    <div class="col-md-7"></div>
+</div>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-7">
 <table id="events-table" class="display" style="display:none" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Packet Info</th>
-                <th>ID-Events</th>
+                <th>Packet</th>
+                <th>Event</th>
                 <th>Timestamp</th>
                 <th>Comment</th>
+                <th>SIP</th>
+                <th>DIP</th>
+                <th>SPort</th>
+                <th>DPort</th>
+                <th>Protocol</th>
+                <th>SMAC</th>
+                <th>DMAC</th>
+                <th>TAG</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>Packet Info</th>
-                <th>ID-Events</th>
+                <th>Packet</th>
+                <th>Event</th>
                 <th>Timestamp</th>
                 <th>Comment</th>
+                <th>SIP</th>
+                <th>DIP</th>
+                <th>SPort</th>
+                <th>DPort</th>
+                <th>Protocol</th>
+                <th>SMAC</th>
+                <th>DMAC</th>
+                <th>TAG</th>
             </tr>
         </tfoot>
     </table>
+    </div>
+    <div class="col-md-5">
+        <div id="seconds" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
     </div>
 {% if latest_source_list %}
