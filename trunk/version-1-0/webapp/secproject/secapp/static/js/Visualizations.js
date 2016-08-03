@@ -2,12 +2,12 @@
 function format ( d ){
   var rows = '';
 
-  d.Additional.forEach(function (item, index, array) {
+  d.forEach(function (item, index, array) {
 
-    var packet_information = '<tr><td>Tag:</td><td>'+item['Tag']+'</td><td>Description:</td><td>'+item['Description']+'</td><td>Value:</td><td>'+item['Value']+'</td></tr>';
+    var packet_information = '<tr><td><b>Tag</b>:</td><td>'+item['Tag']+'</td><td><b>Description</b>:</td><td>'+item['Description']+'</td><td><b>Value</b>:</td><td>'+item['Value']+'</td></tr>';
     rows = rows + packet_information;
   });
-  console.log("ROW: ",rows);
+
   return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width=100%>'+
     rows+
     '</table>';
@@ -178,7 +178,6 @@ var Visualization = React.createClass({
         },
         onclick: function (d, element){
           var events_per_day = "api/packets/" + source + "/" + days[d.index];
-
           ReactDOM.unmountComponentAtNode(document.getElementById('eventComponent'));
           ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
 
@@ -195,6 +194,9 @@ var Visualization = React.createClass({
                 url: events_per_day,
                 dataSrc: ''
               },
+              scrollY: "400px",
+              scrollX: true,
+              scrollCollapse: true,
               columns: [
                 {
                   className: 'details-control',
@@ -204,7 +206,16 @@ var Visualization = React.createClass({
                 },
                 { data: 'id' },
                 { data: 'Local_Timestamp' },
-                { data: 'Comment'}
+                { data: 'Comment' },
+                { data: 'IP_Source' },
+                { data: 'IP_Destination' },
+                { data: 'Port_Source' },
+                { data: 'Port_Destination' },
+                { data: 'Protocol' },
+                { data: 'MAC_Source' },
+                { data: 'MAC_Destination' },
+                { data: 'TAG' }
+
               ]
             });
             table.ajax.url( events_per_day ).load();
@@ -225,16 +236,27 @@ var Visualization = React.createClass({
             $('#events-table tbody').on('click', 'td.details-control', function(){
               var tr = $(this).closest('tr');
               var row = table.row( tr );
+              var additional_info;
+              $.ajax({
+                url: "api/events/"+row.data().id+"/additional",
+                dataType: 'json',
+                cache: false,
+                success: function(data) {
+                  if ( row.child.isShown() ){
+                    row.child.hide();
+                    tr.removeClass('shown');
+                  }
+                  else{
+                    row.child( format(data) ).show();
+                    tr.addClass('shown');
+                  }
+                }.bind(this),
+                error: function(xhr, status, err){
+                  console.error(this.props.url, status, err.toString());
+                }.bind(this)
+              });
 
-              if ( row.child.isShown() ){
-                row.child.hide();
-                tr.removeClass('shown');
-              }
-              else{
-                row.child( format(row.data()) ).show();
-                tr.addClass('shown');
-              }
-            })
+            });
 
           } );
 
