@@ -164,13 +164,18 @@ class VisualizationsInformation(generics.RetrieveAPIView):
                 if serializer.data:
                     for it_list in serializer.data:
                         try:
+                            dt = datetime.strptime(it_list['Date'], "%Y-%m-%d")
 
-                            if events_per_day['Day'] == it_list['Name_Day']:
+                            if events_per_day['Day'] == dt.day:
                                 events_sum = it_list['Process_Events'] + events_per_day['Events']
+
                                 events_per_day = {
                                     "Events": events_sum,
-                                    "Day": it_list['Name_Day'],
+                                    "Name_Day": it_list['Name_Day'],
                                     "Date": it_list['Date'],
+                                    "Day": dt.day,
+                                    "Month": dt.month,
+                                    "Year": dt.year,
                                     "ID_Source": it_list['ID_Source'],
                                     "id": it_list['id']
                                 }
@@ -188,16 +193,22 @@ class VisualizationsInformation(generics.RetrieveAPIView):
 
                                     events_per_day = {
                                         "Events": it_list['Process_Events'],
-                                        "Day": it_list['Name_Day'],
+                                        "Name_Day": it_list['Name_Day'],
                                         "Date": it_list['Date'],
+                                        "Day": dt.day,
+                                        "Month": dt.month,
+                                        "Year": dt.year,
                                         "ID_Source": it_list['ID_Source'],
                                         "id": it_list['id']
                                     }
                         except KeyError:
                             events_per_day = {
                                 "Events": it_list['Process_Events'],
-                                "Day": it_list['Name_Day'],
+                                "Name_Day": it_list['Name_Day'],
                                 "Date": it_list['Date'],
+                                "Day": dt.day,
+                                "Month": dt.month,
+                                "Year": dt.year,
                                 "ID_Source": it_list['ID_Source'],
                                 "id": it_list['id']
                             }

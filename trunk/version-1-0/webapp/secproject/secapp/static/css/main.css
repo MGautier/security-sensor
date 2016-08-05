@@ -1,18 +1,18 @@
 html {
     font-family: Signika, serif;
-    background: url("http://www.highcharts.com/samples/graphics/sand.png");
+    background: url('../resources/sand.png');
 }
 
 div {
     font-family: Signika, serif;
-    background: url("http://www.highcharts.com/samples/graphics/sand.png");
+    background: url('../resources/sand.png');
 }
 
 h1, h2, h3 {
     color: steelblue;
     text-align: center;
     font-family: Signika, serif;
-    background: url("http://www.highcharts.com/samples/graphics/sand.png");
+    background: url('../resources/sand.png');
 }
 
 .chart rect {
@@ -24,7 +24,7 @@ h1, h2, h3 {
   font: 10px;
   text-anchor: end;
   font-family: Signika, serif;
-  background: url("http://www.highcharts.com/samples/graphics/sand.png");
+  background: url('../resources/sand.png');
 }
 
 .bar {

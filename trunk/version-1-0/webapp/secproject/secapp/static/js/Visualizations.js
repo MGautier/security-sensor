@@ -14,274 +14,13 @@ function format ( d ){
 }
 /* ---                 --- */
 
-var Info = React.createClass({
-  render: function() {
-    return (
-        <div className="info">
-        <p>Tag: {this.props.data.Tag} Value: {this.props.data.Value} Description: {this.props.data.Description}</p>
-        </div>
-    );
-  }
-});
-
-var InfoComponent = React.createClass({
-  loadInfoFromServer: function(){
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: true,
-      success: function(data) {
-        if(this.isMounted())
-        {
-          this.setState({data: data});
-
-        }
-      }.bind(this),
-      error: function(xhr, status, err){
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function(){
-    return {data: []};
-  },
-  componentDidMount: function(){
-    this.loadInfoFromServer();
-    setInterval(this.loadInfoFromServer, this.props.pollInterval);
-  },
-  render: function(){
-    return (
-        <div className="infoComponent">
-        <h1>Info</h1>
-        <p>ID: {this.props.data.id}</p>
-        <InfoList key={this.props.id} data={this.state.data}/>
-        </div>
-    );
-  }
-});
-
-var InfoList = React.createClass({
-  render: function(){
-    var infoNodes = this.props.data.map(function(event){
-      return (
-          <li><Info key={event.id} data={event} /></li>
-      );
-    });
-    return (
-        <div className="infoList">
-        <ol>
-        {infoNodes}
-      </ol>
-        </div>
-    );
-  }
-});
-
-var Event = React.createClass({
-  handleClick: function(event){
-    console.log("ON CLICK");
-    console.log("Timestamp: ", this.props.data.Local_Timestamp);
-    console.log("ID: ", this.props.data.id);
-    var additional_info = "api/events/" + this.props.data.id + "/additional";
-
-    ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
-    ReactDOM.render(
-        <InfoComponent url={additional_info} data={this.props.data} pollInterval={60000} />,
-      document.getElementById('infoComponent')
-    );
+function grafica(array){
 
 
-  },
-  render: function() {
-    return (
-        <div className="event">
-        <a onClick={this.handleClick}><u><p className="event-description"> ID-Event: {this.props.data.id} - Timestamp: {this.props.data.Local_Timestamp} - Comment: {this.props.data.Comment} </p></u></a>
-        </div>
-    );
-  }
-});
-
-var EventsComponent = React.createClass({
-  loadEventsFromServer: function(){
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: true,
-      success: function(data) {
-        console.log("IS-MOUNTED: ", this.isMounted());
-        if(this.isMounted())
-        {
-          console.log("HERE");
-          this.setState({data: data});
-
-        }
-      }.bind(this),
-      error: function(xhr, status, err){
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function(){
-    return {data: []};
-  },
-  componentDidMount: function(){
-    this.loadEventsFromServer();
-    setInterval(this.loadEventsFromServer, this.props.pollInterval);
-  },
-  render: function(){
-    return (
-        <div className="eventsComponent">
-        <h1>Events</h1>
-        <EventsList key={this.props.id} data={this.state.data}/>
-        </div>
-    );
-  }
-});
-
-var EventsList = React.createClass({
-  render: function(){
-    var eventNodes = this.props.data.map(function(event){
-      return (
-          <li><div><Event key={event.id} data={event} /></div></li>
-      );
-    });
-    return (
-        <div className="eventsList">
-        <ol className="rectangle-list">
-        {eventNodes}
-        </ol>
-        </div>
-    );
-  }
-});
 
 
-var Visualization = React.createClass({
-  componentDidMount: function() {
-    var days = Array.from(this.props.set);
-    var source = this.props.data.ID_Source;
-    var auxiliar_d;
-    var auxiliar_element;
-    c3.generate({
-      data: {
-        url: 'api/visualizations/1/chart_all.json/',
-        mimeType: 'json',
-        selection: {
-          enabled: true
-        },
-        keys: {
-          x: 'Date',
-          value: ['Events']
-        },
-        names: {
-          Events: 'Iptables Events'
-        },
-        onclick: function (d, element){
-          var events_per_day = "api/packets/" + source + "/" + days[d.index];
-          ReactDOM.unmountComponentAtNode(document.getElementById('eventComponent'));
-          ReactDOM.unmountComponentAtNode(document.getElementById('infoComponent'));
 
-          $(document).ready(function() {
-            var show_events_button = this.getElementById("update-events");
-            var show_events_table = this.getElementById("events-table");
-            show_events_button.style.display = "flex";
-            show_events_table.style.display = "table";
-
-            var table = $('#events-table').DataTable({
-              retrieve: true,
-              order: [[1, 'asc']],
-              ajax:{
-                url: events_per_day,
-                dataSrc: ''
-              },
-              scrollY: "400px",
-              scrollX: true,
-              scrollCollapse: true,
-              columns: [
-                {
-                  className: 'details-control',
-                  data: 'id',
-                  render: "[, ]",
-                  defaulContent: null
-                },
-                { data: 'id' },
-                { data: 'Local_Timestamp' },
-                { data: 'Comment' },
-                { data: 'IP_Source' },
-                { data: 'IP_Destination' },
-                { data: 'Port_Source' },
-                { data: 'Port_Destination' },
-                { data: 'Protocol' },
-                { data: 'MAC_Source' },
-                { data: 'MAC_Destination' },
-                { data: 'TAG' }
-
-              ]
-            });
-            table.ajax.url( events_per_day ).load();
-
-            $("#update-events-button").on( "click", function( event ){
-              var $glyphicon = $(this).find(".glyphicon.glyphicon-refresh"),
-                  animateClass = "glyphicon-refresh-animate";
-
-              $glyphicon.addClass( animateClass );
-              // Se establece el Timeout para indicar que sea asincrona
-              window.setTimeout( function(){
-                $glyphicon.removeClass( animateClass );
-                table.ajax.url( events_per_day ).load();
-              }, 2000 );
-
-            });
-
-            $('#events-table tbody').on('click', 'td.details-control', function(){
-              var tr = $(this).closest('tr');
-              var row = table.row( tr );
-              var additional_info;
-              $.ajax({
-                url: "api/events/"+row.data().id+"/additional",
-                dataType: 'json',
-                cache: false,
-                success: function(data) {
-                  if ( row.child.isShown() ){
-                    row.child.hide();
-                    tr.removeClass('shown');
-                  }
-                  else{
-                    row.child( format(data) ).show();
-                    tr.addClass('shown');
-                  }
-                }.bind(this),
-                error: function(xhr, status, err){
-                  console.error(this.props.url, status, err.toString());
-                }.bind(this)
-              });
-
-            });
-
-          } );
-
-        },
-        type: 'area-spline'
-      },
-      subchart: {
-        show: true
-      },
-      axis: {
-        x: {
-          type: 'category',
-          tick: {
-            rotate: -80,
-            multiline: false
-          },
-          height: 68
-        }
-      }
-    });
-  },
-  render: function() {
-    return(<div className="c3-chart"></div>);
-  }
-});
+}
 
 var VisualizationsComponent = React.createClass({
   getInitialState: function(){
@@ -299,10 +38,303 @@ var VisualizationsComponent = React.createClass({
       success: function(data) {
         if (this.isMounted()){
           this.setState({data: data});
+          var ajax_data = this.state.data;
+          var chart_data = []; // [Timestamp, Events, index, ID_Source, Date(YYYY-MM-DD)]
+          var index_chart_data = []; // [Timestamp] - Usado para indexar la posicion de la abscisa (x)
+          var normalize_char_data = []; // [Timestamp, Events]
+          var it = 0;
+          ajax_data.forEach(function (item, index, list) {
+            chart_data.push([Date.UTC(item.Year,item.Month-1,item.Day),item.Events,it,item.ID_Source,item.Date]);
+            index_chart_data.push(Date.UTC(item.Year,item.Month-1,item.Day));
+            normalize_char_data.push([Date.UTC(item.Year,item.Month-1,item.Day),item.Events]);
+            it++;
+          });
+
+          $(document).ready(function () {
+
+            /**
+             * Sand-Signika theme for Highcharts JS
+             * @author Torstein Honsi
+             */
+
+            // Load the fonts
+            Highcharts.createElement('link', {
+              href: 'https://fonts.googleapis.com/css?family=Signika:400,700',
+              rel: 'stylesheet',
+              type: 'text/css'
+            }, null, document.getElementsByTagName('head')[0]);
+
+            // Add the background image to the container
+            Highcharts.wrap(Highcharts.Chart.prototype, 'getContainer', function (proceed) {
+              proceed.call(this);
+            });
+
+
+            Highcharts.theme = {
+              colors: ["#f45b5b", "#8085e9", "#8d4654", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+                       "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+              chart: {
+                backgroundColor: null,
+                style: {
+                  fontFamily: "Signika, serif"
+                }
+              },
+              title: {
+                style: {
+                  color: 'black',
+                  fontSize: '16px',
+                  fontWeight: 'bold'
+                }
+              },
+              subtitle: {
+                style: {
+                  color: 'black'
+                }
+              },
+              tooltip: {
+                borderWidth: 0
+              },
+              legend: {
+                itemStyle: {
+                  fontWeight: 'bold',
+                  fontSize: '13px'
+                }
+              },
+              xAxis: {
+                labels: {
+                  style: {
+                    color: '#6e6e70'
+                  }
+                }
+              },
+              yAxis: {
+                labels: {
+                  style: {
+                    color: '#6e6e70'
+                  }
+                }
+              },
+              plotOptions: {
+                series: {
+                  shadow: true
+                },
+                candlestick: {
+                  lineColor: '#404048'
+                },
+                map: {
+                  shadow: false
+                }
+              },
+
+              // Highstock specific
+              navigator: {
+                xAxis: {
+                  gridLineColor: '#D0D0D8'
+                }
+              },
+              rangeSelector: {
+                buttonTheme: {
+                  fill: 'white',
+                  stroke: '#C0C0C8',
+                  'stroke-width': 1,
+                  states: {
+                    select: {
+                      fill: '#D0D0D8'
+                    }
+                  }
+                }
+              },
+              scrollbar: {
+                trackBorderColor: '#C0C0C8'
+              },
+
+              // General
+              background2: '#E0E0E8'
+
+            };
+
+            // Apply the theme
+            Highcharts.setOptions(Highcharts.theme);
+
+            $('#container').highcharts({
+              chart: {
+                zoomType: 'x',
+                plotShadow: true
+              },
+              title: {
+                text: 'Events processing by source'
+              },
+              subtitle: {
+                text: document.ontouchstart === undefined ?
+                  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+              },
+              xAxis: {
+                type: 'datetime'
+              },
+              yAxis: {
+                title: {
+                  text: 'Events'
+                }
+              },
+              legend: {
+                enabled: true,
+                align: 'right',
+                layout: 'vertical',
+                verticalAlign: 'middle',
+                borderWidth: 0
+              },
+              plotOptions: {
+                area: {
+                  fillColor: {
+                    linearGradient: {
+                      x1: 0,
+                      y1: 0,
+                      x2: 0,
+                      y2: 1
+                    },
+                    stops: [
+                      [0, Highcharts.getOptions().colors[0]],
+                      [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                  },
+                  marker: {
+                    radius: 2
+                  },
+                  lineWidth: 1,
+                  states: {
+                    hover: {
+                      lineWidth: 1
+                    }
+                  },
+                  threshold: null
+                },
+                series: {
+                  allowPointSelect: true
+                }
+              },
+              series: [
+                {
+                  name: 'Events iptables',
+                  data: normalize_char_data,
+                  point: {
+                    events: {
+                      select: function(event)
+                      {
+                        var index = index_chart_data.indexOf(this.x);
+
+                        var events_per_day = "api/packets/"+chart_data[index][3]+"/"+chart_data[index][4];
+
+                        $(document).ready(function() {
+                          var show_events_button = this.getElementById("update-events");
+                          var show_events_table = this.getElementById("events-table");
+                          show_events_button.style.display = "none";
+                          show_events_table.style.display = "none";
+
+                          show_events_button.style.display = "flex";
+                          show_events_table.style.display = "table";
+
+                          var table = $('#events-table').DataTable({
+                            retrieve: true,
+                            order: [[1, 'asc']],
+                            ajax:{
+                              url: events_per_day,
+                              dataSrc: ''
+                            },
+                            scrollY: "400px",
+                            scrollX: true,
+                            scrollCollapse: true,
+                            columns: [
+                              {
+                                className: "details-control",
+                                data: 'id',
+                                render: "[, ]",
+                                defaulContent: null
+                              },
+                              { data: 'id' },
+                              { data: 'Local_Timestamp' },
+                              { data: 'Comment' },
+                              { data: 'IP_Source' },
+                              { data: 'IP_Destination' },
+                              { data: 'Port_Source' },
+                              { data: 'Port_Destination' },
+                              { data: 'Protocol' },
+                              { data: 'MAC_Source' },
+                              { data: 'MAC_Destination' },
+                              { data: 'TAG' }
+
+                            ]
+                          });
+                          table.ajax.url( events_per_day ).load();
+
+                          $("#update-events-button").on( "click", function( event ){
+                            var $glyphicon = $(this).find(".glyphicon.glyphicon-refresh"),
+                                animateClass = "glyphicon-refresh-animate";
+
+                            $glyphicon.addClass( animateClass );
+                            // Se establece el Timeout para indicar que sea asincrona
+                            window.setTimeout( function(){
+                              $glyphicon.removeClass( animateClass );
+                              table.ajax.url( events_per_day ).load();
+                            }, 2000 );
+
+                          });
+
+
+                          $('#events-table tbody').on('click', 'tr td.details-control', function(){
+                            var tr = $(this).closest('tr');
+                            var row = table.row( tr );
+                            $.ajax({
+                              url: "api/events/"+row.data().id+"/additional",
+                              dataType: 'json',
+                              cache: false,
+                              success: function(data) {
+                                tr.addClass('shown');
+                                row.child( format(data) ).show();
+                              }.bind(this),
+                              error: function(xhr, status, err){
+                                console.error(this.props.url, status, err.toString());
+                              }.bind(this)
+                            });
+
+                          });
+                          $('#events-table tbody').on('dblclick', 'tr td.details-control', function(){
+                            var tr = $(this).closest('tr');
+                            var row = table.row( tr );
+                            $.ajax({
+                              url: "api/events/"+row.data().id+"/additional",
+                              dataType: 'json',
+                              cache: false,
+                              success: function(data) {
+                                tr.removeClass('shown');
+                                row.child.hide();
+                              }.bind(this),
+                              error: function(xhr, status, err){
+                                console.error(this.props.url, status, err.toString());
+                              }.bind(this)
+                            });
+
+                          });
+
+                        } );
+
+                      },
+                      unselect: function(event) {
+                        var p = this.series.chart.getSelectedPoints();
+
+                        if(p.length > 0 && p[0].x == this.x) {
+                          console.log('point unselected');
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            });
+          });
         }
-        else{
+        /*else{
           ReactDOM.unmountComponentAtNode(document.getElementById('visualizationsComponent'));
-        }
+        }*/
       }.bind(this),
       error: function(xhr, status, err){
         console.error(this.props.url, status, err.toString());
@@ -314,11 +346,9 @@ var VisualizationsComponent = React.createClass({
   },
   render: function(){
     console.log("render");
-    var testStyle = { fontSize: '18px', marginRight: '20px' };
     return (
-        <div className="visualizationsComponent" style={testStyle}>
+        <div className="visualizationsComponent">
         <h1>Visualizations</h1>
-        <VisualizationsList data={this.state.data} key={this.state.id}/>
         </div>
     );
   },
@@ -353,25 +383,6 @@ var VisualizationsComponent = React.createClass({
   }
 
 });
-
-var VisualizationsList = React.createClass({
-  render: function(){
-    var my_set = new Set();
-    var visualizationNodes = this.props.data.map(function(visualization){
-      return (
-        my_set.add(visualization.Date),
-          <Visualization data={visualization} set={my_set} key={visualization.id}/>
-      );
-    });
-    return (
-        <div className="visualizationsList">
-        {visualizationNodes}
-        </div>
-    );
-  }
-});
-
-
 
 ReactDOM.render(
     <VisualizationsComponent url="api/visualizations/1/chart_all/" pollInterval={60000} />,
