@@ -592,13 +592,13 @@ class EventsInformation(generics.RetrieveAPIView):
                         day = it.Timestamp.strftime("%Y-%m-%d")
                         events_in_hour = 0
                         try:
-                            events_in_hour = events_per_hour[hour]
+                            events_in_hour = events_per_hour['Events']
                         except KeyError:
                             if events_per_hour:
                                 list_events_in_hour.append(events_per_hour)
-                            events_per_hour = {hour: 0, "day": day}
+                            events_per_hour = {"Events": 0, "Day": day, "Hour": hour}
 
-                        events_per_hour[hour] = events_in_hour + 1
+                        events_per_hour['Events'] = events_in_hour + 1
 
             list_events_in_hour.append(events_per_hour)
 
