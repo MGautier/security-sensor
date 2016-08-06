@@ -14,14 +14,6 @@ function format ( d ){
 }
 /* ---                 --- */
 
-function grafica(array){
-
-
-
-
-
-}
-
 var VisualizationsComponent = React.createClass({
   getInitialState: function(){
     console.log("InitialState");
