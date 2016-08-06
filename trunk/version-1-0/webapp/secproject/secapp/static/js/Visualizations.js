@@ -324,9 +324,6 @@ var VisualizationsComponent = React.createClass({
             });
           });
         }
-        /*else{
-          ReactDOM.unmountComponentAtNode(document.getElementById('visualizationsComponent'));
-        }*/
       }.bind(this),
       error: function(xhr, status, err){
         console.error(this.props.url, status, err.toString());
@@ -377,6 +374,7 @@ var VisualizationsComponent = React.createClass({
 });
 
 ReactDOM.render(
-    <VisualizationsComponent url="api/visualizations/1/chart_all/" pollInterval={60000} />,
+    <VisualizationsComponent url="api/visualizations/1/chart_all/" pollInterval={90000} />,
   document.getElementById('content')
 );
+// 90000 -> 2 min 30 sec
