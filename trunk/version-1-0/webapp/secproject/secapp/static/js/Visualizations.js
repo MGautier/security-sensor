@@ -16,11 +16,11 @@ function format ( d ){
 
 var VisualizationsComponent = React.createClass({
   getInitialState: function(){
-    console.log("InitialState");
+    //console.log("InitialState");
     return {data: [], mounted: true};
   },
   getDefaultProps: function(){
-    console.log("DefaultProps", this.props);
+    //console.log("DefaultProps", this.props);
   },
   loadVisualizationsFromServer: function(){
     $.ajax({
@@ -314,7 +314,7 @@ var VisualizationsComponent = React.createClass({
                         var p = this.series.chart.getSelectedPoints();
 
                         if(p.length > 0 && p[0].x == this.x) {
-                          console.log('point unselected');
+                          //console.log('point unselected');
                         }
                       }
                     }
@@ -331,10 +331,10 @@ var VisualizationsComponent = React.createClass({
     });
   },
   update: function(){
-    console.log("update");
+    //console.log("update");
   },
   render: function(){
-    console.log("render");
+    //console.log("render");
     return (
         <div className="visualizationsComponent">
         <h1>Visualizations</h1>
@@ -342,33 +342,32 @@ var VisualizationsComponent = React.createClass({
     );
   },
   componentWillMount: function() {
-    console.log("WillMount");
+    //console.log("WillMount");
   },
   componentDidMount: function(){
-    console.log("DidMount");
+    //console.log("DidMount");
     this.loadVisualizationsFromServer();
     setInterval(this.loadVisualizationsFromServer, this.props.pollInterval);
   },
   shouldComponentUpdate: function(nextProps, nextState){
-    console.log("shouldComponentUpdate", nextProps);
-    console.log("shouldComponentUpdate2", nextState);
+    //console.log("shouldComponentUpdate", nextProps);
+    //console.log("shouldComponentUpdate2", nextState);
     return true;
   },
   componentWillReceieveProps: function(nextProps){
-    console.log("willReceiveProps: ", nextProps);
+    //console.log("willReceiveProps: ", nextProps);
   },
   componentWillUpdate: function(nextProps, nextState){
-    console.log("willUpdate", nextProps);
-    console.log("willUpdate2", nextState);
+    //console.log("willUpdate", nextProps);
+    //console.log("willUpdate2", nextState);
     //this.unmountComponentAtNode(document.getElementById('content'));
-
   },
   componentDidUpdate: function(prevProps, prevState){
-    console.log("DidUpdate", prevProps);
-    console.log("DidUpdate2", prevState);
+    //console.log("DidUpdate", prevProps);
+    //console.log("DidUpdate2", prevState);
   },
   componentWillUnmount: function(){
-    console.log("WillUnmount");
+    //console.log("WillUnmount");
   }
 
 });

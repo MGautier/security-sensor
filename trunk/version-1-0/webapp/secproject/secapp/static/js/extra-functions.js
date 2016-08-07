@@ -1,7 +1,85 @@
-var hola = 1;
-
 $(function () {
+
+  var ajax_data = [];
+  var SecondsComponent = React.createClass({
+    getInitialState: function(){
+      //console.log("InitialState");
+      return {data: [], mounted: true};
+    },
+    getDefaultProps: function(){
+      //console.log("DefaultProps", this.props);
+    },
+    loadSecondsFromServer: function(){
+      $.ajax({
+        url: this.props.url,
+        dataType: 'json',
+        cache: false,
+        success: function(data) {
+          if (this.isMounted())
+          {
+            this.setState({data: data});
+            ajax_data = this.state.data;
+          }
+
+        }.bind(this),
+        error: function(xhr, status, err){
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
+    },
+    update: function(){
+      //console.log("update");
+    },
+    render: function(){
+      //console.log("render");
+      return (
+          <div>
+          </div>
+      );
+    },
+    componentWillMount: function() {
+      //console.log("WillMount");
+    },
+    componentDidMount: function(){
+      //console.log("DidMount");
+      this.loadSecondsFromServer();
+      setInterval(this.loadSecondsFromServer, this.props.pollInterval);
+    },
+    shouldComponentUpdate: function(nextProps, nextState){
+      //console.log("shouldComponentUpdate", nextProps);
+      //console.log("shouldComponentUpdate2", nextState);
+      return true;
+    },
+    componentWillReceieveProps: function(nextProps){
+      //console.log("willReceiveProps: ", nextProps);
+    },
+    componentWillUpdate: function(nextProps, nextState){
+      //console.log("willUpdate", nextProps);
+      //console.log("willUpdate2", nextState);
+      //this.unmountComponentAtNode(document.getElementById('content'));
+    },
+    componentDidUpdate: function(prevProps, prevState){
+      //console.log("DidUpdate", prevProps);
+      //console.log("DidUpdate2", prevState);
+    },
+    componentWillUnmount: function(){
+      //console.log("WillUnmount");
+    }
+
+  });
+
+  ReactDOM.render(
+      <SecondsComponent url="api/events/hour/1" pollInterval={2500} />,
+    document.getElementById('seconds')
+  );
+
   $(document).ready(function () {
+
+    /**
+     * Sand-Signika theme for Highcharts JS
+     * @author Torstein Honsi
+     */
+
     // Load the fonts
     Highcharts.createElement('link', {
       href: 'https://fonts.googleapis.com/css?family=Signika:400,700',
@@ -16,9 +94,6 @@ $(function () {
 
 
     Highcharts.theme = {
-      global: {
-        useUTC: false
-      },
       colors: ["#f45b5b", "#8085e9", "#8d4654", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
                "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
       chart: {
@@ -26,6 +101,9 @@ $(function () {
         style: {
           fontFamily: "Signika, serif"
         }
+      },
+      global: {
+        useUTC: false
       },
       title: {
         style: {
@@ -111,33 +189,20 @@ $(function () {
         marginRight: 10,
         events: {
           load: function () {
+            // set up the updating of the chart each second
 
-            // set up the updating of the chart each 2,5 seconds
             var series = this.series[0];
-            var ajax_data = 0;
-            $.ajax({
-              url: "api/events/hour/1",
-              dataType: 'json',
-              cache: false,
-              success: function(data) {
-                ajax_data = data[0].Events;
-              }.bind(this),
-              error: function(xhr, status, err){
-                console.error(this.props.url, status, err.toString());
-              }.bind(this)
-            });
             setInterval(function () {
               var x = (new Date()).getTime(), // current time
-                  y = ajax_data;
-              console.log("Y: ",y);
-              console.log("RANDOM");
+                  y = ajax_data[0].Events;
+
               series.addPoint([x, y], true, true);
             }, 2500);
           }
         }
       },
       title: {
-        text: 'Events on live'
+        text: 'Live Events Iptables'
       },
       xAxis: {
         type: 'datetime',
@@ -145,7 +210,7 @@ $(function () {
       },
       yAxis: {
         title: {
-          text: 'Events'
+          text: 'Value'
         },
         plotLines: [{
           value: 0,
@@ -170,21 +235,16 @@ $(function () {
         enabled: false
       },
       series: [{
-        name: 'Events Iptables'+hola,
+        name: 'Events Iptables',
         data: (function () {
-          // generate an array of random data previous load
-          // events
-          // este array de datos se muestra previo a la carga
-          // de información por parte del setInterval de arriba
-
-          console.log("DATA RANDOM");
+          // generate an array of random data
           var data = [],
               time = (new Date()).getTime(),
               i;
 
           for (i = -19; i <= 0; i += 1) {
             data.push({
-              x: time + i * 2500,
+              x: time + i * 1000,
               y: Math.random()
             });
           }
