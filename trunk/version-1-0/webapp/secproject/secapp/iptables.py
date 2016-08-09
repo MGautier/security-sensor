@@ -168,8 +168,6 @@ class Iptables(source.Source):
 
         register = {}  # Diccionario con los valores del log iptables
 
-
-
         try:
 
             # timestamp tendrá cómo year el valor 1990 ya que el log no proporciona dicho valor y este lo toma
