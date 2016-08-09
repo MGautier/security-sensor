@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Ips, LogSources, Events, Ports, Tags, Macs, PacketAdditionalInfo, PacketEventsInformation, Tcp, Udp
-from .models import Visualizations
+from .models import Visualizations, Historic
 
 # Aqui se registran los modelos de interaccion de la base de datos con los que vamos a trabajar en la aplicacion.
 
@@ -19,3 +19,4 @@ admin.site.register(PacketEventsInformation)
 admin.site.register(Tcp)
 admin.site.register(Udp)
 admin.site.register(Visualizations)
+admin.site.register(Historic)

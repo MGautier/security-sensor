@@ -32,6 +32,17 @@ class LogSources(models.Model):
         return '%s %s ' % (self.Type, self.Description)
 
 
+# Clase que alberga el historico de eventos totales de la hora actual
+
+class Historic(models.Model):
+    ID_Source = models.ForeignKey(LogSources, on_delete=models.CASCADE)
+    Timestamp = models.DateTimeField('Log Process date')
+    Events = models.IntegerField('Events stored in the system at that timestamp')
+
+    def __str__(self):
+        return '%s-%s' % (timezone.localtime(self.Timestamp), self.Events)
+
+
 # Clase que alberga los campos de los eventos (lineas de log) de una fuente (source) de seguridad procesada
 
 class Events(models.Model):
