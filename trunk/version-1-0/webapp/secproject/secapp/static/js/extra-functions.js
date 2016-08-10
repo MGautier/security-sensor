@@ -192,45 +192,41 @@ $(function () {
             // set up the updating of the chart each second
 
             var series = this.series[0];
+            var y, previous_y = 0;
 
-            setTimeout(function(){
               setInterval(function () {
                 var x = (new Date()).getTime(); // current time
 
-                var y;
+
                 if ( ajax_data.length == 0 )
                 {
                   y = 0;
                 }else{
-                  y = ajax_data[0].Events;
+                  if (ajax_data[0].Events == previous_y)
+                  {
+                    y = 0;
+                  }else{
+                    previous_y = y;
+                    y = ajax_data[0].Events;
+                  }
+
                 }
 
                 series.addPoint([x, y], true, true);
-                series.show();
 
               }, 2700);
 
-              series.setData(
-                (function () {
-                  // generate an array of random data
-                  var data = [],
-                      time = (new Date()).getTime(),
-                      i;
-                  for (i = -19; i <= 0; i += 1) {
-                    data.push({
-                      x: time + i * 1000,
-                      y: Math.random()
-                    });
-                    console.log("X: ", time + i * 1000);
-                    console.log("Y: ", Math.random());
+            var data = [],
+                time = (new Date()).getTime(),
+                i;
+            for (i = -5; i <= 0; i += 1) {
+              data.push({
+                x: time + i * 1000,
+                y: 0
+              });
+            }
 
-                  }
-
-                  return data;
-                }())
-              );
-
-            }, 2000);
+            series.setData(data);
 
           }
         }
