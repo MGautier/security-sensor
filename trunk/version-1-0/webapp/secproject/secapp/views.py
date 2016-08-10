@@ -576,11 +576,11 @@ class EventsInformation(generics.RetrieveAPIView):
 
         try:
             events_source = Events.objects.filter(ID_Source=pk)
-            historic = Historic.objects.filter(ID_Source=pk)
+            # historic = Historic.objects.filter(ID_Source=pk)
         except Events.DoesNotExist:
             return HttpResponse(status=404)
-        except Historic.DoesNotExist:
-            return HttpResponse(status=404)
+        # except Historic.DoesNotExist:
+        #    return HttpResponse(status=404)
 
         if request.method == 'GET':
             today = timezone.localtime(timezone.now())
@@ -606,72 +606,74 @@ class EventsInformation(generics.RetrieveAPIView):
 
             list_events_in_hour.append(events_per_hour)
 
-            if not historic:
-                if historic.count() == 0:
-                    it = 0
-                    while it < 19:
-                        historic = Historic(
-                            ID_Source=LogSources.objects.get(pk=pk),
-                            Timestamp=timezone.now(),
-                            Events=it
-                        )
-                        historic.save()
-                        it += 1
-            else:
-                items = []
-                items_json = []
+            # Este trozo de codigo es para cuando consiga introducir datos historicos de eventos
+            # en la precarga de la grafica de eventos en tiempo real
 
-                for it in historic.order_by('Timestamp'):
-                    items.append(it)
-                    items_json.append({
-                        "Timestamp": it.Timestamp,
-                        "Events": it.Events,
-                        "Year": timezone.localtime(it.Timestamp).year,
-                        "Month": timezone.localtime(it.Timestamp).month,
-                        "Day": timezone.localtime(it.Timestamp).day
-                    })
+            # if not historic:
+            #    if historic.count() == 0:
+            #        it = 0
+            #        while it < 19:
+            #            historic = Historic(
+            #                ID_Source=LogSources.objects.get(pk=pk),
+            #                Timestamp=timezone.now(),
+            #                Events=it
+            #            )
+            #            historic.save()
+            #            it += 1
+            # else:
+            #   items = []
+            #    items_json = []
 
-                indice = 0
-                for it_historic in items:
-                    # Se establecen por defecto 19 puntos iniciales que serán el histórico de eventos previos
-                    # cada vez que se haga una actualización de la página.
-                    if indice+1 < 19:
-                        Historic.objects.filter(pk=it_historic.pk).update(
-                            Timestamp=items[indice+1].Timestamp,
-                            Events=items[indice+1].Events
-                        )
-                        it_historic.refresh_from_db()
-                        indice += 1
-                    else:
-                        try:
-                            Historic.objects.filter(pk=it_historic.pk).update(
-                                Timestamp=timezone.now(),
-                                Events=events_per_hour['Events']
-                            )
+            #    for it in historic.order_by('Timestamp'):
+            #        items.append(it)
+            #        items_json.append({
+            #            "Timestamp": it.Timestamp,
+            #            "Events": it.Events,
+            #            "Year": timezone.localtime(it.Timestamp).year,
+            #            "Month": timezone.localtime(it.Timestamp).month,
+            #            "Day": timezone.localtime(it.Timestamp).day
+            #        })
 
-                        except KeyError:
-                            # Si no hay eventos actualmente procesandose, se establece a cero el valor por defecto
-                            Historic.objects.filter(pk=it_historic.pk).update(
-                                Timestamp=timezone.now(),
-                                Events=0
-                            )
-                        it_historic.refresh_from_db
-
-                json_object = list_events_in_hour.pop()
-                try:
-                    list_events_in_hour.append({
-                        "Events": json_object['Events'],
-                        "Day": json_object['Day'],
-                        "Hour": json_object['Hour'],
-                        "Historic": items_json
-                    })
-                except KeyError:
-                    list_events_in_hour.append({
-                        "Events": 0,
-                        "Day": timezone.localtime(timezone.now()).strftime("%Y-%m-%d"),
-                        "Hour": timezone.localtime(timezone.now()).hour,
-                        "Historic": items_json
-                    })
+            # indice = 0
+            # for it_historic in items:
+            # Se establecen por defecto 19 puntos iniciales que serán el histórico de eventos previos
+            # cada vez que se haga una actualización de la página.
+            #    if indice+1 < 19:
+            #        Historic.objects.filter(pk=it_historic.pk).update(
+            #            Timestamp=items[indice+1].Timestamp,
+            #            Events=items[indice+1].Events
+            #        )
+            #        it_historic.refresh_from_db()
+            #        indice += 1
+            #    else:
+            #        try:
+            #            Historic.objects.filter(pk=it_historic.pk).update(
+            #                Timestamp=timezone.now(),
+            #                Events=events_per_hour['Events']
+            #            )
+            #
+            #        except KeyError:
+            #            # Si no hay eventos actualmente procesandose, se establece a cero el valor por defecto
+            #            Historic.objects.filter(pk=it_historic.pk).update(
+            #                Timestamp=timezone.now(),
+            #                Events=0
+            #            )
+            #        it_historic.refresh_from_db
+            # json_object = list_events_in_hour.pop()
+            # try:
+            #    list_events_in_hour.append({
+            #        "Events": json_object['Events'],
+            #        "Day": json_object['Day'],
+            #       "Hour": json_object['Hour'],
+            #        "Historic": items_json
+            #    })
+            # except KeyError:
+            #    list_events_in_hour.append({
+            #        "Events": 0,
+            #        "Day": timezone.localtime(timezone.now()).strftime("%Y-%m-%d"),
+            #        "Hour": timezone.localtime(timezone.now()).hour,
+            #        "Historic": items_json
+            #    })
 
             return JSONResponse([result for result in list_events_in_hour])
 
