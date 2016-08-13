@@ -215,15 +215,162 @@ var VisualizationsComponent = React.createClass({
                         var index = index_chart_data.indexOf(this.x);
 
                         var events_per_day = "api/packets/"+chart_data[index][3]+"/"+chart_data[index][4];
+                        var stadistics_per_day = "api/stadistics/"+chart_data[index][3]+"/"+chart_data[index][4];
+                        console.log("STADISTICS-DAY: ", stadistics_per_day);
+
+                        var ajax_stadistics = [];
 
                         $(document).ready(function() {
                           var show_events_button = this.getElementById("update-events");
                           var show_events_table = this.getElementById("events-table");
+                          var show_stadistics = this.getElementById("interaction");
+                          var get_select = this.getElementById("stadistics-select");
+
+                          $('#stadistics').highcharts({
+                            title: {
+                              text: 'Stadistics packets - '+chart_data[index][4]
+                            }
+                          });
+
+
+                          /*---           Visualizaciones        ---*/
                           show_events_button.style.display = "none";
                           show_events_table.style.display = "none";
+                          show_stadistics.style.display = "none";
 
                           show_events_button.style.display = "flex";
                           show_events_table.style.display = "table";
+                          show_stadistics.style.display = "";
+                          /*---                                  ---*/
+                          /*---           Asignaciones           ---*/
+
+
+                          /*---                                  ---*/
+                          /*---           Estadisticas           ---*/
+
+                          $("#stadistics-show-button").on( "click", function( event ){
+                            var $glyphicon = $(this).find(".glyphicon.glyphicon-repeat"),
+                                animateClass = "glyphicon-refresh-animate";
+
+                            var option_selected = get_select.options[get_select.selectedIndex].value;
+
+
+                            $glyphicon.addClass( animateClass );
+                            // Se establece el Timeout para indicar que sea asincrona
+                            console.log("SOURCE: ", chart_data[index][3]);
+                            console.log("DAY: ", chart_data[index][4]);
+                            console.log("STADISTICS-2: ", stadistics_per_day);
+                            $.ajax({
+                              url: stadistics_per_day,
+                              dataType: 'json',
+                              cache: false,
+                              success: function(data) {
+                                console.log("SOURCE-2: ", chart_data[index][3]);
+                                console.log("DAY-2: ", chart_data[index][4]);
+
+                                if (option_selected != '-')
+                                {
+                                  ajax_stadistics = [];
+                                  var array_stadistics = data[option_selected];
+                                  var hits_or_frequency = 'Hits';
+
+                                  if (option_selected == 'Timestamps')
+                                  {
+                                    hits_or_frequency = 'Frequency';
+                                  }
+
+                                  var size = array_stadistics.length;
+
+                                  var value = [];
+                                  if (size == 1)
+                                  {
+                                    value.push(100.0);
+                                  }
+                                  else
+                                  {
+                                    if (size > 1)
+                                    {
+                                      var sum = 0;
+                                      array_stadistics.forEach(function (item, index, array){
+                                        sum = sum + item[hits_or_frequency];
+                                      });
+
+                                      array_stadistics.forEach(function (item, index, array){
+                                        var operation = (item[hits_or_frequency] * 100) / sum;
+
+                                        value.push(operation.toFixed(2));
+                                      });
+                                    }
+                                  }
+
+                                  if (option_selected == 'Timestamps')
+                                  {
+                                    array_stadistics.forEach(function (item, index, array) {
+                                      ajax_stadistics.push([
+                                        'Hour: '+item['Hour']+' - '+hits_or_frequency+': '+item[hits_or_frequency],
+                                        parseFloat(value[index])
+                                      ]);
+                                    });
+                                  }
+                                  else
+                                  {
+                                    array_stadistics.forEach(function (item, index, array) {
+                                      ajax_stadistics.push([
+                                        option_selected+': '+item[option_selected]+' - '+hits_or_frequency+': '+item[hits_or_frequency],
+                                        parseFloat(value[index])
+                                      ]);
+                                    });
+                                  }
+
+                                  console.log("AJAX-STADISTICS: ", ajax_stadistics);
+                                }
+                              }.bind(this),
+                              error: function(xhr, status, err){
+                                console.error(stadistics_per_day, status, err.toString());
+                              }.bind(this)
+                            });
+
+                            window.setTimeout( function(){
+                              $glyphicon.removeClass( animateClass );
+
+                              $('#stadistics').highcharts({
+                                chart: {
+                                  type: 'pie',
+                                  options3d: {
+                                    enabled: true,
+                                    alpha: 45,
+                                    beta: 0
+                                  }
+                                },
+                                title: {
+                                  text: 'Stadistics packets - '+chart_data[index][4]
+                                },
+                                tooltip: {
+                                  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                },
+                                plotOptions: {
+                                  pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    depth: 35,
+                                    dataLabels: {
+                                      enabled: true,
+                                      format: '{point.name}'
+                                    }
+                                  }
+                                },
+                                series: [{
+                                  type: 'pie',
+                                  name: 'Percentage',
+                                  data: ajax_stadistics
+                                }]
+                              });
+
+                            }, 7000 );
+
+                          });
+
+                          /*---                                 ---*/
 
                           var table = $('#events-table').DataTable({
                             retrieve: true,
@@ -232,7 +379,7 @@ var VisualizationsComponent = React.createClass({
                               url: events_per_day,
                               dataSrc: ''
                             },
-                            scrollY: "400px",
+                            scrollY: "650px",
                             scrollX: true,
                             scrollCollapse: true,
                             columns: [
