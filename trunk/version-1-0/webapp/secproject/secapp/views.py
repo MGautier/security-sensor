@@ -9,9 +9,9 @@ from .models import LogSources, Events, PacketEventsInformation, PacketAdditiona
 from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
-from collections import deque
+
 from types import *
-import sys
+
 
 
 class JSONResponse(HttpResponse):
@@ -454,6 +454,145 @@ class EventsInformation(generics.RetrieveAPIView):
                 list_additional_info.append(info)
 
             return JSONResponse([result for result in list_additional_info])
+
+    @csrf_exempt
+    def stadistics(self, request, pk, day, month, year):
+        """
+
+        Args:
+            request:
+            pk:
+            day:
+            month:
+            year:
+
+        Returns:
+
+        """
+
+        events_list = []
+        packet_result = []
+        time_set = 0
+
+        try:
+            events_list_in_day = Events.objects.filter(ID_Source=pk)
+        except Events.DoesNotExist:
+            return HttpResponse(status=404)
+
+        if request.method == 'GET':
+
+            for it in events_list_in_day:
+                if timezone.localtime(it.Timestamp).year == int(year) and \
+                                timezone.localtime(it.Timestamp).month == int(month) and \
+                                timezone.localtime(it.Timestamp).day == int(day):
+
+                    # Compruebo si el timestamp local contiene algun valor positivo en su tzinfo
+                    # si que es si la operacion aritmetica sera positiva, si es que no
+                    # es que la franja horaria disminuye el valor obtenido por timestamp
+                    if not time_set:
+                        localtime = timezone.localtime(it.Timestamp)
+                        if "+" in str(localtime):
+                            time_set = localtime.hour - it.Timestamp.hour
+                        else:
+                            time_set = it.Timestamp.hour - localtime.hour
+
+                    events_list.append(it)
+
+            serializer = EventsSerializer(events_list, many=True)
+
+        if request.method == 'GET':
+            for it in serializer.data:
+
+                packet = {
+                    "id": it['id'],
+                    "Local_Timestamp": it['Local_Timestamp'],
+                    "Timestamp": it['Timestamp'],
+                    "Timestamp_Insertion": it['Timestamp_Insertion'],
+                    "Comment": it['Comment'],
+                    "ID_Source": it['ID_Source']
+                }
+
+                try:
+                    event = Events.objects.get(pk=it['id'])
+                    packet_event = PacketEventsInformation.objects.filter(id=event)
+
+                    for it_packet_data in packet_event:
+                        packet['IP_Source'] = str(it_packet_data.ID_IP_Source)
+                        packet['IP_Destination'] = str(it_packet_data.ID_IP_Dest)
+                        packet['Port_Source'] = str(it_packet_data.ID_Source_Port)
+                        packet['Port_Destination'] = str(it_packet_data.ID_Dest_Port)
+                        packet['Protocol'] = str(it_packet_data.Protocol)
+                        packet['MAC_Source'] = str(it_packet_data.ID_Source_MAC)
+                        packet['MAC_Destination'] = str(it_packet_data.ID_Dest_MAC)
+                        packet['TAG'] = str(it_packet_data.TAG)
+
+                except Events.DoesNotExist:
+                    return HttpResponse(status=404)
+                except PacketEventsInformation.DoesNotExist:
+                    return HttpResponse(status=404)
+                except PacketAdditionalInfo.DoesNotExist:
+                    return HttpResponse(status=404)
+
+                packet_result.append(packet)
+
+            stadistics = {}
+            sip = []
+            dip = []
+            timestamps = []
+            sport = []
+            dport = []
+            protocols = []
+
+            for it in packet_result:
+
+                dt = datetime.strptime(it['Timestamp'], "%Y-%m-%dT%H:%M:%S.%fZ")
+                # Paso a tipo datetime la cadena de texto que corresponde al timestamp
+                # a esta cadena
+
+                try:
+                    EventsInformation().stadistics_dump(sip, 'SIP', it['IP_Source'], 'Hits')
+                    EventsInformation().stadistics_dump(dip, 'DIP', it['IP_Destination'], 'Hits')
+                    EventsInformation().stadistics_dump(timestamps, 'Hour', dt.hour + time_set, 'Frequency')
+                    EventsInformation().stadistics_dump(sport, 'SPORT', it['Port_Source'], 'Hits')
+                    EventsInformation().stadistics_dump(dport, 'DPORT', it['Port_Destination'], 'Hits')
+                    EventsInformation().stadistics_dump(protocols, 'Protocol', it['Protocol'], 'Hits')
+                except KeyError:
+                    pass
+
+            stadistics['SIP'] = sip
+            stadistics['DIP'] = dip
+            stadistics['Timestamps'] = timestamps
+            stadistics['SPORT'] = sport
+            stadistics['DPORT'] = dport
+            stadistics['Protocol'] = protocols
+
+            return JSONResponse(stadistics)
+
+    @staticmethod
+    def stadistics_dump(array, key, value, iterator):
+        """
+
+        Args:
+            array: Lista que contiene los objetos referenciados
+            key: Clave del objeto interno principal
+            value: Valor del objeto interno principal
+            iterator: Clave del numero de items repetidos de la Key
+
+        Returns:
+
+        """
+
+        if not array:
+            array.append({key: value, iterator: 1})
+        else:
+            search = False
+            for it in array:
+                if it[key] == value:
+                    it[iterator] += 1
+                    search = True
+
+            if not search:
+                array.append({key: value, iterator: 1})
 
     @csrf_exempt
     def packets(self, request, pk, day, month, year):
