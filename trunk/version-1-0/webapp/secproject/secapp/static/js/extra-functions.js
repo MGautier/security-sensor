@@ -70,7 +70,7 @@ $(function () {
 
   ReactDOM.render(
       <SecondsComponent url="api/events/hour/1" pollInterval={2500} />,
-    document.getElementById('seconds')
+    document.getElementById('live')
   );
 
   $(document).ready(function () {
@@ -182,7 +182,7 @@ $(function () {
     // Apply the theme
     Highcharts.setOptions(Highcharts.theme);
 
-    $('#seconds').highcharts({
+    $('#live').highcharts({
       chart: {
         type: 'spline',
         animation: Highcharts.svg, // don't animate in old IE
