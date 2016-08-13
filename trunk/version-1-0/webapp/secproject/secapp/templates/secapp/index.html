@@ -9,10 +9,10 @@
 <div class="row">
     <div class="col-md-2"></div>
 <div class="col-md-3" id="update-events" style="display:none">
-<span style="margin-left:1em">Update events table: </span>
-<button id="update-events-button" type="button" class="btn btn-default btn-sm">
-    <span class="glyphicon glyphicon-refresh"></span>
-</button>
+    <span style="margin-left:1em">Update events table: </span>
+    <button id="update-events-button" type="button" class="btn btn-default btn-sm">
+        <span class="glyphicon glyphicon-refresh"></span>
+    </button>
 </div>
     <div class="col-md-7"></div>
 </div>
@@ -54,7 +54,23 @@
     </table>
     </div>
     <div class="col-md-5">
-        <div id="seconds" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div id="live" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div id="interaction" style="display: none">
+            <select id="stadistics-select" name="stadistics-select">
+                <option value="-" selected>-</option>
+                <option value="SIP">Source Ip</option>
+                <option value="DIP">Destination Ip</option>
+                <option value="SPORT">Source Port</option>
+                <option value="DPORT">Destination Port</option>
+                <option value="Timestamps">Timestamp</option>
+                <option value="Protocol">Protocol</option>
+            </select>
+            <span style="margin-left:1em">Get stadistics</span>
+            <button id="stadistics-show-button" type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-repeat"></span>
+            </button>
+        </div>
+        <div id="stadistics" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
     </div>
 
