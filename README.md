@@ -219,4 +219,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OU
 The use of visual package javascript, [Highcharts](http://www.highcharts.com/), follows the license Non-Commercial use.
 
 This project is for Non-commercial purpose and following the [Creative Commons Attribution-NonCommercial 3.0 License](https://creativecommons.org/licenses/by-nc/3.0/).
-<p align="center"><img src="https://github.com/MGautier/security-sensor/blob/master/by-nd.png"></p>
+<p align="center"><img src="https://github.com/MGautier/security-sensor/blob/master/by-nc.png"></p>
