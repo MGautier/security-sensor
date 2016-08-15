@@ -150,7 +150,7 @@ Instalación de Nginx:
 
 Configuración de Nginx:
 
-1. Vamos a la carpeta `/etc/nginx/sites-available/` y creamos nuestro archivo de configuración `myproject.conf` con el siguiente contenido:
+* Vamos a la carpeta `/etc/nginx/sites-available/` y creamos nuestro archivo de configuración `myproject.conf` con el siguiente contenido:
 ```bash
     server {
 
@@ -165,8 +165,7 @@ root /var/www/html;
         server_name localhost;
 
         location /static/ {
-          alias <ruta-descarga-proyecto>/securityproject/trunk/ \\
-                 version-1-0/webapp/secproject/secapp/static/;
+          alias <ruta-descarga-proyecto>/securityproject/trunk/version-1-0/webapp/secproject/secapp/static/;
           expires 30d;
         }
 
@@ -184,16 +183,16 @@ root /var/www/html;
         }
       }
 ```
-2. Una vez hemos escrito el archivo de configuración hacemos un enlace simbólico del mismo a otra carpeta de nginx, en este caso a ``sites-enabled/''
+* Una vez hemos escrito el archivo de configuración hacemos un enlace simbólico del mismo a otra carpeta de nginx, en este caso a ``sites-enabled/''
 ```bash
     $ sudo ln -s /etc/nginx/sites-available/myproject.conf /etc/nginx/sites-enabled/
 ```
-3. Para comprobar que los archivos de configuración no tienen errores, ejecutamos el siguiente comando y si es éxito, reiniciamos el servicio:
+* Para comprobar que los archivos de configuración no tienen errores, ejecutamos el siguiente comando y si es éxito, reiniciamos el servicio:
 ```bash
     $ sudo nginx -t
     $ sudo service nginx restart
 ```
-4. Ahora nos vamos al proyecto Django y lanzamos la instancia:
+* Ahora nos vamos al proyecto Django y lanzamos la instancia:
 ```bash
     $ ./manage.py runserver
 ```
