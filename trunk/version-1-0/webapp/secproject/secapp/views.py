@@ -5,13 +5,11 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from rest_framework.renderers import JSONRenderer
-from .models import LogSources, Events, PacketEventsInformation, PacketAdditionalInfo, Visualizations, Historic
+from .models import LogSources, Events, PacketEventsInformation, PacketAdditionalInfo, Visualizations
 from rest_framework import generics
 from serializers import EventsSerializer, VisualizationsSerializer
 from calendar import Calendar
-
 from types import *
-
 
 
 class JSONResponse(HttpResponse):
@@ -458,15 +456,17 @@ class EventsInformation(generics.RetrieveAPIView):
     @csrf_exempt
     def stadistics(self, request, pk, day, month, year):
         """
+        Metodo de la api para la obtencion de estadisticas de los eventos almacenados en un determinado
+        dia en el sistema
 
         Args:
-            request:
-            pk:
-            day:
-            month:
-            year:
+            request: Peticion http (normalmente GET)
+            pk: Identificador del evento del cual queremos obtener mas informacion
+            day: Dia del cual se quiere obtener la informacion estadistica de los eventos
+            month: Mes del cual se quiere obtener la informacion estadistica de los eventos
+            year: Year del cual se quiere obtener la informacion estadistica de los eventos
 
-        Returns:
+        Returns: JSON con la informacion estadistica del dia para los eventos almacenados
 
         """
 
@@ -571,14 +571,14 @@ class EventsInformation(generics.RetrieveAPIView):
     @staticmethod
     def stadistics_dump(array, key, value, iterator):
         """
+        Funcion auxiliar para la iteracion y almacenamiento de eventos estadisticos de la funcion api
+        stadistics.
 
         Args:
             array: Lista que contiene los objetos referenciados
             key: Clave del objeto interno principal
             value: Valor del objeto interno principal
             iterator: Clave del numero de items repetidos de la Key
-
-        Returns:
 
         """
 
