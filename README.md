@@ -183,7 +183,7 @@ root /var/www/html;
         }
       }
 ```
-* Una vez hemos escrito el archivo de configuración hacemos un enlace simbólico del mismo a otra carpeta de nginx, en este caso a ``sites-enabled/''
+* Una vez hemos escrito el archivo de configuración hacemos un enlace simbólico del mismo a otra carpeta de nginx, en este caso a `sites-enabled/`
 ```bash
     $ sudo ln -s /etc/nginx/sites-available/myproject.conf /etc/nginx/sites-enabled/
 ```
