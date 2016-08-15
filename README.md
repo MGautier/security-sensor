@@ -1,6 +1,8 @@
+# README #
+
 # Sensor para recopilación y visualización de información de seguridad en nodos de una red #
 
-# README #
+<p align="center"><img src="https://github.com/MGautier/security-sensor/blob/master/trunk/Documentacion/Memoria/diagramas/web_8.png"></p>
 
 # Descripción
 
