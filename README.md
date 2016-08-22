@@ -4,6 +4,19 @@
 
 <p align="center"><img src="https://github.com/MGautier/security-sensor/blob/master/trunk/Documentacion/Memoria/diagramas/web_8.png"></p>
 
+# Tabla de contenidos
+1. [Descripción](https://github.com/MGautier/security-sensor#descripción)
+2. [Configuración previa](https://github.com/MGautier/security-sensor#configuracion-previa)
+..* [Instalación de Django y VirtualEnv](https://github.com/MGautier/security-sensor#instalación-de-django-y-virtualenv)
+..* [Rsyslog](https://github.com/MGautier/security-sensor#rsyslog)
+..* [LogRotate](https://github.com/MGautier/security-sensor#logrotate)
+..* [iptables.log](https://github.com/MGautier/security-sensor#iptableslog)
+..* [Archivo offset paquete PygTail](https://github.com/MGautier/security-sensor#archivo-offset-paquete-pygtail)
+..* [Rsyslog.d](https://github.com/MGautier/security-sensor#rsyslogd)
+..* [Iptables](https://github.com/MGautier/security-sensor#iptables)
+1. [Web Server](https://github.com/MGautier/security-sensor#web-server)
+..* [Nginx](https://github.com/MGautier/security-sensor#nginx)
+1. [Pruebas y ejecución](https://github.com/MGautier/security-sensor#pruebas-y-ejecución)
 # Descripción
 
 El objetivo principal del proyecto es desarrollar un software que permita recopilar y visualizar la información generada por las aplicaciones de monitorización y control de seguridad que se ejecutan en una máquina.
@@ -16,7 +29,7 @@ Por último, para comprobar la efectividad y analizar el funcionamiento de la so
 
 La planificación de los hitos principales de este proyecto se encuentran disponibles en la web de gestión de proyectos [Taiga](https://tree.taiga.io/project/mgautier-proyecto-fin-de-carrera/backlog).
 
-# Instalación
+# Configuración previa
 
 ## Instalación de Django y VirtualEnv
 
@@ -140,7 +153,7 @@ Los pasos anteriores es para la recolección de eventos generados por Iptables d
     COMMIT
 ```
 
-## Web Server
+# Web Server
 
 Ahora ya sólo nos queda configurar nuestro servidor web, que en este caso será Nginx. **Importante:** Previamente no debe haberse instalado una versión de servidor web Apache, sino habrá que desinstalar todo y aún así dará muchos problemas. Por lo que es altamente recomendable que la instalación este limpia del paquete apache en cualquiera de sus versiones.
 
@@ -187,8 +200,9 @@ root /var/www/html;
         }
       }
 ```
-* Una vez hemos escrito el archivo de configuración hacemos un enlace simbólico del mismo a otra carpeta de nginx, en este caso a `sites-enabled/`
+* Una vez hemos escrito el archivo de configuración hacemos un enlace simbólico del mismo a otra carpeta de nginx, en este caso a `sites-enabled/`. Para que el funcionamiento sea el correcto, tenemos que eliminar el enlace simbólico que existe para el archivo `default` en `sites-enabled` para que por defecto `nginx` tome como configuración la definida anteriormente.
 ```bash
+    $ sudo rm /etc/nginx/sites-enabled/default
     $ sudo ln -s /etc/nginx/sites-available/myproject.conf /etc/nginx/sites-enabled/
 ```
 * Para comprobar que los archivos de configuración no tienen errores, ejecutamos el siguiente comando y si es éxito, reiniciamos el servicio:
@@ -211,6 +225,93 @@ Para probar el funcionamiento del sistema tenemos que lanzar los siguientes coma
     $ ping 127.0.0.1 #A gusto del consumidor, cuanto más tiempo este funcionando más eventos tendremos
 ```
 
+Si queremos ver como dichos eventos se han generado en el sistema, si todo ha funcionado correctamente, estarán en el archivo creado previamente `/var/log/iptables.log` además de en el registro de mensajes del sistema `dmesg -t`.
+
+Una vez tengamos generados eventos para Iptables, tenemos que procesarlos con la herramienta. Para ello nos situamos en la ruta `/trunk/version-1-0/webapp/secproject` y ejecutamos:
+```bash
+    $ python main.py
+```
+
+En la terminal de ejecución nos saldrá algo similar a lo siguiente:
+```bash
+    --------------------------------------------------
+    Introduce los parametros de la configuracion de la fuente - iptables
+    Valores por defecto ----
+    [1] Ruta procesamiento: '/var/log/iptables.log',
+    [2] Configuración fuente: '.kernel/conf/iptables-conf.conf'
+    [3] Salir de la configuración
+    Si no quieres modificar el campo introduce Intro en la selección
+    --------------------------------------------------
+    --------------------------------------------------
+    Introduce parámetro a modificar ([3] - Saltar este paso, [0] - Ayuda): 
+
+```
+Si introducimos la opción `3`, que hace saltar el paso se procesarán todos los eventos registrado en `/var/log/iptables.log`:
+
+```bash
+    --------------------------------------------------
+
+    Procesando línea --> 2016-08-22T20:35:10.847422+02:00 debian kernel: [16423.237371] IPTMSG=Connection SSH IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=19599 DF PROTO=TCP SPT=35562 DPT=22 WINDOW=43690 RES=0x00 SYN URGP=0 
+
+    --------------------------------------------------
+    ++++++++++++++++++++++++++++++++++++++++++++++++++
+    ---> Insertado registro: {'TAG': 'Connection SSH', 'ID_Source_PORT': <Ports: 35562>, 'Protocol': u'TCP', 'RAW_Info': '2016-08-22T20:35:10.847422+02:00 debian kernel 16423.237371 IPTMSG=Connection SSH IN=lo OUT MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=19599 DF PROTO=TCP SPT=35562 DPT=22 WINDOW=43690 RES=0x00 SYN URGP=0 ', 'ID_Source_MAC': <Macs: 00:00:00:00:00:00:00:00:00:00:00:00:08:00>, 'ID_Source_IP': <Ips: 127.0.0.1>, 'ID_Dest_IP': <Ips: 127.0.0.1>, 'ID_Dest_PORT': <Ports: 22>, 'ID_Dest_MAC': <Macs: 00:00:00:00:00:00:00:00:00:00:00:00:00:00>}
+
+    ++++++++++++++++++++++++++++++++++++++++++++++++++
+    ---> Fin de procesado de linea 
+
+    ++++++++++++++++++++++++++++++++++++++++++++++++++
+
+```
+### Ayuda de comandos de ejecución
+
+Si necesitamos en cualquier momento de la ejecución anterior saber los comandos disponibles para la interacción, simplemente con teclear la palabra clave `commands` obtendremos información relacionada:
+```bash
+    --------------------------------------------------
+    Opcion  incorrecta (commands para mas informacion)
+    --------------------------------------------------
+    > commands
+    -------------------------------------------------
+    info -> Informacion sobre la fuente en ejecucion 
+    clear -> Limpia la pantalla de informacion 
+    pids -> Muestra los pids asociados en ejecucion 
+    kill PID (valor) -> Mata al PID que se introduzca (Si es el padre aborta la ejecucion) 
+    exit -> Aborta la ejecucion del proceso y lo mata.
+    --------------------------------------------------
+```
+#### info
+```bash
+    > info
+    --------------------------------------------------
+    Source -->  iptables
+    Parent pid -->  9889
+    Child pid -->  9889
+    Type source -->  Firewall
+    Model source -->  iptables
+    Configuration file -->  ./kernel/conf/iptables-conf.conf
+    Log processing -->  /var/log/iptables.log
+    Thread name -->  Thread-1
+    --------------------------------------------------
+
+```
+
+#### pids
+```bash
+    > pids
+    Main thread --> 9889
+
+```
+
+#### exit or kill
+```bash
+    > pids
+    Main thread --> 9889
+    > kill 9889
+    --------------------------------------------------
+    Matando al proceso:  9889
+    Terminado (killed)
+
+```
 
 # Licencia
 
