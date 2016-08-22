@@ -14,6 +14,8 @@ Para esta finalidad será necesario definir los pasos para la obtención de logs
 
 Por último, para comprobar la efectividad y analizar el funcionamiento de la solución software, se realizaría una demostración en directo con procesamiento real de eventos para la fuente de seguridad cuyo ámbito tiene este proyecto que será Iptables.
 
+La planificación de los hitos principales de este proyecto se encuentran disponibles en la web de gestión de proyectos [Taiga](https://tree.taiga.io/project/mgautier-proyecto-fin-de-carrera/backlog).
+
 # Instalación
 
 ## Instalación de Django y VirtualEnv
