@@ -40,7 +40,7 @@ La clase base que sería Source, hereda del comportamiento de la clase Thread (d
   \caption{Arquitectura: Monitor}
 \end{figure}
 
-En esta sección de la arquitectura es dónde se define la parte del control y ejecución (hilos) de las fuentes de seguridad implementadas. A su vez estas pasan dicha información a la base de datos usando el modelo ORM del framework Django. La jerarquía de clases sería de la siguiente manera: \\
+En esta sección de la arquitectura es donde se define la parte del control y ejecución (hilos) de las fuentes de seguridad implementadas. A su vez, estas pasan dicha información a la base de datos usando el modelo ORM del framework Django. La jerarquía de clases sería de la siguiente manera: \\
 
 \begin{figure}[H]
   \hspace*{-0.25in}{\includegraphics[scale=0.525]{diagramas/diagrama-monitor.jpg}}
@@ -72,7 +72,7 @@ La clase o tabla que contendrá el peso de toda la jerarquía de base de datos, 
 \item PacketAdditionalInfo
 \end{itemize}
 
-Cómo podemos observar en el diagrama anterior, por ejemplo, para la clase PacketEventInformation, tenemos su traducción a formato ORM del motor proporcionado por Django:
+Como podemos observar en el diagrama anterior, por ejemplo, para la clase PacketEventInformation, tenemos su traducción a formato ORM del motor proporcionado por Django:
 
 \begin{figure}[H]
 \lstinputlisting{trozos-codigo/codigo-8.py}
@@ -89,7 +89,7 @@ El formato normalizado de la base de datos para visualizar dicha información se
   \caption{Arquitectura: Visualizaciones}
 \end{figure}
 
-En esta seccción de la arquitectura es dónde se define la parte de la interacción con la base de datos y la visualización de los datos en la interfaz web. La jerarquía de clases sería de la siguiente manera: \\
+En esta seccción de la arquitectura es donde se define la parte de la interacción con la base de datos y la visualización de los datos en la interfaz web. La jerarquía de clases sería de la siguiente manera: \\
 
 \begin{figure}[H]
   \hspace*{0.5in}{\includegraphics[scale=0.65]{diagramas/visualization.jpg}}
@@ -172,7 +172,7 @@ Estos han sido los diagramas de secuencia o interacción que podrá tener la par
 
 \begin{figure}[H]
 \vspace*{.2in}{\hspace*{.55in}{\includegraphics[scale=.32,angle=270]{diagramas/web_3.png}}}
-\caption{Vista principal con la información de eventos del dia seleccionado}
+\caption{Vista principal con la información de eventos del día seleccionado}
 \end{figure}
 
 \subsubsection{Vista con la información adicional por evento}

@@ -73,7 +73,7 @@ Web: \url{https://www.docker.com/}\\
   \end{center}
 \end{figure}
 
-Docker es un sistema de desarrollo de sistemas completos, utilizando el concepto de contenedor (LXC) de los sistemas UNIX. Un contenedor de Docker, envuelve una fragmento de software en un sistema de archivos completo (imagen) que contiene todo lo necesario para funcionar: código, instancias de arranque, herramientas del sistema, bibliotecas del sistema... cualquier cosa que tendría un sistema operativo normal pero en una versión más optimizada y ligera (estos sistemas normalmente se obtienen de un Docker Repository y en su totalidad son sistemas open source). Esto garantiza que el software se ejecutará siempre de la misma forma, independientemente del medio en el que se despliegue.\\
+Docker es un sistema de desarrollo de sistemas completos, utilizando el concepto de contenedor (LXC) de los sistemas UNIX. Un contenedor de Docker, envuelve un fragmento de software en un sistema de archivos completo (imagen) que contiene todo lo necesario para funcionar: código, instancias de arranque, herramientas del sistema, bibliotecas del sistema... cualquier cosa que tendría un sistema operativo normal pero en una versión más optimizada y ligera (estos sistemas normalmente se obtienen de un Docker Repository y en su totalidad son sistemas open source). Esto garantiza que el software se ejecutará siempre de la misma forma, independientemente del medio en el que se despliegue.\\
 
 \begin{figure}[H]
   \hspace*{-.1in}{\includegraphics[scale=0.4]{diagramas/docker.png}}
@@ -81,7 +81,7 @@ Docker es un sistema de desarrollo de sistemas completos, utilizando el concepto
 \end{figure}
 \newpage
 \section[Configuración local]{Configuración local para procesamiento}
-Los primeros pasos para la obtención de logs o eventos generados por la fuente de seguridad, iptables, serán los de configurar el sistema interno de correlación de logs rsyslog junto con el sistema de rotacion de logs logrotate. Para el caso de rsyslog tenemos que definir un filtro para que cualquier evento que genere el sistema con un determinado mensaje definido en las reglas de iptables, sea capturado y almacenado en un determinado directorio. También hemos dotado a los logs del sistema de timestamp con mayor precisión para poder diferenciar eventos con mayor afinamiento y cambiado la tupla de permisos a la hora de crear un archivo con \textbf{FileCreateMode}.
+Los primeros pasos para la obtención de logs o eventos generados por la fuente de seguridad, iptables, serán los de configurar el sistema interno de correlación de logs rsyslog junto con el sistema de rotación de logs logrotate. Para el caso de rsyslog tenemos que definir un filtro para que cualquier evento que genere el sistema con un determinado mensaje definido en las reglas de iptables, sea capturado y almacenado en un determinado directorio. También hemos dotado a los logs del sistema de timestamp con mayor precisión para poder diferenciar eventos con mayor afinamiento y cambiado la tupla de permisos a la hora de crear un archivo con \textbf{FileCreateMode}.
 
 \begin{figure}[H]
   \begin{lstlisting}[language=bash]
@@ -161,7 +161,7 @@ En la siguiente sección explicaremos en profundidad cada una de las opciones de
 
 \subsection{Iptables}
 
-El servicio de firewall del kernel de GNU Linux, iptables, nos proporciona una interfaz de reglas y tablas en dónde podemos definir patrones o reglas que actuen sobre el tráfico que llega o sale desde nuestra máquina. Las reglas que se han definido por defecto son las siguientes (si queremos más filtros hay que implicar al protocolo y su puerto asociado con un mensaje):
+El servicio de firewall del kernel de GNU Linux, iptables, nos proporciona una interfaz de reglas y tablas en donde podemos definir patrones o reglas que actuen sobre el tráfico que llega o sale desde nuestra máquina. Las reglas que se han definido por defecto son las siguientes (si queremos más filtros hay que implicar al protocolo y su puerto asociado con un mensaje):
 
 \begin{figure}[H]
 \begin{lstlisting}[language=bash]
@@ -190,18 +190,18 @@ A continuación una breve explicación de cada opción o comando:
 \item --state: Tipo de paquete según conexión:
   \begin{itemize}
   \item NEW: Paquete que crea una nueva conexión.
-  \item RELATED: Paquete que está relacionado a una conexión existente, pero que no es parte de ella, cómo un error ICMP o, un paquete que establece una conexión de datos FTP.
+  \item RELATED: Paquete que está relacionado a una conexión existente, pero que no es parte de ella, como un error ICMP o, un paquete que establece una conexión de datos FTP.
   \item ESTABLISHED: Paquete que pertenece a una conexión existente (que tuvo paquetes de respuesta).
   \item INVALID (no usado): Paquete que no pudo ser identificado por alguna razón: quedarse sin memoria o errores ICMP que no corresponden a ninguna conexión conocida. Normalmente estos paquetes deben ser descartados.
   \end{itemize}
 \item -j: Acción de salto cuando encuentre dicha regla de paquetes. Se especifican dos acciones:
   \begin{itemize}
-  \item LOG --log-prefix ``message'' : Cuando se encuentre dicha regla se recolecta cómo log de la misma adjuntando un mensaje para diferenciarla del resto de reglas.
+  \item LOG --log-prefix ``message'' : Cuando se encuentre dicha regla se recolecta como log de la misma adjuntando un mensaje para diferenciarla del resto de reglas.
   \item DROP : Cuando se encuentre dicha regla se descarta el paquete dentro del propio sistema. Al ir seguido LOG de un DROP el paquete se muestra en el registro de syslog para posteriormente ser eliminado del registro de almacenamiento de paquetes (Para esto usamos rsyslog que se encarga de almacenar dicho mensaje en un archivo de log).
   \end{itemize}
 \end{itemize}
 
-Así pues una vez tengamos un evento o paquete o log de iptables en nuestro sistema generados mediante ssh 127.0.0.1 o ping 127.0.0.1 obtendremos lo siguiente:
+Así pues, una vez tengamos un evento o paquete o log de iptables en nuestro sistema generados mediante ssh 127.0.0.1 o ping 127.0.0.1 obtendremos lo siguiente:
 
 \begin{figure}[H]
 \begin{lstlisting}[language=bash, breaklines=true]
@@ -221,7 +221,7 @@ Lo anterior correspondía a la salida del comando \textbf{\$ dmesg -T} que muest
 \caption{Log capturado y almacenado por rsyslog en /var/log/iptables.log}
 \end{figure}
 
-Lo anterior corresponde con la manipulación por parte de rsyslog del mensaje obtenido en syslog. Cómo podemos observar se añade un campo de timestamp de mayor precisión según la configuración que hemos establecido en rsyslog.conf para poder diferenciar con mayor exactitud eventos entre diferentes franjas de tiempo. \\
+Lo anterior corresponde con la manipulación por parte de rsyslog del mensaje obtenido en syslog. Como podemos observar se añade un campo de timestamp de mayor precisión según la configuración que hemos establecido en rsyslog.conf para poder diferenciar con mayor exactitud eventos entre diferentes franjas de tiempo. \\
 
 \begin{figure}[H]
 \begin{lstlisting}[language=bash, breaklines=true]

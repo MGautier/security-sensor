@@ -67,7 +67,7 @@ La pila ELK se basa en una solución open-source de tres productos bien diferenc
 \begin{itemize}
 \item Logstash para el registro centralizado de logs y su posterior normalización y enriquecimiento de datos.
 \item Elasticsearch para la búsqueda de datos y análisis en profundidad de un sistema.
-\item Kibana cómo herramienta de visualización de los datos recolectados y procesados anteriormente según las especificaciones que queramos para el filtrado.
+\item Kibana como herramienta de visualización de los datos recolectados y procesados anteriormente según las especificaciones que queramos para el filtrado.
 \end{itemize}
 
 \subsection{Logstash}
@@ -97,11 +97,11 @@ Kibana hace que sea fácil de entender y procesar grandes volúmenes de datos. M
 
 \subsection{Análisis de la herramienta}
 
-La pila ELK, cómo bien se ha comentado en los tres puntos anteriores nos permite recolectar, procesar y correlar cualquier tipo de logs que genere nuestro sistema de una manera visual, ágil y fácil de entender. \\
+La pila ELK, cómo bien se ha comentado en los tres puntos anteriores, nos permite recolectar, procesar y correlar cualquier tipo de logs que genere nuestro sistema de una manera visual, ágil y fácil de entender. \\
 
-El motor de indexación de datos, Elasticsearch, nos permite obtener una ejecución en tiempo real de los logs del sistema así cómo poder escalar dicho volumen de datos dependiendo de la situación. El único inconveniente de esta herramienta es que el sistema de referenciación de documentos internos es mediante json. Es un formato muy versátil pero incapaz de tener funcionalidad por si sola.\\
+El motor de indexación de datos, Elasticsearch, nos permite obtener una ejecución en tiempo real de los logs del sistema así como poder escalar dicho volumen de datos dependiendo de la situación. El único inconveniente de esta herramienta es que el sistema de referenciación de documentos internos es mediante json. Es un formato muy versátil pero incapaz de tener funcionalidad por si sola.\\
 
-Después tenemos Logstash que es el encargado de hacer de middleware entre elastic y kibana, es decir, la parte de la recogida de muestras/eventos y la parte dónde se visualizan esas muestras. Logstash hace de filtro y de motor de normalización de datos entre los diferentes activos que tiene asignados para así poder tener todos los datos unificados según la especificación que queramos dar a cada uno de ellos. \\
+Después tenemos Logstash que es el encargado de hacer de middleware entre elastic y kibana, es decir, la parte de la recogida de muestras/eventos y la parte donde se visualizan esas muestras. Logstash hace de filtro y de motor de normalización de datos entre los diferentes activos que tiene asignados para así poder tener todos los datos unificados según la especificación que queramos dar a cada uno de ellos. \\
 
 Cada parte de la pila esta desarrollada en su propio lenguaje de desarrollo, siendo Java (o Groovy) el lenguaje de desarrollo de elastic, Ruby el de logstash y Javascript para Kibana. El único inconveniente que se ha podido observar es que la solución ELK está diseñada para trabajar más optimizada en entornos de cloud computing y no de manera local en un servidor. Dado que tendría que usar recursos propios de la máquina y conforme se vayan escalando nuevos recursos estos irán aumentando los de la máquina. Si hay limitación de hardware por los mismos puede llegarse a experimentar un cuello de botella entre elastic y kibana, siendo la carga de datos muy lenta y con tiempos de refresco bastante altos. \\
 
@@ -123,7 +123,7 @@ Así pues, el término SIEM haría referencia a la recopilación de eventos de s
 Estos son los puntos que principalmente gestiona un SIEM:\\
 
 \begin{itemize}
-\item Gestión de parches (actualizaciones) del kernel o software de terceros cómo adobe, java, etc.
+\item Gestión de parches (actualizaciones) del kernel o software de terceros como adobe, java, etc.
 \item Antivirus en máquinas de usuarios o en servidor.
 \item Gestión de cortafuegos.
 \item Integración con Active Directory (LDAP).
@@ -147,15 +147,15 @@ Aunque esta herramienta sea como un conglomerado de aplicaciones o herramientas 
 
 Una de las palabras más comunes que definen la implementación de un SIEM es: desalentador. A menudo termina costando más de lo previsto, requiere una experiencia sobre la herramienta que a menudo suele ser externalizada (sobre el propio fabricante) y puede llevar un tiempo considerable antes de obtener resultados tangibles.\\
 
-Los motivos para los que generalmente se introducen éste sistema en la red corporativa suelen ser varios, pero entre los más destacados suelen ser: el cumplimiento de una normativa industrial o de un gobierno, la gestión de incidentes recurrentes de seguridad o también que en la licitación de un contrato esté contemplado la puesta en marcha de este sistema para una mayor calidad del servicio prestado por un tercero o por la propia entidad. Y aún así, que la propia empresa ya gestione sus eventos internos o los monitorice, no implica que su migración al SIEM sea inmediata.\\
+Los motivos para los que generalmente se introduce este sistema en la red corporativa suelen ser varios, pero entre los más destacados suelen ser: el cumplimiento de una normativa industrial o de un gobierno, la gestión de incidentes recurrentes de seguridad o también que en la licitación de un contrato esté contemplado la puesta en marcha de este sistema para una mayor calidad del servicio prestado por un tercero o por la propia entidad. Y aún así, que la propia empresa ya gestione sus eventos internos o los monitorice, no implica que su migración al SIEM sea inmediata.\\
 
-Además, la licitación o adquisición de un producto de estas características supone que el entorno sobre el que se va a aplicar contiene dispositivos de seguridad que monitorizar (sino se está realizando dicho control), que se dispongan de herramienta de centralización de datos (físicamente o en cloud) y que se quiera un sistema de gestión 24/7, incluido la monitorización fuera de horario laboral.\\
+Además, la licitación o adquisición de un producto de estas características supone que el entorno sobre el que se va a aplicar contiene dispositivos de seguridad que monitorizar (si no se está realizando dicho control), que se dispongan de herramienta de centralización de datos (físicamente o en cloud) y que se quiera un sistema de gestión 24/7, incluido la monitorización fuera de horario laboral.\\
 
 Son estas razones por las que a veces un sistema tan complejo y gigantesco puede que genere un sobrecoste o cubra pocas áreas de la red en las que no se tiene necesidad de vigilar. Siendo esto un incoveniente finalmente, dado que hay otras herramientas (de las que se nutre el SIEM) que ya cumplen con dicha funcionalidad a coste de tener un sistema muy pesado que gestionar.\\
 
 \subsection{Otros SIEM comerciales}
 
-Existen otras muchas más herramientas, comerciales en su gran mayoría, que tratan de abordar el concepto de SIEM a un paso más allá de lo anteiormente analizado. A continuación se van a citar algunas de esas herramientas:
+Existen otras muchas más herramientas, comerciales en su gran mayoría, que tratan de abordar el concepto de SIEM a un paso más allá de lo anteriormente analizado. A continuación se van a citar algunas de esas herramientas:
 
 \begin{itemize}
 \item \href{https://www.alienvault.com/products/ossim}{OSSIM} - Alienvault: Herramienta SIEM de código abierto.
@@ -165,9 +165,9 @@ Existen otras muchas más herramientas, comerciales en su gran mayoría, que tra
 \item \href{https://logrhythm.com/es/}{LogRhythm}
 \end{itemize}
 
-\section{Solución tecnológica de éste proyecto}
+\section{Solución tecnológica de este proyecto}
 
-La principal diferencia que existe entre éste proyecto final de carrera y las herramientas anteriormente analizadas es que el desarrollo y gestión de la información no se hace de forma analítica sino que se gestionan cantidades de datos (en la fase de recolección de logs de dispositivos) y estos no reciben ningún tipo de filtro o procesamiento previo. Se transportan desde el dispositivo monitorizado a otro en dónde se correlan los distintos logs o recolecciones según patrones definidos por los ingenieros de seguridad de la compañía encargada de detectar anomalías en los mismos. \\
+La principal diferencia que existe entre este proyecto final de carrera y las herramientas anteriormente analizadas es que el desarrollo y gestión de la información no se hace de forma analítica sino que se gestionan cantidades de datos (en la fase de recolección de logs de dispositivos) y estos no reciben ningún tipo de filtro o procesamiento previo. Se transportan desde el dispositivo monitorizado a otro en donde se correlan los distintos logs o recolecciones según patrones definidos por los ingenieros de seguridad de la compañía encargada de detectar anomalías en los mismos. \\
 
 No existe ningún tipo de mecanismo analítico de esta información dado que el punto de inflexión o la inteligencia, está en las etapas finales y no en las previas del tratamiento de la información. Para dotar de una mayor funcionalidad a estos sistemas hay extensiones o módulos que desarrollan las compañías que amplian la capacidad analítica de la misma por una cantidad económica bastante alta y su uso suele estar supeditado a licencia. \\
 
@@ -189,11 +189,11 @@ Python es un lenguaje multiparadigma cuya estructura principal está integrament
 Las principales características que han favorecido su elección fueron:
 \begin{itemize}
 \item Es un lenguaje que facilita la implementación de una forma muy ágil y dinámica.
-\item Su sistema de paquetes es muy intuitivo y ligero. Se puede instalar cualquier dependencia descargandola del repositorio de paquetes PyPi en el que se pueden encontrar infinidad de soluciones software dependiendo de lo que necesites. Sino, siempre se puede definir el propio paquete software y subirlo al repositorio.
+\item Su sistema de paquetes es muy intuitivo y ligero. Se puede instalar cualquier dependencia descargandola del repositorio de paquetes PyPi en el que se pueden encontrar infinidad de soluciones software dependiendo de lo que necesites. Si no, siempre se puede definir el propio paquete software y subirlo al repositorio.
 \item Es de licencia similar a la BSD (Python Software Foundation License) compatible con la GNU GPL. Por lo tanto se puede modificar cualquier aspecto del kernel del lenguaje o mejorar cualquier funcionalidad anteriormente definida.
 \item Permite la fácil portabilidad entre plataformas, ya que sólo requiere de un intérprete que traduzca dicho código fuente a lenguaje máquina por lo que no existe una pesada fase de compilación por parte del sistema.
 \item Tiene una amplia comunidad de desarrolladores y es muy fácil de aprender en un corto periodo de tiempo para alguien iniciado.
-\item Es ampliamente empleado en el mundo de la seguridad informática para ser usado en parsers, procesadores de eventos y usos con la web cómo principal reclamo (Protocolos, paquetes, tráfico, etc).
+\item Es ampliamente empleado en el mundo de la seguridad informática para ser usado en parsers, procesadores de eventos y usos con la web como principal reclamo (Protocolos, paquetes, tráfico, etc).
 \end{itemize}
 
 
@@ -205,7 +205,7 @@ En la fase de estudio de tecnologías, se planteo la posibilidad de desarrollar 
 \item Precisa de unos conocimientos más avanzados sobre el control de procesos e hilos aunque sea más eficiente, también es más pesada la ejecución de los mismos en un sistema concurrente que puede que tenga muchos activos o fuentes que usar.
 \item Lenguaje fuertemente tipado y muy estructurado.
 \item Precisa de una compilación previa que pudiera incrementar los costes de empaquetar dicha solución y además solo se puede ejecutar en un entorno dónde exista una JVM o java virtual machine.
-\item Para adaptar la solución obtenida a un resultado web tendría que hacer uso de un framework o IDE que ayudase a la hora de la gestión y diseño de la interfaz web así cómo la comunicación. En Python frameworks como Django, facilitan la tarea del despliegue en formato web y lo más cercano que se le parece es el lenguaje Groovy sobre el que se basa el software Elasticsearch.
+\item Para adaptar la solución obtenida a un resultado web tendría que hacer uso de un framework o IDE que ayudase a la hora de la gestión y diseño de la interfaz web así como la comunicación. En Python frameworks como Django, facilitan la tarea del despliegue en formato web y lo más cercano que se le parece es el lenguaje Groovy sobre el que se basa el software Elasticsearch.
 \end{itemize}
 
 \subsection{Procesos vs hilos}
@@ -228,7 +228,7 @@ La normal general es que un conjunto de hilos o procesos tiendan a compartir inf
 
 Diferentes hilos comparten un mismo PID mientras que diferentes procesos, poseen sus propios PID. Sin embargo, esto no sucede a nivel de kernel. Los hilos del kernel tienen sus propios PID, debido a la forma en la que el kernel es ejecutado.\\
 
-El kernel (para sistemas GNU) en sí mismo no se ejecuta cómo un proceso sino que sus tareas se ejecutan cómo parte de otros procesos. Debido a la gran cantidad de tareas que se ejecutan, en el kernel se realiza una implementación o acción alternativa para operar de forma similar a los procesos (esto es a lo que se le conoce cómo demonios).\\
+El kernel (para sistemas GNU) en sí mismo no se ejecuta como un proceso sino que sus tareas se ejecutan como parte de otros procesos. Debido a la gran cantidad de tareas que se ejecutan, en el kernel se realiza una implementación o acción alternativa para operar de forma similar a los procesos (esto es a lo que se le conoce como demonios).\\
 
 \subsubsection{Solución que aplica Python}
 
@@ -244,7 +244,7 @@ Lo que se realiza en esa comprobación es que dentro de la pila o lista de threa
 
 Web: \url{https://www.djangoproject.com/}\\
 
-Django es un framework web de alto nivel para el lenguaje de programación Python. Éste framework permite un despliegue de una aplicación de escritorio al entorno web de una forma sencilla, segura y fácilmente escalable. \\
+Django es un framework web de alto nivel para el lenguaje de programación Python. Este framework permite un despliegue de una aplicación de escritorio al entorno web de una forma sencilla, segura y fácilmente escalable. \\
 
 Su metodología es MVT - Model View Template. A continuación, se explicarán en que consisten cada una de ellas:
 
@@ -256,22 +256,22 @@ Model o Modelo es la parte encargada de la gestión con la base de datos y de ab
 
 View o Vista es la parte encargada de la gestión entre la base de datos y el template. Puede llevar a confusión esta metodología de desarrollo web, ya que existe una similar: MVC. Pero en MVC (Model-View-Controller) el modelo se encarga de la gestión de la BD, la vista de representar los datos y el controlador de administrador o motor de contenidos entre la BD y la vista final de la aplicación web. \\
 
-Así pues la \textbf{Vista} en el framework Django se representa al modelo MVC cómo el controlador.\\
+Así pues la \textbf{Vista} en el framework Django se representa al modelo MVC como el controlador.\\
 
 \subsubsection{Template}
 
-Template o Plantilla se refiere a la parte encargada de reprensentar la información almacenada en BD, procesada y generada mediante la Vista (View). Al contrario de un modelo MVC, en dónde el controlador se encarga de generar las vistas, en este modelo se representan las mismas cómo una plantilla de muchas otras que se van enrutando a diferentes funciones generadas por la vista. \\
+Template o Plantilla se refiere a la parte encargada de reprensentar la información almacenada en BD, procesada y generada mediante la Vista (View). Al contrario de un modelo MVC, en donde el controlador se encarga de generar las vistas, en este modelo se representan las mismas como una plantilla de muchas otras que se van enrutando a diferentes funciones generadas por la vista. \\
 
-Dicho esto, siempre habra una plantilla Master o padre de la que heredarán todas las hijas que vayamos asociando a nuestra web. Estas heredan una estructura o skeleton en formato html enriquecido con lenguaje propio de Django en formato python. Veamos un ejemplo de plantilla Master y una plantilla que se nutre de éste skeleton:\\
+Dicho esto, siempre habra una plantilla Master o padre de la que heredarán todas las hijas que vayamos asociando a nuestra web. Estas heredan una estructura o skeleton en formato html enriquecido con lenguaje propio de Django en formato python. Veamos un ejemplo de plantilla Master y una plantilla que se nutre de este skeleton:\\
 
 \lstinputlisting[language=HTML]{trozos-codigo/codigo-2.html}
 
-En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos dónde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ése bloque.\\
+En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos donde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ése bloque.\\
 
 \newpage
 \begin{minipage}{\linewidth}
   \lstinputlisting[language=HTML]{trozos-codigo/codigo-3.html}
-  Aquí se observa perfectamente cómo se heredan las características de la plantilla Master y se define el bloque de contenido que en la plantilla Master ya se especificó (se situa dentro de las etiquetas \textbf{block} y \textbf{endblock}). \\
+  Aquí se observa perfectamente como se heredan las características de la plantilla Master y se define el bloque de contenido que en la plantilla Master ya se especificó (se situa dentro de las etiquetas \textbf{block} y \textbf{endblock}). \\
 \end{minipage}
 
 \subsection{C3js}
@@ -307,7 +307,7 @@ Web: \url{https://www.latex-project.org/}\\
 
 Web: \url{https://facebook.github.io/react/}\\
 
-React es una biblioteca Javascript que permite construir interfaces de usuario en nuestra aplicación web. Existen soluciones similares a React cómo podría ser JQuery, pero en este caso el proceso de creación de componentes visuales se hace muy intuitiva mediante clases internas que encapsulan el contenido que posteriormente se traducirá a código Javascript nativo.\\
+React es una biblioteca Javascript que permite construir interfaces de usuario en nuestra aplicación web. Existen soluciones similares a React como podría ser JQuery, pero en este caso el proceso de creación de componentes visuales se hace muy intuitiva mediante clases internas que encapsulan el contenido que posteriormente se traducirá a código Javascript nativo.\\
 
 Para la traducción, React utiliza un componente llamada JSX, pero en nuestra solución se ha usado el paquete Babel (\url{https://babeljs.io/}) que es similar pero en formato Javascript y no NodeJS.\\
 
@@ -337,8 +337,8 @@ SQLite es un biblioteca software que implementa un motor para bases de datos SQL
 \begin{itemize}
 \item Las transacciones de datos son atómicas, consistentes, aisladas y duraderas (ACID) incluso después de que el sistema tengo un fallo o se apague inesperadamente.
 \item No necesita de una administración o configuración previa para su normal funcionamiento.
-\item Implementación de un sistema SQL íntegro con características más avanzadas cómo indexación parcial.
-\item La base de datos, en su totalidad, se almacena cómo un archivo normal en disco. Esto es útil para ser cargado directamente como un archivo en una aplicación.
+\item Implementación de un sistema SQL íntegro con características más avanzadas como indexación parcial.
+\item La base de datos, en su totalidad, se almacena como un archivo normal en disco. Esto es útil para ser cargado directamente como un archivo en una aplicación.
 \item Soporta bases de datos de Terabytes de tamaño y Gigabytes de string o archivos.
 \item Facilidad de uso mediante su API interna.
 \item No tiene ninguna dependencia externa.
@@ -369,7 +369,7 @@ Rsyslog (Rocket-Fast System for Log Processing), es un sistema de recogida de lo
 Web: \url{https://github.com/logrotate/logrotate}\\
 man: \url{http://linux.die.net/man/8/logrotate}\\
 
-Es una utilidad de los sistemas UNIX que nos permite simplificar la administración de archivos de logs en un sistema en dónde haya logs de muchos tipos de fuentes. Nos permite automatizar la rotación, compresión, eliminación y envío por email de los archivos de logs del sistema. Logrotate se encuentra normalmente corriendo cómo un proceso cron diario. \\
+Es una utilidad de los sistemas UNIX que nos permite simplificar la administración de archivos de logs en un sistema en dónde haya logs de muchos tipos de fuentes. Nos permite automatizar la rotación, compresión, eliminación y envío por email de los archivos de logs del sistema. Logrotate se encuentra normalmente corriendo como un proceso cron diario. \\
 
 \begin{figure}[H]
 \begin{lstlisting}[language=bash]
@@ -423,13 +423,13 @@ Herramienta de filtrado de paquetes IPv4/IPv6 y NAT. Iptables es usado para conf
 
 Web: \url{http://www.django-rest-framework.org/}\\
 
-Django REST es un framework potente y flexible que permite construir Web APIs. Se usa cómo un complemento al framework Django para el uso de API Restfull dentro de la propia aplicación.
+Django REST es un framework potente y flexible que permite construir Web APIs. Se usa como un complemento al framework Django para el uso de API Restfull dentro de la propia aplicación.
 
 \subsection{JSON}
 
 Web: \url{http://www.json.org/}\\
 
-JSON (Javascript Object Notation) es un formato de intercambio de datos ligero. Se usa para facilitar la legibilidad y escritura para los humanos y además es fácil de interpretar y parsear para una máquina. Está basado cómo un subconjunto de JavaScript y el Standard ECMA-262 3ª Edición. \\
+JSON (Javascript Object Notation) es un formato de intercambio de datos ligero. Se usa para facilitar la legibilidad y escritura para los humanos y además es fácil de interpretar y parsear para una máquina. Está basado como un subconjunto de JavaScript y el Standard ECMA-262 3ª Edición. \\
 
 JSON está construido sobre dos estructuras:
 
@@ -444,7 +444,7 @@ JSON está construido sobre dos estructuras:
 
 Web: \url{https://www.jetbrains.com/pycharm/}\\
 
-PyCharm es un IDE que permite el trabajo con aplicaciones Python en sus respectivos entornos virtuales (virtualenv) así cómo la integración con frameworks de desarrollo cómo es el caso de Django. La aplicación en sí fue desarrollada nativamente mediante un editor de texto (Emacs) pero a la hora de realizar un empaquetado e integración con otra herramientas se optó por éste IDE. \\
+PyCharm es un IDE que permite el trabajo con aplicaciones Python en sus respectivos entornos virtuales (virtualenv) así como la integración con frameworks de desarrollo como es el caso de Django. La aplicación en sí fue desarrollada nativamente mediante un editor de texto (Emacs) pero a la hora de realizar un empaquetado e integración con otra herramientas se optó por este IDE. \\
 
 \subsection{Taiga}
 
@@ -452,7 +452,7 @@ PyCharm es un IDE que permite el trabajo con aplicaciones Python en sus respecti
 
 Web: \url{https://taiga.io/}\\
 
-Taiga es un gestor de proyectos que nos permite implementar una metodología SCRUM o Kanban sobre nuestro proyecto. Es una herramienta muy intuitiva y colaborativa, que permite definir hitos/tareas/wikis para solucionar cada punto de la fase de desarrollo de un proyecto. Además, permite la integración (WebHooks) con otras plataformas de repositorios de proyectos cómo GitHub, GitLab o BitBucket. \\
+Taiga es un gestor de proyectos que nos permite implementar una metodología SCRUM o Kanban sobre nuestro proyecto. Es una herramienta muy intuitiva y colaborativa, que permite definir hitos/tareas/wikis para solucionar cada punto de la fase de desarrollo de un proyecto. Además, permite la integración (WebHooks) con otras plataformas de repositorios de proyectos como GitHub, GitLab o BitBucket. \\
 \newpage
 \begin{figure}[H]
 \includegraphics[scale=0.235]{diagramas/taiga-backlog.png}
@@ -466,7 +466,7 @@ Taiga es un gestor de proyectos que nos permite implementar una metodología SCR
 Web: \url{https://bitbucket.org/}\\
 Repositorio: \url{https://bitbucket.org/MGautierGomez/securityproject}\\
 
-Gestor de repositorios Git y Mercurial. Se optó por éste gestor para probar su funcionamiento, así cómo la posibilidad de tener repositorios privados para desarrollar partes del proyecto que necesitasen ser ocultadas. También se encuentra alojado en el repositorio de \textbf{GitHub}: \url{https://github.com/MGautier/security-sensor}\\
+Gestor de repositorios Git y Mercurial. Se optó por este gestor para probar su funcionamiento, así como la posibilidad de tener repositorios privados para desarrollar partes del proyecto que necesitasen ser ocultadas. También se encuentra alojado en el repositorio de \textbf{GitHub}: \url{https://github.com/MGautier/security-sensor}\\
 
 \subsection{Git}
 
@@ -561,10 +561,10 @@ Es una herramienta que nos permite crear entornos aislados de Python. De esta fo
   \item pygtail 0.6.1: \url{https://pypi.python.org/pypi/pygtail} - Sirve para leer archivos de log en los cuales haya registros del mismo sin leer. Similar al comando tail -f en sistemas Unix.
   \item python-dateutil 2.4.2: \url{https://pypi.python.org/pypi/python-dateutil/2.4.2} - Extensión al módulo principal de Python datetime.
   \item react 2.0.2: \url{https://pypi.python.org/pypi/react/2.0.2} - Módulo que ejecuta un servidor de datos para los componentes react de la aplicación en Python.
-  \item requests 2.9.1: \url{https://pypi.python.org/pypi/requests/} - Bibloteca Python para poder consumir recursos HTTP de forma segura y controlada.
+  \item requests 2.9.1: \url{https://pypi.python.org/pypi/requests/} - Es una biblioteca Python para poder consumir recursos HTTP de forma segura y controlada.
   \item setuptools 20.1.1: \url{https://pypi.python.org/pypi/setuptools} - Herramienta para la descarga, compilación, instalación, desinstalación y actualización de todos los paquetes Python. El resultado de la misma se puede usar mediante pip que se nutre el repositorio de paquetes PyPi.
   \item six 1.10.0: \url{https://pypi.python.org/pypi/six} - Es una bibloteca de compatibilidad entre Python 2 y 3.
   \item wheel 0.29.0: \url{https://pypi.python.org/pypi/wheel} - Es un gestor o generador de paquetes en Python.
-  \item wsgiref 0.1.2: \url{https://pypi.python.org/pypi/wsgiref} - Es una biblioteca que sirve cómo soporte de validación para WSGI 1.0.1 para versiones de Python inferiores a la 3.2.
-  \item configparser 3.5.0: \url{https://docs.python.org/2/library/configparser.html} - Es módulo o clase que implementa un lenguaje muy sencillo para el parseo de archivos de configuración, siguiendo una estructura similar a cómo se describen y procesan los archivos INI en sistemas Microsoft Windows.
+  \item wsgiref 0.1.2: \url{https://pypi.python.org/pypi/wsgiref} - Es una biblioteca que sirve como soporte de validación para WSGI 1.0.1 para versiones de Python inferiores a la 3.2.
+  \item configparser 3.5.0: \url{https://docs.python.org/2/library/configparser.html} - Es módulo o clase que implementa un lenguaje muy sencillo para el parseo de archivos de configuración, siguiendo una estructura similar a como se describen y procesan los archivos INI en sistemas Microsoft Windows.
 \end{itemize}

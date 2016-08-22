@@ -111,7 +111,7 @@ Tenemos que crear un archivo llamado ``iptables.log'' en ``/var/log'' con las si
 
 \section{Offset paquete PygTail}
 
-El paquete PygTail usa para la lectura de logs dentro de nuestro sistema un archivo ``.offset'' del que consultará información relacionada del archivo del cual queremos obtener el texto correspondiente. Cómo por defecto, éste no puede ejecutarse con privilegios de super usuario dentro de la ruta ``/var/log'' o hacemos que nuestra aplicación corra directamente sobre super usuario (opción desaconsejada) o creamos el siguiente archivo para cada log que queramos procesar mediante PygTail.
+El paquete PygTail usa para la lectura de logs dentro de nuestro sistema un archivo ``.offset'' del que consultará información relacionada del archivo del cual queremos obtener el texto correspondiente. Como por defecto, éste no puede ejecutarse con privilegios de super usuario dentro de la ruta ``/var/log'' o hacemos que nuestra aplicación corra directamente sobre super usuario (opción desaconsejada) o creamos el siguiente archivo para cada log que queramos procesar mediante PygTail.
 
 \begin{figure}[H]
   \begin{lstlisting}[language=bash]
