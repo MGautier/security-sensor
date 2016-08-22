@@ -266,7 +266,7 @@ Si introducimos la opción `3`, que hace saltar el paso, se procesarán todos lo
 
     --------------------------------------------------
     ++++++++++++++++++++++++++++++++++++++++++++++++++
-    ---> Insertado registro: {'TAG': 'Connection SSH', 'ID_Source_PORT': <Ports: 35562>, 'Protocol': u'TCP', 'RAW_Info': '2016-08-22T20:35:10.847422+02:00 debian kernel 16423.237371 IPTMSG=Connection SSH IN=lo OUT MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=19599 DF PROTO=TCP SPT=35562 DPT=22 WINDOW=43690 RES=0x00 SYN URGP=0 ', 'ID_Source_MAC': <Macs: 00:00:00:00:00:00:00:00:00:00:00:00:08:00>, 'ID_Source_IP': <Ips: 127.0.0.1>, 'ID_Dest_IP': <Ips: 127.0.0.1>, 'ID_Dest_PORT': <Ports: 22>, 'ID_Dest_MAC': <Macs: 00:00:00:00:00:00:00:00:00:00:00:00:00:00>}
+    ---> Insertado registro: {'TAG': 'Connection SSH', 'ID_Source_PORT': <Ports: 35562>, 'Protocol': u'TCP', 'RAW_Info': '2016-08-22T20:35:10.847422+02:00 debian kernel 16423.237371 IPTMSG=Connection SSH IN=lo OUT MAC=00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=127.0.0.1 DST=127.0.0.1 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=19599 DF PROTO=TCP SPT=35562 DPT=22 WINDOW=43690 RES=0x00 SYN URGP=0 ', 'ID_Source_MAC': <Macs: 00:00:00:00:00:00:00:00:00:00:00:00:00:00>, 'ID_Source_IP': <Ips: 127.0.0.1>, 'ID_Dest_IP': <Ips: 127.0.0.1>, 'ID_Dest_PORT': <Ports: 22>, 'ID_Dest_MAC': <Macs: 00:00:00:00:00:00:00:00:00:00:00:00:00:00>}
 
     ++++++++++++++++++++++++++++++++++++++++++++++++++
     ---> Fin de procesado de linea 
