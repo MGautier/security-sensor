@@ -6,7 +6,7 @@
 
 # Tabla de contenidos
 1. [Descripción](https://github.com/MGautier/security-sensor#descripción)
-2. [Configuración previa](https://github.com/MGautier/security-sensor#configuracion-previa)
+2. [Configuración previa](https://github.com/MGautier/security-sensor#configuración-previa)
 <ul>
 <li>[Instalación de Django y VirtualEnv](https://github.com/MGautier/security-sensor#instalación-de-django-y-virtualenv)</li>
 <li>[Rsyslog](https://github.com/MGautier/security-sensor#rsyslog)</li>
@@ -19,6 +19,14 @@
 3. [Web Server](https://github.com/MGautier/security-sensor#web-server)
 <ul><li>[Nginx](https://github.com/MGautier/security-sensor#nginx)</li></ul>
 4. [Pruebas y ejecución](https://github.com/MGautier/security-sensor#pruebas-y-ejecución)
+<ul>
+<li>[Ayuda de comandos en ejecución](https://github.com/MGautier/security-sensor#ayuda-de-comandos-de-ejecución)</li>
+<li>[info](https://github.com/MGautier/security-sensor#info)</li>
+<li>[pids](https://github.com/MGautier/security-sensor#pids)</li>
+<li>[exit or kill](https://github.com/MGautier/security-sensor#exit-or-kill)</li>
+</ul>
+5. [Licencia](https://github.com/MGautier/security-sensor#licencia)
+<ul><li>[Higcharts License](https://github.com/MGautier/security-sensor#highcharts-licence)</li></ul>
 
 # Descripción
 
@@ -220,7 +228,7 @@ root /var/www/html;
 
 Si la configuración se ha realizado correctamente, los contenidos estáticos de la web se verán en el navegador y no tendremos que entrar por el puerto 8000 sino por la dirección de loopback directamente: [http://127.0.0.1/secapp](http://127.0.0.1/secapp) ó [http://127.0.0.1/admin](http://127.0.0.1/admin)
 
-## Pruebas y ejecución
+# Pruebas y ejecución
 
 Para probar el funcionamiento del sistema tenemos que lanzar los siguientes comandos para que generen eventos de Iptables en nuestra máquina:
 ```bash
@@ -266,7 +274,7 @@ Si introducimos la opción `3`, que hace saltar el paso se procesarán todos los
     ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ```
-### Ayuda de comandos de ejecución
+## Ayuda de comandos de ejecución
 
 Si necesitamos en cualquier momento de la ejecución anterior saber los comandos disponibles para la interacción, simplemente con teclear la palabra clave `commands` obtendremos información relacionada:
 ```bash
@@ -282,7 +290,7 @@ Si necesitamos en cualquier momento de la ejecución anterior saber los comandos
     exit -> Aborta la ejecucion del proceso y lo mata.
     --------------------------------------------------
 ```
-#### info
+### info
 ```bash
     > info
     --------------------------------------------------
@@ -298,14 +306,14 @@ Si necesitamos en cualquier momento de la ejecución anterior saber los comandos
 
 ```
 
-#### pids
+### pids
 ```bash
     > pids
     Main thread --> 9889
 
 ```
 
-#### exit or kill
+### exit or kill
 ```bash
     > pids
     Main thread --> 9889
