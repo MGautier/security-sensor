@@ -7,16 +7,19 @@
 # Tabla de contenidos
 1. [Descripción](https://github.com/MGautier/security-sensor#descripción)
 2. [Configuración previa](https://github.com/MGautier/security-sensor#configuracion-previa)
-..* [Instalación de Django y VirtualEnv](https://github.com/MGautier/security-sensor#instalación-de-django-y-virtualenv)
-..* [Rsyslog](https://github.com/MGautier/security-sensor#rsyslog)
-..* [LogRotate](https://github.com/MGautier/security-sensor#logrotate)
-..* [iptables.log](https://github.com/MGautier/security-sensor#iptableslog)
-..* [Archivo offset paquete PygTail](https://github.com/MGautier/security-sensor#archivo-offset-paquete-pygtail)
-..* [Rsyslog.d](https://github.com/MGautier/security-sensor#rsyslogd)
-..* [Iptables](https://github.com/MGautier/security-sensor#iptables)
-1. [Web Server](https://github.com/MGautier/security-sensor#web-server)
-..* [Nginx](https://github.com/MGautier/security-sensor#nginx)
-1. [Pruebas y ejecución](https://github.com/MGautier/security-sensor#pruebas-y-ejecución)
+<ul>
+<li>[Instalación de Django y VirtualEnv](https://github.com/MGautier/security-sensor#instalación-de-django-y-virtualenv)</li>
+<li>[Rsyslog](https://github.com/MGautier/security-sensor#rsyslog)</li>
+<li>[LogRotate](https://github.com/MGautier/security-sensor#logrotate)</li>
+<li>[iptables.log](https://github.com/MGautier/security-sensor#iptableslog)</li>
+<li>[Archivo offset paquete PygTail](https://github.com/MGautier/security-sensor#archivo-offset-paquete-pygtail)</li>
+<li>[Rsyslog.d](https://github.com/MGautier/security-sensor#rsyslogd)</li>
+<li>[Iptables](https://github.com/MGautier/security-sensor#iptables)</li>
+</ul>
+3. [Web Server](https://github.com/MGautier/security-sensor#web-server)
+<ul><li>[Nginx](https://github.com/MGautier/security-sensor#nginx)</li></ul>
+4. [Pruebas y ejecución](https://github.com/MGautier/security-sensor#pruebas-y-ejecución)
+
 # Descripción
 
 El objetivo principal del proyecto es desarrollar un software que permita recopilar y visualizar la información generada por las aplicaciones de monitorización y control de seguridad que se ejecutan en una máquina.
