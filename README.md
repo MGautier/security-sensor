@@ -98,7 +98,7 @@ Tenemos que crear un archivo llamado `iptables.log` en `/var/log` con las siguie
 ```bash
     -rw-r--r-- 1 root adm 15604061 oct 26 20:28 /var/log/iptables.log
     $ chmod 644
-    $ chown root:admin
+    $ chown root:adm
 ```
 
 ## Archivo offset paquete PygTail
@@ -202,6 +202,15 @@ root /var/www/html;
 ```
 
 Si la configuración se ha realizado correctamente, los contenidos estáticos de la web se verán en el navegador y no tendremos que entrar por el puerto 8000 sino por la dirección de loopback directamente: [http://127.0.0.1/secapp](http://127.0.0.1/secapp) ó [http://127.0.0.1/admin](http://127.0.0.1/admin)
+
+## Pruebas y ejecución
+
+Para probar el funcionamiento del sistema tenemos que lanzar los siguientes comandos para que generen eventos de Iptables en nuestra máquina:
+```bash
+    $ ssh 127.0.0.1 #Pasados unos instantes detenemos el comando y pasamos al siguiente
+    $ ping 127.0.0.1 #A gusto del consumidor, cuanto más tiempo este funcionando más eventos tendremos
+```
+
 
 # Licencia
 
