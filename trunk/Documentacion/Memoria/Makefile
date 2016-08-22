@@ -6,6 +6,8 @@ pdfmulti: securityproject.tex
 	pdflatex securityproject.tex
 	pdflatex securityproject.tex
 
+others: first-page second-page auth tutor thanks
+
 first-page: primerahoja.tex
 	pdflatex primerahoja.tex
 
