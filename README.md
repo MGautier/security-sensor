@@ -257,7 +257,7 @@ En la terminal de ejecución nos saldrá algo similar a lo siguiente:
     Introduce parámetro a modificar ([3] - Saltar este paso, [0] - Ayuda): 
 
 ```
-Si introducimos la opción `3`, que hace saltar el paso se procesarán todos los eventos registrado en `/var/log/iptables.log`:
+Si introducimos la opción `3`, que hace saltar el paso, se procesarán todos los eventos registrados en `/var/log/iptables.log`:
 
 ```bash
     --------------------------------------------------
