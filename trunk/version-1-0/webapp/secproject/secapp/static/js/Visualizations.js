@@ -1,3 +1,7 @@
+/* --- Flag conditions --- */
+
+var xhr; // Para llevar el control de peticiones ajax en el action del button stadistics
+
 /* --- Extra functions --- */
 function format ( d ){
   var rows = '';
@@ -216,7 +220,6 @@ var VisualizationsComponent = React.createClass({
 
                         var events_per_day = "api/packets/"+chart_data[index][3]+"/"+chart_data[index][4];
                         var stadistics_per_day = "api/stadistics/"+chart_data[index][3]+"/"+chart_data[index][4];
-                        console.log("STADISTICS-DAY: ", stadistics_per_day);
 
                         var ajax_stadistics = [];
 
@@ -245,6 +248,7 @@ var VisualizationsComponent = React.createClass({
                           /*---           Asignaciones           ---*/
 
 
+
                           /*---                                  ---*/
                           /*---           Estadisticas           ---*/
 
@@ -254,19 +258,17 @@ var VisualizationsComponent = React.createClass({
 
                             var option_selected = get_select.options[get_select.selectedIndex].value;
 
+                            if(xhr && xhr.readyState != 4){
+                              xhr.abort();
+                            }
 
                             $glyphicon.addClass( animateClass );
                             // Se establece el Timeout para indicar que sea asincrona
-                            console.log("SOURCE: ", chart_data[index][3]);
-                            console.log("DAY: ", chart_data[index][4]);
-                            console.log("STADISTICS-2: ", stadistics_per_day);
-                            $.ajax({
+                            xhr = $.ajax({
                               url: stadistics_per_day,
                               dataType: 'json',
                               cache: false,
                               success: function(data) {
-                                console.log("SOURCE-2: ", chart_data[index][3]);
-                                console.log("DAY-2: ", chart_data[index][4]);
 
                                 if (option_selected != '-')
                                 {
@@ -322,16 +324,20 @@ var VisualizationsComponent = React.createClass({
                                     });
                                   }
 
-                                  console.log("AJAX-STADISTICS: ", ajax_stadistics);
                                 }
                               }.bind(this),
                               error: function(xhr, status, err){
                                 console.error(stadistics_per_day, status, err.toString());
+                              }.bind(this),
+                              complete: function(){
+                                console.log("Peticion ajax finalizada: ", ajax_stadistics);
                               }.bind(this)
                             });
 
                             window.setTimeout( function(){
                               $glyphicon.removeClass( animateClass );
+                              var results = ajax_stadistics;
+                              ajax_stadistics = [];
 
                               $('#stadistics').highcharts({
                                 chart: {
@@ -362,7 +368,7 @@ var VisualizationsComponent = React.createClass({
                                 series: [{
                                   type: 'pie',
                                   name: 'Percentage',
-                                  data: ajax_stadistics
+                                  data: results
                                 }]
                               });
 
