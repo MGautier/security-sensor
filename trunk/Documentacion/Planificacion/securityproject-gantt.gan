@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="" company="UGR" webLink="" view-date="2016-04-21" view-index="0" gantt-divider-location="702" resource-divider-location="300" version="2.7.2" locale="es">
+<?xml version="1.0" encoding="UTF-8"?><project name="" company="UGR" webLink="" view-date="2016-08-01" view-index="0" gantt-divider-location="702" resource-divider-location="300" version="2.7.2" locale="es">
     <description><![CDATA[El objetivo principal del proyecto es desarrollar un software que permita recopilar y visualizar la información generada por las aplicaciones de monitorización y control de seguridad que se ejecutan en una máquina.
 
 La motivación del mismo surge fruto de la necesidad de monitorizar un red corporativa a través de un mecanismo de gestión automatizada de eventos, o lo que viene siendo un SIEM. Los pasos para la realización de este sistema se han modularizado y dividido en diferentes etapas que se acometarán cómo un todo dentro del proyecto de investigación VERITAS (http://nesg.ugr.es/veritas/) del Network Engineering & Security Group (NESG - http://nesg.ugr.es/) perteneciente al área de Ingeniería Telemática de la Universidad de Granada.]]></description>
-    <view zooming-state="default:3" id="gantt-chart">
+    <view zooming-state="default:4" id="gantt-chart">
         <field id="tpd3" name="Nombre" width="54" order="0"/>
         <field id="tpd4" name="Fecha de inicio" width="13" order="1"/>
         <field id="tpd5" name="Fecha de fin" width="31" order="2"/>
-        <option id="color.recent"><![CDATA[#cc3300 #000000 #ffff00 #00cc33]]></option>
+        <option id="color.recent"><![CDATA[#00cc33 #cc3300 #000000 #ffff00]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Nombre" width="50" order="0"/>
@@ -160,6 +160,7 @@ Usando estas dos lista tengo cubierto la semana de abril que no sea cero y la se
         <task id="158" name="[NEXT] Evaluación" color="#8cb6ce" meeting="false" start="2016-08-15" duration="6" complete="0" expand="true"/>
         <task id="160" name="Reunión 1 de Septiembre 2016" color="#cc3300" meeting="false" start="2016-09-01" duration="1" complete="0" expand="true"/>
         <task id="164" name="Reunión 2 de Septiembre 2016" color="#cc3300" meeting="false" start="2016-09-02" duration="1" complete="0" expand="true"/>
+        <task id="165" name="[NEXT] Empaquetar la aplicación django" color="#00cc33" meeting="false" start="2016-08-22" duration="5" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
