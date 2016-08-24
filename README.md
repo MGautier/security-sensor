@@ -52,6 +52,14 @@ $ virtualenv .
 $ . bin/activate
 ```
 
+### Descarga del proyecto mediante paquete PyPI
+
+Podemos usar la aplicación generada bajo Django en otro proyecto Django que tengamos o como importación del mismo en un proyecto nuevo Django. Para ello se puede descargar el paquete del repositorio de paquetes python [PyPI](https://pypi.python.org/pypi/security-sensor). En la propia página del paquete viene el procedimiento de como instalar dicho paquete.
+
+```bash
+    $ pip install security-sensor
+```
+
 Una vez dispuesto nuestro entorno virtual vamos a instalar las dependencias necesarias para el funcionamiento de la aplicación. Para este paso es necesario tener instalado el paquete [pip](https://pip.pypa.io/en/stable/installing/), que es el gestor de paquetes del lenguaje Python.
 
 ```bash

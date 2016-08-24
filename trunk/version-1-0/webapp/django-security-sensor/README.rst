@@ -26,3 +26,5 @@ Quick start
    to create a user isolated like user-secapp (you'll need the Admin app enabled).
 
 5. Visit http://127.0.0.1:8000/secapp/ to see events log in a chart.
+
+Download from PyPi: https://pypi.python.org/pypi/security-sensor
