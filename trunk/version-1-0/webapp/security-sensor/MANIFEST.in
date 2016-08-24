@@ -1,5 +1,0 @@
-include LICENSE
-include README.rst
-recursive-include secapp/static *
-recursive-include secapp/templates *
-recursive-include docs *
