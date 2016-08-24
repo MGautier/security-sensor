@@ -1,0 +1,99 @@
+html {
+    font-family: Signika, serif;
+    background: url('../resources/sand.png');
+}
+
+div {
+    font-family: Signika, serif;
+    background: url('../resources/sand.png');
+}
+
+h1, h2, h3 {
+    color: steelblue;
+    text-align: center;
+    font-family: Signika, serif;
+    background: url('../resources/sand.png');
+}
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: white;
+  font: 10px;
+  text-anchor: end;
+  font-family: Signika, serif;
+  background: url('../resources/sand.png');
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+    font: 10px;
+    font-family: Signika, serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+  font-family: Signika, serif;
+}
+
+.x.axis path {
+  display: none;
+}
+
+div#content {
+    margin: auto;
+    padding: 1em;
+    fontSize: 18px;
+    font-family: Signika, serif;
+    color: steelblue;
+}
+div#sub-content {
+    margin: auto;
+    padding: 1em;
+    fontSize: 18px;
+    font-family: Signika, serif;
+    color: steelblue;
+}
+
+button.btn-sm{
+    margin-bottom: 1em;
+    margin-left: 1em;
+    padding: 0.5em;
+    font-family: Signika, serif;
+}
+
+.glyphicon-refresh-animate {
+   -webkit-animation-name: rotateThis;
+   -webkit-animation-duration: 2s;
+   -webkit-animation-iteration-count: infinite;
+   -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes "rotateThis" {
+ from {
+        -webkit-transform: rotate( 0deg );
+    }
+ to  {
+        -webkit-transform: rotate( 360deg );
+    }
+}
+
+td.details-control {
+    background: url('../resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../resources/details_close.png') no-repeat center center;
+}
