@@ -4,15 +4,15 @@ var uglify = require('gulp-uglify');
 
 
 gulp.task('cssnano', function(){
-  return gulp.src('$VIRTUAL_ENV/secproject/static/css/*.css')
+  return gulp.src('css/main.css')
     .pipe(nanoCSS())
-    .pipe(gulp.dest('$VIRTUAL_ENV/secproject/static/build/css/'));
+    .pipe(gulp.dest('build/css/main.min.css'));
 });
 
 gulp.task('uglify', function(){
-  return gulp.src('$VIRTUAL_ENV/secproject/static/js/*.js')
+  return gulp.src('js/Visualizations.js')
     .pipe(uglify())
-    .pipe(gulp.dest('$VIRTUAL_ENV/secproject/static/build/js'));
+    .pipe(gulp.dest('build/js/Visualizations.min.js'));
 });
 
 gulp.task('optimized', ['cssnano', 'uglify']);
