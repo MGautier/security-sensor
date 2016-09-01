@@ -34,7 +34,7 @@ Ahora es el momento de configurar nuestro proyecto Django para su ejecución:
     $ ./manage.py migrate
     $ ./manage.py createsuperuser #Esto nos crea el superuser de administracion
   \end{lstlisting}
-  \caption{Configuracion de la base de datos y creacion del super usuario}
+  \caption{Configuración de la base de datos y creación del super usuario}
 \end{figure}
 
 Si queremos especificar un usuario distinto a uno general para diferenciar entre entornos de desarrollo y producción, tendremos que acceder a la dirección ``http://127.0.0.1:8000/admin'', ingresar con el super usuario y definir nuevos usuarios para nuestra aplicación. Para nuestro propósito se ha definido un usuario llamado ``pfc'' para la parte de desarrollo de la aplicación. Una vez finalizada, se podrá establecer para un usuario normal o para otro específico.\\
@@ -104,7 +104,7 @@ Tenemos que crear un archivo llamado ``iptables.log'' en ``/var/log'' con las si
   \begin{lstlisting}[language=bash]
     -rw-r--r-- 1 root adm 15604061 oct 26 20:28 /var/log/iptables.log
     $ chmod 644
-    $ chown root:admin
+    $ chown root:adm
   \end{lstlisting}
   \caption{Creación del archivo base de iptables.log}
 \end{figure}

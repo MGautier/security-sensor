@@ -1,7 +1,9 @@
-\chapter[Arte]{Estado del arte y tecnologías utilizadas}
+\chapter[Estado del arte y tecnologías utilizadas]{Estado del arte y tecnologías utilizadas}
+\chaptermark{Arte y tecnologías}
 \label{chap:estado del arte}
 
-\section[Estado del arte]{Estado del arte de herramientas para monitorizar información}
+\section[Estado del arte de herramientas para monitorizar información]{Estado del arte de herramientas para monitorizar información}
+\sectionmark{Estado del arte}
 
 En primer lugar, se realiza un estado del arte de herramientas que pudieran realizar funcionalidades parecidas a las que se van a implementar en este proyecto.\\
 
@@ -173,7 +175,7 @@ No existe ningún tipo de mecanismo analítico de esta información dado que el 
 
 Además, la visualización de los eventos almacenados no siempre es inmediata y necesita de otra aplicación externa o módulo (funcionalidad extra) que explote estos recursos y los haga fácil para la interacción humana.\\
 
-\newpage
+%\newpage
 \section{Tecnologías utilizadas}
 
 A continuación se detallan las diferentes tecnologías/bibliotecas/lenguajes que se han empleado para la elaboración del proyecto y por qué se han escogido por encima de otras posibles soluciones.
@@ -236,7 +238,10 @@ A la hora de la implementación para comprobar que hilos se están ejecutando a 
 
 Lo que se realiza en esa comprobación es que dentro de la pila o lista de thread que se han lanzado haya alguna coincidencia de objetos de la clase Iptables y si la hay ya existe un hilo previo en ejecución que hace las comprobaciones pertinentes.\\
 
-\lstinputlisting{trozos-codigo/codigo-1.py}
+\begin{figure}
+  \lstinputlisting{trozos-codigo/codigo-1.py}
+  \caption{Comprobación dentro de la pila de Threads para el objeto de la clase Iptables}
+\end{figure}
 \newpage
 \subsection{Django}
 
@@ -263,24 +268,21 @@ Así pues la \textbf{Vista} en el framework Django se representa al modelo MVC c
 Template o Plantilla se refiere a la parte encargada de reprensentar la información almacenada en BD, procesada y generada mediante la Vista (View). Al contrario de un modelo MVC, en donde el controlador se encarga de generar las vistas, en este modelo se representan las mismas como una plantilla de muchas otras que se van enrutando a diferentes funciones generadas por la vista. \\
 
 Dicho esto, siempre habra una plantilla Master o padre de la que heredarán todas las hijas que vayamos asociando a nuestra web. Estas heredan una estructura o skeleton en formato html enriquecido con lenguaje propio de Django en formato python. Veamos un ejemplo de plantilla Master y una plantilla que se nutre de este skeleton:\\
+\begin{figure}[H]
+  \lstinputlisting[language=HTML]{trozos-codigo/codigo-2.html}
+  \caption{Cabecera de la plantilla Master que heredarán el resto de plantillas/vistas de la aplicación}
+\end{figure}
 
-\lstinputlisting[language=HTML]{trozos-codigo/codigo-2.html}
-
-En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos donde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ése bloque.\\
+En el fragmento de la plantilla Master incluimos los archivos estáticos del sistema (\textbf{load staticfiles}) y además especificamos donde iría el cuerpo de las vistas o plantillas hijas que heredarán este skeleton mediante la especificación de un bloque (\textbf{block content} y \textbf{endblock}). Y ahora veremos un ejemplo de lo que podría ir dentro de ese bloque.\\
 
 \newpage
 \begin{minipage}{\linewidth}
-  \lstinputlisting[language=HTML]{trozos-codigo/codigo-3.html}
+  \begin{figure}[H]
+    \lstinputlisting[language=HTML]{trozos-codigo/codigo-3.html}
+    \caption{Contenido de la plantilla index que hereda funcionalidades de la plantilla Master.}
+  \end{figure}
   Aquí se observa perfectamente como se heredan las características de la plantilla Master y se define el bloque de contenido que en la plantilla Master ya se especificó (se situa dentro de las etiquetas \textbf{block} y \textbf{endblock}). \\
 \end{minipage}
-
-\subsection{C3js}
-
-Web: \url{http://c3js.org/}\\
-
-Es una biblioteca gráfica basada D3js, que es otra biblioteca visual en Javascript. En este caso, la biblioteca hace uso de la funcionalidad para gráficas de D3js adaptando su motor a otras posibles soluciones de implementación.\\
-
-\includegraphics[scale=0.25]{diagramas/c3js-chart.png}
 
 \subsection{D3js}
 \hspace*{1in}{\includegraphics[scale=0.35]{diagramas/d3js-logo.png}}
@@ -294,6 +296,13 @@ D3.js es una biblioteca javascript para la manipulación de documentos basado en
   \caption{Ejemplo de D3js}
 \end{figure}
 
+\subsection{C3js}
+
+Web: \url{http://c3js.org/}\\
+
+Es una biblioteca gráfica basada D3js, que es otra biblioteca visual en Javascript. En este caso, la biblioteca hace uso de la funcionalidad para gráficas de D3js adaptando su motor a otras posibles soluciones de implementación.\\
+
+\includegraphics[scale=0.25]{diagramas/c3js-chart.png}
 
 \subsection{\LaTeX}
 
@@ -307,9 +316,9 @@ Web: \url{https://www.latex-project.org/}\\
 
 Web: \url{https://facebook.github.io/react/}\\
 
-React es una biblioteca Javascript que permite construir interfaces de usuario en nuestra aplicación web. Existen soluciones similares a React como podría ser JQuery, pero en este caso el proceso de creación de componentes visuales se hace muy intuitiva mediante clases internas que encapsulan el contenido que posteriormente se traducirá a código Javascript nativo.\\
+React es una biblioteca Javascript que permite construir interfaces de usuario en nuestra aplicación web. Existen soluciones similares a React como podría ser JQuery, pero en este caso el proceso de creación de componentes visuales se hace muy intuitivo mediante clases internas que encapsulan el contenido que posteriormente se traducirá a código Javascript nativo.\\
 
-Para la traducción, React utiliza un componente llamada JSX, pero en nuestra solución se ha usado el paquete Babel (\url{https://babeljs.io/}) que es similar pero en formato Javascript y no NodeJS.\\
+Para la traducción, React utiliza un componente llamado JSX, pero en nuestra solución se ha usado el paquete Babel (\url{https://babeljs.io/}) que es similar pero en formato Javascript y no NodeJS.\\
 
 \subsection{Highcharts}
 
@@ -335,7 +344,7 @@ Web: \url{https://www.sqlite.org/}\\
 SQLite es un biblioteca software que implementa un motor para bases de datos SQL. Sus principales características son las siguientes:
 
 \begin{itemize}
-\item Las transacciones de datos son atómicas, consistentes, aisladas y duraderas (ACID) incluso después de que el sistema tengo un fallo o se apague inesperadamente.
+\item Las transacciones de datos son atómicas, consistentes, aisladas y duraderas (ACID) incluso después de que el sistema tenga un fallo o se apague inesperadamente.
 \item No necesita de una administración o configuración previa para su normal funcionamiento.
 \item Implementación de un sistema SQL íntegro con características más avanzadas como indexación parcial.
 \item La base de datos, en su totalidad, se almacena como un archivo normal en disco. Esto es útil para ser cargado directamente como un archivo en una aplicación.
@@ -446,6 +455,15 @@ Web: \url{https://www.jetbrains.com/pycharm/}\\
 
 PyCharm es un IDE que permite el trabajo con aplicaciones Python en sus respectivos entornos virtuales (virtualenv) así como la integración con frameworks de desarrollo como es el caso de Django. La aplicación en sí fue desarrollada nativamente mediante un editor de texto (Emacs) pero a la hora de realizar un empaquetado e integración con otra herramientas se optó por este IDE. \\
 
+\subsection{Bitbucket}
+
+\hspace*{2in}{\includegraphics{diagramas/bitbucket-logo.png}}\\
+
+Web: \url{https://bitbucket.org/}\\
+Repositorio: \url{https://bitbucket.org/MGautierGomez/securityproject}\\
+
+Gestor de repositorios Git y Mercurial. Se optó por este gestor para probar su funcionamiento, así como la posibilidad de tener repositorios privados para desarrollar partes del proyecto que necesitasen ser ocultadas. También se encuentra alojado en el repositorio de \textbf{GitHub}: \url{https://github.com/MGautier/security-sensor}\\
+
 \subsection{Taiga}
 
 \hspace*{2.5in}{\includegraphics[scale=0.25]{diagramas/taiga-logo.png}}
@@ -459,14 +477,7 @@ Taiga es un gestor de proyectos que nos permite implementar una metodología SCR
 \caption{Backlog del proyecto siguiendo un SCRUM}
 \end{figure}
 
-\subsection{Bitbucket}
 
-\hspace*{2in}{\includegraphics{diagramas/bitbucket-logo.png}}\\
-
-Web: \url{https://bitbucket.org/}\\
-Repositorio: \url{https://bitbucket.org/MGautierGomez/securityproject}\\
-
-Gestor de repositorios Git y Mercurial. Se optó por este gestor para probar su funcionamiento, así como la posibilidad de tener repositorios privados para desarrollar partes del proyecto que necesitasen ser ocultadas. También se encuentra alojado en el repositorio de \textbf{GitHub}: \url{https://github.com/MGautier/security-sensor}\\
 
 \subsection{Git}
 
@@ -566,5 +577,11 @@ Es una herramienta que nos permite crear entornos aislados de Python. De esta fo
   \item six 1.10.0: \url{https://pypi.python.org/pypi/six} - Es una bibloteca de compatibilidad entre Python 2 y 3.
   \item wheel 0.29.0: \url{https://pypi.python.org/pypi/wheel} - Es un gestor o generador de paquetes en Python.
   \item wsgiref 0.1.2: \url{https://pypi.python.org/pypi/wsgiref} - Es una biblioteca que sirve como soporte de validación para WSGI 1.0.1 para versiones de Python inferiores a la 3.2.
-  \item configparser 3.5.0: \url{https://docs.python.org/2/library/configparser.html} - Es módulo o clase que implementa un lenguaje muy sencillo para el parseo de archivos de configuración, siguiendo una estructura similar a como se describen y procesan los archivos INI en sistemas Microsoft Windows.
+  \item configparser 3.5.0: \url{https://docs.python.org/2/library/configparser.html} - Es un xsmódulo o clase que implementa un lenguaje muy sencillo para el parseo de archivos de configuración, siguiendo una estructura similar a como se describen y procesan los archivos INI en sistemas Microsoft Windows.
 \end{itemize}
+
+\subsection{Versiones de las herramientas empleadas}
+
+Las versiones de las herramientas anteriormente mencionadas no difieren mucho el comportamiento unas de otras, para el caso de herramientas softwares que no sean dependencias directas de Python.\\
+
+Para el caso de las dependencias de Python, las especificadas en los requirimientos de instalación dentro del entorno virtual, son las que se han definido en la sección anterior. De igual manera, no afecta que sea de una versión superior o no, simplemente se empezó a desarrollar el proyecto en esas versiones.

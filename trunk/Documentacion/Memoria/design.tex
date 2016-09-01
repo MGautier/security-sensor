@@ -23,7 +23,7 @@ En el esquema podemos ver toda la arquitectura que tendría una sonda para el pr
   \caption{Arquitectura: Assets}
 \end{figure}
 
-En esta sección de la arquitectura es dónde se define la parte de las fuentes de seguridad que se van a gestionar desde la sonda, es decir, implementar, recolección y pasar el control final a su clase superior: Monitor. La jerarquía de clases sería de la siguiente manera:\\
+En esta sección de la arquitectura es donde se define la parte de las fuentes de seguridad que se van a gestionar desde la sonda, es decir, implementar, recolección y pasar el control final a su clase superior: Monitor. La jerarquía de clases sería de la siguiente manera:\\
 \newpage
 \begin{figure}
   \hspace*{0.05in}{\includegraphics[scale=0.7]{diagramas/diagrama-assets.jpg}}
@@ -31,6 +31,8 @@ En esta sección de la arquitectura es dónde se define la parte de las fuentes 
 \end{figure}
 
 La clase base que sería Source, hereda del comportamiento de la clase Thread (de la biblioteca threading de Python) y a su vez toda fuente de seguridad que se decida implementar heredará de ella los métodos previstos.\\
+
+Estas fuentes de seguridad podrían ser varias (Iptables, Snort, Syslog, etc), pero cada una de ellas irá asociada a una instancia de Source, es decir, a una hebra que se encargará de monitorizar su log. Además, el uso de la clase Source, permite instanciar al resto de clases heredadas de manera interna abstrayendo su uso para el usuario final.
 \newpage
 
 \subsubsection{Monitor}
@@ -44,7 +46,7 @@ En esta sección de la arquitectura es donde se define la parte del control y ej
 
 \begin{figure}[H]
   \hspace*{-0.25in}{\includegraphics[scale=0.525]{diagramas/diagrama-monitor.jpg}}
-  \caption{Diagrama de clases: Assets}
+  \caption{Diagrama de clases: Monitor}
 \end{figure}
 
 Nuestra arquitectura monitor se representa con la clase Controller que se encarga de dotar de funcionalidad de ejecución de la fuente (hilo) para unos determinados parámetros de configuración.
@@ -53,7 +55,7 @@ Nuestra arquitectura monitor se representa con la clase Controller que se encarg
 
 \begin{figure}[H]
   \hspace*{0.65in}{\includegraphics[scale=0.5]{diagramas/bbdd.png}}
-  \caption{Arquitectura: Monitor}
+  \caption{Arquitectura: BD}
 \end{figure}
 
 En esta sección de la arquitectura es dónde se define la parte de la interacción con la base de datos y que tablas (clases del modelo ORM) se han definido y con que relaciones. La jerarquía de clases sería de la siguiente manera: \\
@@ -81,20 +83,24 @@ Como podemos observar en el diagrama anterior, por ejemplo, para la clase Packet
 
 El formato normalizado de la base de datos para visualizar dicha información será mediante JSON, ya que para hacer uso de la información la implementación consumirá dichos datos de la api que se proporciona con la aplicación.\\
 
-\newpage
 \subsubsection{Visualizations}
 
+\newpage
 \begin{figure}[H]
-  \hspace*{0.65in}{\includegraphics[scale=0.5]{diagramas/visualization.png}}
-  \caption{Arquitectura: Visualizaciones}
+  \hspace*{0.65in}{\includegraphics[scale=0.47]{diagramas/visualization.png}}
+  \caption{Arquitectura: Visualizaciones\\}
 \end{figure}
+\vspace*{-.5in}{
+\begin{minipage}{\linewidth}
+  En esta seccción de la arquitectura es donde se define la parte de la interacción con la base de datos y la visualización de los datos en la interfaz web. La jerarquía de clases sería de la siguiente manera: \\
 
-En esta seccción de la arquitectura es donde se define la parte de la interacción con la base de datos y la visualización de los datos en la interfaz web. La jerarquía de clases sería de la siguiente manera: \\
+  \begin{figure}[H]
+    \hspace*{0.5in}{\includegraphics[scale=0.65]{diagramas/visualization.jpg}}
+    \caption{Clase Visualization para el paquete ReactJS}
+  \end{figure}
+\end{minipage}}
 
-\begin{figure}[H]
-  \hspace*{0.5in}{\includegraphics[scale=0.65]{diagramas/visualization.jpg}}
-  \caption{Clase Visualization para el paquete ReactJS}
-\end{figure}
+
 
 \begin{figure}[H]
   \hspace*{0.75in}{\includegraphics[scale=0.65]{diagramas/visualizations-visualizations.jpg}}
@@ -110,7 +116,7 @@ En esta seccción de la arquitectura es donde se define la parte de la interacci
   \hspace*{2.15in}{\includegraphics[scale=0.65]{diagramas/visualizations-info.jpg}}
   \caption{Paquete Info}
 \end{figure}
-\pagebreak
+
 \section{Diagramas de Secuencia - Operaciones}
 
 En esta sección vamos a describir los diagramas de secuencia de operaciones tales como:
@@ -137,15 +143,19 @@ Ahora definiremos la parte de diagramas de secuencias para la interacción entre
 \end{figure}
 
 \section{Diseño de la vista}
+En esta sección se definen los flujos de interacción para un usuario y la vista final de aplicación en el navegador web.\\
 
-\subsection{Flujo de interacción de la vista principal}
 
-\begin{figure}[H]
-\vspace*{-.1in}{\hspace*{.35in}{\includegraphics[scale=.7]{diagramas/vista-principal.jpg}}}
-\caption{Diagrama de Secuencia para la vista principal}
-\end{figure}
-
+\begin{minipage}{\linewidth}
+  \subsection{Flujo de interacción de la vista principal}
+  Interacción del usuario con los items de la vista principal.
+  \begin{figure}[H]
+    \vspace*{-.1in}{\hspace*{.35in}{\includegraphics[scale=.7]{diagramas/vista-principal.jpg}}}
+    \caption{Diagrama de Secuencia para la vista principal}
+  \end{figure}
+\end{minipage}
 \subsection{Flujo de interacción de la vista de eventos en tiempo real}
+Interacción del usuario con el item de eventos en tiempo real de la vista principal.
 
 \begin{figure}[H]
 \vspace*{-.1in}{\hspace*{.65in}{\includegraphics[scale=.7]{diagramas/vista-live-events.jpg}}}
@@ -153,22 +163,25 @@ Ahora definiremos la parte de diagramas de secuencias para la interacción entre
 \end{figure}
 
 \subsection{Flujo de interacción de la vista de estadísticas de los paquetes}
+Interacción del usuario con el item de generación de estadísticas asociadas a eventos de la vista principal.
 
 \begin{figure}[H]
 \vspace*{-.1in}{\hspace*{.75in}{\includegraphics[scale=.7]{diagramas/vista-estadisticas.jpg}}}
 \caption{Diagrama de Secuencia para la vista de estadísticas de los paquetes}
 \end{figure}
+\newpage
+Estos han sido los diagramas de secuencia o interacción que podrá tener la parte de la web con el usuario. Ahora se mostrarán algunas capturas de la parte visual (web) que finalmente se ha obtenido:\\
 
-Estos han sido los diagramas de secuencia o interacción que podrá tener la parte de la web con el usuario. Ahora se mostrarán algunas capturas de la parte visual (web) que finalmente se ha obtenido:
-
+\begin{minipage}{\linewidth}
 \subsubsection{Vista Principal}
-
+Resultado de la vista final que el usuario podrá acceder y manejar.
 \begin{figure}[H]
-\vspace*{-.5in}{\hspace*{.55in}{\includegraphics[scale=.32,angle=270]{diagramas/web_2.png}}}
+\vspace*{-.1in}{\hspace*{1.25in}{\includegraphics[scale=.25,angle=270]{diagramas/web_2.png}}}
 \caption{Vista principal de la Web}
 \end{figure}
-
+\end{minipage}
 \subsubsection{Vista con información de los eventos}
+Vista en donde se podrá obtener información asociada al evento pulsado en la gráfica principal.
 
 \begin{figure}[H]
 \vspace*{.2in}{\hspace*{.55in}{\includegraphics[scale=.32,angle=270]{diagramas/web_3.png}}}
@@ -176,14 +189,14 @@ Estos han sido los diagramas de secuencia o interacción que podrá tener la par
 \end{figure}
 
 \subsubsection{Vista con la información adicional por evento}
-
+Item de la tabla de paquetes en donde haciendo click (despliega) y doble click (pliega) la información adicional del paquete capturado en el procesamiento.
 \begin{figure}[H]
-\vspace*{.2in}{\hspace*{.55in}{\includegraphics[scale=.32,angle=270]{diagramas/web_4.png}}}
+\vspace*{.2in}{\hspace*{1.25in}{\includegraphics[scale=.25,angle=270]{diagramas/web_4.png}}}
 \caption{Vista principal con la información adicional por cada evento seleccionado}
 \end{figure}
 
 \subsubsection{Vista con las estadísticas del día seleccionado}
-
+Gráfico en formato tarta (pie chart) con la información que el usuario ha podido elegir del item desplegable y que posteriormente ha generado al pulsar el botón.
 \begin{figure}[H]
 \vspace*{.2in}{\hspace*{.55in}{\includegraphics[scale=.32,angle=270]{diagramas/web_5.png}}}
 \caption{Vista principal con las estadísticas de los eventos del día seleccionado}

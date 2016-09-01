@@ -37,7 +37,7 @@ Web: \url{https://www.chef.io/}\\
   \end{center}
 \end{figure}
 
-Chef es una plataforma de automatización de gran alcance que nos transforma el control de infraestructuras en código. Da igual sobre el sistema operativo o plataforma sobre el que se tenga que operar, Chef automatiza configuraciones de infraestructuras, desplegados y gestionado a través de la red, sin importar el tamaño de la solución software a controlar.\\
+Chef es una plataforma de automatización de gran alcance que nos transforma el control de infraestructuras en código. Da igual el sistema operativo o plataforma sobre el que se tenga que operar, Chef automatiza configuraciones de infraestructuras, desplegados y gestionado a través de la red, sin importar el tamaño de la solución software a controlar.\\
 
 A continuación un diagrama explicando la arquitectura de un sistema bajo Chef:
 
@@ -79,10 +79,11 @@ Docker es un sistema de desarrollo de sistemas completos, utilizando el concepto
   \hspace*{-.1in}{\includegraphics[scale=0.4]{diagramas/docker.png}}
   \caption{Diagrama de la arquitectura general de Docker}
 \end{figure}
-\newpage
+\vspace*{-.12in}{
+\begin{minipage}{\linewidth}
 \section[Configuración local]{Configuración local para procesamiento}
 Los primeros pasos para la obtención de logs o eventos generados por la fuente de seguridad, iptables, serán los de configurar el sistema interno de correlación de logs rsyslog junto con el sistema de rotación de logs logrotate. Para el caso de rsyslog tenemos que definir un filtro para que cualquier evento que genere el sistema con un determinado mensaje definido en las reglas de iptables, sea capturado y almacenado en un determinado directorio. También hemos dotado a los logs del sistema de timestamp con mayor precisión para poder diferenciar eventos con mayor afinamiento y cambiado la tupla de permisos a la hora de crear un archivo con \textbf{FileCreateMode}.
-
+\end{minipage}}
 \begin{figure}[H]
   \begin{lstlisting}[language=bash]
     #
@@ -110,6 +111,7 @@ Los primeros pasos para la obtención de logs o eventos generados por la fuente 
   \caption{Configuración de iptables para Rsyslog}
 \end{figure}
 \pagebreak
+\begin{minipage}{\linewidth}
 Hemos de configurar Logrotate (más información sobre los campos visitar sección \ref{subsection:logrotate}):
 
 \begin{figure}[H]
@@ -158,7 +160,7 @@ iptables -A INPUT -p tcp -m tcp --dport 22 -j LOG --log-prefix "IPTMSG=Connectio
 \end{figure}
 
 En la siguiente sección explicaremos en profundidad cada una de las opciones de la regla, pero a simple vista podemos observar que el mensaje asociado a la regla coincide con la palabra clave del filtro empleado en rsyslog: \textbf{IPTMSG=}. Así pues, una vez dicho evento se genere el sistema y syslog lo procese como un mensaje de un servicio determinado, en este caso iptables, rsyslog filtrará dicho mensaje según su configuración para almacenarlo posteriormente en \textbf{/var/log/iptables.log}.
-
+\end{minipage}
 \subsection{Iptables}
 
 El servicio de firewall del kernel de GNU Linux, iptables, nos proporciona una interfaz de reglas y tablas en donde podemos definir patrones o reglas que actuen sobre el tráfico que llega o sale desde nuestra máquina. Las reglas que se han definido por defecto son las siguientes (si queremos más filtros hay que implicar al protocolo y su puerto asociado con un mensaje):
@@ -239,7 +241,6 @@ Lo anterior corresponde con la manipulación por parte de rsyslog del mensaje ob
 \end{lstlisting}
 \caption{Procesamiento del log capturado y almacenado en la bd interna de la aplicación}
 \end{figure}
-\pagebreak
 
 \subsection[Parser]{Transformación de log en información útil: Parser}
 
@@ -250,8 +251,9 @@ Una vez hemos descrito los pasos a seguir para obtener un log para un evento ipt
 \caption{Instancia de la clase Pygtail y lectura de las líneas del log}
 \end{figure}
 
-Hacemos uso del módulo o paquete \href{https://pypi.python.org/pypi/pygtail}{Pygtail} que nos permite leer archivos de log cuyos registros internos aún no han sido leídos. Es una especie de \textbf{\$ tail -f} a un archivo en concreto, pero usa un concepto de offset e inode para saber la última actualización y posición del archivo antes y después de ser abierto para así saber que parte de la última lectura se quedo en ejecución. Éste es otro punto importante dado que para hacer uso de esta funcionalidad debemos crear un archivo con el nombre del log, véase \textbf{/var/log/iptables.log} cuya extensión final sea offset (\textbf{/var/log/iptables.log.offset}) y sus permisos los siguientes:
-
+Hacemos uso del módulo o paquete \href{https://pypi.python.org/pypi/pygtail}{Pygtail} que nos permite leer archivos de log cuyos registros internos aún no han sido leídos. Es una especie de \textbf{\$ tail -f} a un archivo en concreto, pero usa un concepto de offset e inode para saber la última actualización y posición del archivo antes y después de ser abierto para así saber que parte de la última lectura se quedo en ejecución. Éste es otro punto importante dado que para hacer uso de esta funcionalidad debemos crear un archivo con el nombre del log, véase \textbf{/var/log/iptables.log} cuya extensión final sea offset (\textbf{/var/log/iptables.log.offset}) y sus permisos los siguientes:\\
+\vspace*{-.5in}{
+\begin{minipage}{\linewidth}
 \begin{figure}[H]
   \begin{lstlisting}[language=bash, breaklines=true]
     -rw-r--r-- 1 root adm 10391 jul  3 17:12 /var/log/iptables.log
@@ -274,16 +276,17 @@ Una vez separado por palabras toda la línea de log, pasamos a diferenciar entre
 \caption{Obtenemos la tupla key=>value para cada etiqueta del log}
 \end{figure}
 
-Ya tenemos todas las etiquetas de los campos del log y ahora nos toca extraer su valor asociado para asignarlo al ORM de la base de datos, es decir, almacenar la información en la BD.\\
-
+Ya tenemos todas las etiquetas de los campos del log y ahora nos toca extraer su valor asociado para asignarlo al ORM de la base de datos, es decir, almacenar la información en la BD.
+\end{minipage}}
+\begin{minipage}{\linewidth}
 \begin{figure}[H]
 \lstinputlisting{trozos-codigo/codigo-7.py}
 \caption{Vamos asignando cada etiqueta y su valor a su asociado del ORM}
 \end{figure}
 
 Los siguientes pasos de comprobación de integridad de valores y demás se relegan a la visualización del interesado en el método process\_line del archivo código fuente iptables.py\\
+\end{minipage}
 
-\pagebreak
 \subsection{Workflow}
 Ahora vamos a detallar los pasos que seguirá la aplicación a la hora de la visualización de información en la web mediante el framework Django. Pero primero cómo se procesan y almacenan los datos de los logs:\\
 
