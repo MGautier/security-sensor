@@ -3,6 +3,145 @@
 
 A continuación se dejan algunos ejemplos de las pruebas funcionales. Estos son test unitarios que se han realizado sobre la parte más importante del proyecto que es la base de datos y la integridad de dichos datos a la hora de poder operar con ellos desde la api/interfaz web.\\
 
-Para una mayor profundidad en su estudio, estos se encuentran en el archivo ``tests.py'' dentro de la jerarquía del código fuente.\\
+Para una mayor profundidad en su estudio, estos se encuentran en el archivo ``tests.py'' dentro de la jerarquía del código fuente. Pasemos a analizar cada uno de los test realizados sobre el modelo PacketEventsInformation de la base de datos.\\
 
-\lstinputlisting{trozos-codigo/codigo-9.py}
+\section{Test: PacketEventsInformation}
+
+Clase del modelo relacional ORM - PacketEventsInformation. Es la clase que almacena todas las referencias al resto de clases internas de la arquitectura del sistema de base de datos.\\
+
+\lstinputlisting{trozos-codigo/codigo-9-class.py}
+
+\subsection{Método: setUp}
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso tenemos que crear instancias paras todas las referencias que contiene un objeto de la clase PacketEventsInformation.
+
+\lstinputlisting{trozos-codigo/codigo-9-set-up.py}
+
+\begin{itemize}
+\item ip-source: Instancia Clase Ips.
+\item ip-dest: Instancia Clase Ips.
+\item port-source: Instancia Clase Ports.
+\item port-dest: Instancia Clase Ports.
+\item mac-source: Instancia Clase Macs.
+\item mac-dest: Instancia Clase Macs.
+\item log-sources: Instancia Clase LogSources.
+\item event: Instancia Clase Events.
+\item PacketEventsInformation: Instancia a su propia clase.
+\end{itemize}
+
+Los métodos siguientes sirven para la consecución del test a la clase. \\
+
+\subsection{Método: test\_id\_ip\_source}
+Descripción: Comprobación de que el objeto de ip origen (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Ips creada anteriormente, en el método setUp, si existe algún campo (\textbf{Ip}) cuyo valor coincida con el valor de: ``127.0.0.2''.
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_IP\_Source} con una referencia de una instancia similar, en este caso: \textbf{ip\_source}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ips como la consulta de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-1.py}
+
+\subsection{Método: test\_id\_ip\_dest}
+
+Descripción: Comprobación de que el objeto de ip destino (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Ips creada anteriormente, en el método setUp, si existe algún campo (\textbf{Ip}) cuyo valor coincida con el valor de: ``127.0.0.3''.
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_IP\_Dest} con una referencia de una instancia similar, en este caso: \textbf{ip\_dest}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ips como la consulta de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-2.py}
+
+\subsection{Método: test\_id\_source\_port}
+
+Descripción: Comprobación de que el objeto de puerto origen (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Ports creada anteriormente, en el método setUp, si existe algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ftp''.
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Source\_Port} con una referencia de una instancia similar, en este caso: \textbf{port\_source}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ports como la consulta de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-3.py}
+
+\subsection{Método: test\_id\_dest\_port}
+
+Descripción: Comprobación de que el objeto de puerto destino (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Ports creada anteriormente, en el método setUp, si existe algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Dest\_Port} con una referencia de una instancia similar, en este caso: \textbf{port\_dest}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ports como la consulta de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-4.py}
+
+\subsection{Método: test\_protocol}
+
+Descripción: Comprobación de que el protocolo del paquete coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriormente, en el método setUp, si existe algún campo (\textbf{Protocol}) cuyo valor coincida con el valor de: ``ICMP''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información comparando que la devolución del método interno de la clase PacketEventsInformation es igual al argumento pasado al método: ``ICMP''.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-5.py}
+
+\subsection{Método: test\_id\_source\_mac}
+
+Descripción: Comprobación de que el objeto de mac origen (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Macs creada anteriormente, en el método setUp, si existe algún campo (\textbf{TAG}) cuyo valor coincida con el valor de: ``Mac local1''.
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Source\_MAC} con una referencia de una instancia similar, en este caso: \textbf{mac\_source}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Macs como la consulta de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-6.py}
+
+\subsection{Método: test\_id\_dest\_mac}
+
+Descripción: Comprobación de que el objeto de mac destino (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Macs creada anteriormente, en el método setUp, si existe algún campo (\textbf{TAG}) cuyo valor coincida con el valor de: ``Mac local2''.
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Dest\_MAC} con una referencia de una instancia similar, en este caso: \textbf{mac\_dest}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Macs como la consulta de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-7.py}
+
+\subsection{Método: test\_raw\_info}
+
+Descripción: Comprobación de que el log en formato RAW coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriormente, en el método setUp, si existe algún campo (\textbf{RAW\_Info}) cuyo valor coincida con el valor de: ``LOG RAW INFO''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información comparando que la devolución del método interno de la clase PacketEventsInformation es igual al argumento pasado al método ``LOG RAW INFO''.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-8.py}
+
+\subsection{Método: test\_tag}
+
+Descripción: Comprobación de que la etiqueta especificada para el paquete coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia PacketEventsInformation creada anteriormente, en el método setUp, si existe algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``Connection ICMP''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información comparando que la devolución del método interno de la clase PacketEventsInformation es igual al argumento pasado al método ``Connection ICMP''.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-9.py}
+
+\subsection{Método: test\_id}
+
+Descripción: Comprobación de que el objeto de ip origen (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia Events creada anteriormente, en el método setUp, si existe algún campo (\textbf{Timestamp}) cuyo valor coincida con el valor de: Timestamp del sistema en la hora actual que se almacenó cómo atributo interno de la clase Test.
+\item Se pasa como parámetro la referencia de la instancia anterior a la instancia temporal de la clase PacketEventsInformation (la destinataria del test).
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Events como la devolución de la referencia interna asociada dentro de PacketEventsInformation.
+\end{itemize}
+
+\lstinputlisting{trozos-codigo/codigo-9-10.py}
