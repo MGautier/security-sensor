@@ -114,8 +114,8 @@ urlpatterns = [
 
     # Listado de estadisticas por cada paquete que se consulte (IPs, Eventos en hora, Puertos, Protocolos, etc)
 
-    url(r'^api/stadistics/(?P<pk>[0-9]+)/(?P<year>[0-9][0-9][0-9][0-9]+)-(?P<month>[0-9][0-9]+)-(?P<day>[0-9][0-9]+)/$',
-        views.EventsInformation().stadistics, name='stadistics')
+    url(r'^api/statistics/(?P<pk>[0-9]+)/(?P<year>[0-9][0-9][0-9][0-9]+)-(?P<month>[0-9][0-9]+)-(?P<day>[0-9][0-9]+)/$',
+        views.EventsInformation().statistics, name='statistics')
 
 ]
 

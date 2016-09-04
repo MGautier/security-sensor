@@ -454,7 +454,7 @@ class EventsInformation(generics.RetrieveAPIView):
             return JSONResponse([result for result in list_additional_info])
 
     @csrf_exempt
-    def stadistics(self, request, pk, day, month, year):
+    def statistics(self, request, pk, day, month, year):
         """
         Metodo de la api para la obtencion de estadisticas de los eventos almacenados en un determinado
         dia en el sistema
@@ -535,7 +535,7 @@ class EventsInformation(generics.RetrieveAPIView):
 
                 packet_result.append(packet)
 
-            stadistics = {}
+            statistics = {}
             sip = []
             dip = []
             timestamps = []
@@ -550,29 +550,29 @@ class EventsInformation(generics.RetrieveAPIView):
                 # a esta cadena
 
                 try:
-                    EventsInformation().stadistics_dump(sip, 'SIP', it['IP_Source'], 'Hits')
-                    EventsInformation().stadistics_dump(dip, 'DIP', it['IP_Destination'], 'Hits')
-                    EventsInformation().stadistics_dump(timestamps, 'Hour', dt.hour + time_set, 'Frequency')
-                    EventsInformation().stadistics_dump(sport, 'SPORT', it['Port_Source'], 'Hits')
-                    EventsInformation().stadistics_dump(dport, 'DPORT', it['Port_Destination'], 'Hits')
-                    EventsInformation().stadistics_dump(protocols, 'Protocol', it['Protocol'], 'Hits')
+                    EventsInformation().statistics_dump(sip, 'SIP', it['IP_Source'], 'Hits')
+                    EventsInformation().statistics_dump(dip, 'DIP', it['IP_Destination'], 'Hits')
+                    EventsInformation().statistics_dump(timestamps, 'Hour', dt.hour + time_set, 'Frequency')
+                    EventsInformation().statistics_dump(sport, 'SPORT', it['Port_Source'], 'Hits')
+                    EventsInformation().statistics_dump(dport, 'DPORT', it['Port_Destination'], 'Hits')
+                    EventsInformation().statistics_dump(protocols, 'Protocol', it['Protocol'], 'Hits')
                 except KeyError:
                     pass
 
-            stadistics['SIP'] = sip
-            stadistics['DIP'] = dip
-            stadistics['Timestamps'] = timestamps
-            stadistics['SPORT'] = sport
-            stadistics['DPORT'] = dport
-            stadistics['Protocol'] = protocols
+            statistics['SIP'] = sip
+            statistics['DIP'] = dip
+            statistics['Timestamps'] = timestamps
+            statistics['SPORT'] = sport
+            statistics['DPORT'] = dport
+            statistics['Protocol'] = protocols
 
-            return JSONResponse(stadistics)
+            return JSONResponse(statistics)
 
     @staticmethod
-    def stadistics_dump(array, key, value, iterator):
+    def statistics_dump(array, key, value, iterator):
         """
         Funcion auxiliar para la iteracion y almacenamiento de eventos estadisticos de la funcion api
-        stadistics.
+        statistics.
 
         Args:
             array: Lista que contiene los objetos referenciados

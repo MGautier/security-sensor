@@ -1,6 +1,6 @@
 /* --- Flag conditions --- */
 
-var xhr; // Para llevar el control de peticiones ajax en el action del button stadistics
+var xhr; // Para llevar el control de peticiones ajax en el action del button statistics
 
 /* --- Extra functions --- */
 function format ( d ){
@@ -219,19 +219,19 @@ var VisualizationsComponent = React.createClass({
                         var index = index_chart_data.indexOf(this.x);
 
                         var events_per_day = "api/packets/"+chart_data[index][3]+"/"+chart_data[index][4];
-                        var stadistics_per_day = "api/stadistics/"+chart_data[index][3]+"/"+chart_data[index][4];
+                        var statistics_per_day = "api/statistics/"+chart_data[index][3]+"/"+chart_data[index][4];
 
-                        var ajax_stadistics = [];
+                        var ajax_statistics = [];
 
                         $(document).ready(function() {
                           var show_events_button = this.getElementById("update-events");
                           var show_events_table = this.getElementById("events-table");
-                          var show_stadistics = this.getElementById("interaction");
-                          var get_select = this.getElementById("stadistics-select");
+                          var show_statistics = this.getElementById("interaction");
+                          var get_select = this.getElementById("statistics-select");
 
-                          $('#stadistics').highcharts({
+                          $('#statistics').highcharts({
                             title: {
-                              text: 'Stadistics packets - '+chart_data[index][4]
+                              text: 'Statistics packets - '+chart_data[index][4]
                             }
                           });
 
@@ -239,11 +239,11 @@ var VisualizationsComponent = React.createClass({
                           /*---           Visualizaciones        ---*/
                           show_events_button.style.display = "none";
                           show_events_table.style.display = "none";
-                          show_stadistics.style.display = "none";
+                          show_statistics.style.display = "none";
 
                           show_events_button.style.display = "flex";
                           show_events_table.style.display = "table";
-                          show_stadistics.style.display = "";
+                          show_statistics.style.display = "";
                           /*---                                  ---*/
                           /*---           Asignaciones           ---*/
 
@@ -252,7 +252,7 @@ var VisualizationsComponent = React.createClass({
                           /*---                                  ---*/
                           /*---           Estadisticas           ---*/
 
-                          $("#stadistics-show-button").on( "click", function( event ){
+                          $("#statistics-show-button").on( "click", function( event ){
                             var $glyphicon = $(this).find(".glyphicon.glyphicon-repeat"),
                                 animateClass = "glyphicon-refresh-animate";
 
@@ -265,15 +265,15 @@ var VisualizationsComponent = React.createClass({
                             $glyphicon.addClass( animateClass );
                             // Se establece el Timeout para indicar que sea asincrona
                             xhr = $.ajax({
-                              url: stadistics_per_day,
+                              url: statistics_per_day,
                               dataType: 'json',
                               cache: false,
                               success: function(data) {
 
                                 if (option_selected != '-')
                                 {
-                                  ajax_stadistics = [];
-                                  var array_stadistics = data[option_selected];
+                                  ajax_statistics = [];
+                                  var array_statistics = data[option_selected];
                                   var hits_or_frequency = 'Hits';
 
                                   if (option_selected == 'Timestamps')
@@ -281,7 +281,7 @@ var VisualizationsComponent = React.createClass({
                                     hits_or_frequency = 'Frequency';
                                   }
 
-                                  var size = array_stadistics.length;
+                                  var size = array_statistics.length;
 
                                   var value = [];
                                   if (size == 1)
@@ -293,11 +293,11 @@ var VisualizationsComponent = React.createClass({
                                     if (size > 1)
                                     {
                                       var sum = 0;
-                                      array_stadistics.forEach(function (item, index, array){
+                                      array_statistics.forEach(function (item, index, array){
                                         sum = sum + item[hits_or_frequency];
                                       });
 
-                                      array_stadistics.forEach(function (item, index, array){
+                                      array_statistics.forEach(function (item, index, array){
                                         var operation = (item[hits_or_frequency] * 100) / sum;
 
                                         value.push(operation.toFixed(2));
@@ -307,8 +307,8 @@ var VisualizationsComponent = React.createClass({
 
                                   if (option_selected == 'Timestamps')
                                   {
-                                    array_stadistics.forEach(function (item, index, array) {
-                                      ajax_stadistics.push([
+                                    array_statistics.forEach(function (item, index, array) {
+                                      ajax_statistics.push([
                                         'Hour: '+item['Hour']+' - '+hits_or_frequency+': '+item[hits_or_frequency],
                                         parseFloat(value[index])
                                       ]);
@@ -316,8 +316,8 @@ var VisualizationsComponent = React.createClass({
                                   }
                                   else
                                   {
-                                    array_stadistics.forEach(function (item, index, array) {
-                                      ajax_stadistics.push([
+                                    array_statistics.forEach(function (item, index, array) {
+                                      ajax_statistics.push([
                                         option_selected+': '+item[option_selected]+' - '+hits_or_frequency+': '+item[hits_or_frequency],
                                         parseFloat(value[index])
                                       ]);
@@ -327,19 +327,19 @@ var VisualizationsComponent = React.createClass({
                                 }
                               }.bind(this),
                               error: function(xhr, status, err){
-                                console.error(stadistics_per_day, status, err.toString());
+                                console.error(statistics_per_day, status, err.toString());
                               }.bind(this),
                               complete: function(){
-                                console.log("Peticion ajax finalizada: ", ajax_stadistics);
+                                console.log("Peticion ajax finalizada: ", ajax_statistics);
                               }.bind(this)
                             });
 
                             window.setTimeout( function(){
                               $glyphicon.removeClass( animateClass );
-                              var results = ajax_stadistics;
-                              ajax_stadistics = [];
+                              var results = ajax_statistics;
+                              ajax_statistics = [];
 
-                              $('#stadistics').highcharts({
+                              $('#statistics').highcharts({
                                 chart: {
                                   type: 'pie',
                                   options3d: {
@@ -349,7 +349,7 @@ var VisualizationsComponent = React.createClass({
                                   }
                                 },
                                 title: {
-                                  text: 'Stadistics packets - '+chart_data[index][4]
+                                  text: 'Statistics packets - '+chart_data[index][4]
                                 },
                                 tooltip: {
                                   pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
