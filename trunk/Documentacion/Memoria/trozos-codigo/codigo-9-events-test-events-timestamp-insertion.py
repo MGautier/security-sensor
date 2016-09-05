@@ -1,6 +1,6 @@
 def test_events_timestamp_insertion(self):
     """
-    Comprobacion de que el timestamp de inserccion del evento corresponde con el asociado
+    Comprobacion de que el timestamp de insercion del evento corresponde con el asociado
     Returns:
 
     """

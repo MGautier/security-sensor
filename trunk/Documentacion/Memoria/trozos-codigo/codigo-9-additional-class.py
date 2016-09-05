@@ -9,8 +9,12 @@ class PacketAdditionalInfoTestCase(TestCase):
         ip_dest = Ips.objects.create(Ip="127.0.0.3", Hostname="localhost", Tag="localhost")
         port_source = Ports.objects.create(Tag="ftp")
         port_dest = Ports.objects.create(Tag="ssh")
-        mac_source = Macs.objects.create(MAC="00:00:00:00:00:00:00:00:00:00:00:00:08:00", TAG="Mac local1")
-        mac_dest = Macs.objects.create(MAC="00:00:00:00:00:00:00:00:00:00:00:00:08:00", TAG="Mac local2")
+        mac_source = Macs.objects.create(
+            MAC="00:00:00:00:00:00:00:00:00:00:00:00:08:00",
+            TAG="Mac local1")
+        mac_dest = Macs.objects.create(
+            MAC="00:00:00:00:00:00:00:00:00:00:00:00:08:00",
+            TAG="Mac local2")
         log_sources = LogSources.objects.create(
             Description="Firewall of gnu/linux kernel",
             Type="Iptables",
