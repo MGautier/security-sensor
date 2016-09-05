@@ -3,194 +3,523 @@
 
 En éste apéndice se tratarán en profundidad el resto de test realizados a las clases del modelo relacional de la base de datos del sistema.
 
-\section{\quad Ips}
+\section[\quad Test: Ips]{Test: Ips}
+\sectionmark{Test: Ips}
+
+
+Clase del modelo relacional ORM - Ips. Es la clase que almacena todas las ips que se han ido obteniendo resultado del procesamiento de log de la fuente de seguridad.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos dos instancias de la clase Ips, que se usarán para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-ips-class.py}
 
 \subsection{\quad Método: test\_ips}
 
+Descripción: Comprobación de que las ips asignadas coinciden con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consultan sobre las dos instancias generadas anteriormente, en el método setUp, si existen algún campo (\textbf{Ip}) cuyo valor coincida con el valor de: ``127.0.0.[2-3]''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ips como la consulta de la referencia interna asociada dentro de Ips.
+\end{itemize}
 \lstinputlisting{trozos-codigo/codigo-9-ips-test-ips.py}
 
 \subsection{\quad Método: test\_ips\_hostname}
+
+Descripción: Comprobación de que coinciden las ips asignadas con su hostname.\\
+Pasos:
+\begin{itemize}
+\item Se consultan sobre las dos instancias generadas anteriormente, en el método setUp, si existen algún campo (\textbf{Ip}) cuyo valor coincida con el valor de: ``127.0.0.[2-3]''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ips como la consulta de la referencia interna asociada dentro de Ips.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-ips-test-ips-hostname.py}
 
 \subsection{\quad Método: test\_ips\_tag}
 
+Descripción: Comprobación de que los tags asociados a las ips coinciden.\\
+Pasos:
+\begin{itemize}
+\item Se consultan sobre las dos instancias generadas anteriormente, en el método setUp, si existen algún campo (\textbf{Ip}) cuyo valor coincida con el valor de: ``127.0.0.[2-3]''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ips como la consulta de la referencia interna asociada dentro de Ips.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-ips-test-ips-tag.py}
 
-\section{\quad Ports}
+\section{\quad Test: Ports}
+
+Clase del modelo relacional ORM - Ports. Es la clase que almacena todos los puertos que se han ido obteniendo resultado del procesamiento de log de la fuente de seguridad.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos una instancia de la clase Ports, que se usará para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-ports-class.py}
 
 \subsection{\quad Método: test\_ports\_tag}
 
+Descripción: Comprobación de que el tag asociado al puerto coincide.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia generada anteriormente, en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ftp''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Ports como la consulta de la referencia interna asociada dentro de Ports.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-ports-test-ports-tag.py}
 
-\section{\quad Tcp}
+\section{\quad Test: Tcp}
+
+Clase del modelo relacional ORM - Tcp (hereda de Ports). Es la clase que almacena todos los puertos asociados a conexión TCP que se han ido obteniendo resultado del procesamiento de log de la fuente de seguridad.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos una instancia de la clase Tcp y Ports, que se usarán para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-tcp-class.py}
 
 \subsection{\quad Método: test\_tcp\_service}
 
+Descripción: Comprobación de que el servicio asociado al protocolo coincide.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Ports, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia Tcp creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{port}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{tcp} coincide con el valor: ``ssh''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-tcp-test-tcp-service.py}
 
 \subsection{\quad Método: test\_tcp\_description}
+
+Descripción: Comprobación de que la descripción asociada al protocolo coincide.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Ports, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia Tcp creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{port}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{tcp} coincide con el valor: ``Conexion ssh''.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-tcp-test-tcp-description.py}
 
 \subsection{\quad Método: test\_tcp\_id}
 
+Descripción: Comprobación de que el puerto (objeto heredado) coincide con el asociado al protocolo.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Ports, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia Tcp creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{port}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la referencia de la instancia de \textbf{tcp} (identificador de la clase padre \textbf{Ports}) coincide con la referencia de la instancia temporal \textbf{port}.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-tcp-test-tcp-id.py}
 
-\section{\quad Udp}
+\section{\quad Test: Udp}
+
+Clase del modelo relacional ORM - Udp (hereda de Ports). Es la clase que almacena todos los puertos asociados a conexión UDP que se han ido obteniendo resultado del procesamiento de log de la fuente de seguridad.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos unas instancias de las clase Udp y Ports, que se usarán para poder obtener la información en los test siguientes.\\
+
 
 \lstinputlisting{trozos-codigo/codigo-9-udp-class.py}
 
 \subsection{\quad Método: test\_udp\_service}
 
+Descripción: Comprobación de que el servicio asociado al protocolo coincide.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Ports, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia Udp creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{port}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{udp} coincide con el valor: ``ssh''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-udp-test-udp-service.py}
 
 \subsection{\quad Método: test\_udp\_description}
+
+Descripción: Comprobación de que la descripción asociada al protocolo coincide.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Ports, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia Udp creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{port}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{udp} coincide con el valor: ``Conexion ssh''.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-udp-test-udp-description.py}
 
 \subsection{\quad Método: test\_udp\_id}
 
+Descripción: Comprobación de que el puerto (objeto heredado) coincide con el asociado al protocolo.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Ports, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ssh''.
+\item Se consulta sobre la instancia Udp creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{port}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la referencia de la instancia de \textbf{udp} (identificador de la clase padre \textbf{Ports}) coincide con la referencia de la instancia temporal \textbf{port}.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-udp-test-udp-id.py}
 
-\section{\quad Tags}
+\section{\quad Test: Tags}
+
+Clase del modelo relacional ORM - Tags. Es la clase que almacena todas las etiquetas que pueden contener los paquetes capturados y obtenidos de los logs de la fuente de seguridad a monitorizar.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos una instancia de la clase Tags, que se usará para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-tags-class.py}
 
 \subsection{\quad Método: test\_tags\_description}
 
+Descripción: Comprobación de que la descripción de la etiqueta coincide con su asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Tags, generada anteriormente en el método setUp, si existen algún campo (\textbf{Description}) cuyo valor coincida con el valor de: ``Urgent Pointer''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{tags} coincide con el valor: ``Urgent Pointer''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-tags-test-tags-description.py}
 
 \subsection{\quad Método: test\_tags\_tag}
 
+Descripción: Comprobación de que la etiqueta (keyword) coincide con su asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Tags, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``URGP''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{tags} coincide con el valor: ``URGP''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-tags-test-tags-tag.py}
 
-\section{\quad Macs}
+\section{\quad Test: Macs}
+
+Clase del modelo relacional ORM - Macs. Es la clase que almacena todas los valores asociados a la direcciones MAC de los logs procesados y obtenidos de la fuente de seguridad a monitorizar.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos una instancia de la clase Macs, que se usará para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-macs-class.py}
 
 \subsection{\quad Método: test\_macs\_mac}
 
+Descripción: Comprobación de que la dirección mac coincide con su asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Macs, generada anteriormente en el método setUp, si existen algún campo (\textbf{MAC}) cuyo valor coincida con el valor de: ``0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 8 : 0 0''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{macs} coincide con el valor: ``0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 0 : 0 8 : 0 0''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-macs-test-macs-mac.py}
 
 \subsection{\quad Método: test\_macs\_tag}
 
+Descripción: Comprobación de que la etiqueta que identifica a la dirección mac coincide con su asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Macs, generada anteriormente en el método setUp, si existen algún campo (\textbf{TAG}) cuyo valor coincida con el valor de: ``Mac local''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{macs} coincide con el valor: ``Mac local''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-macs-test-macs-tag.py}
 
-\section{\quad LogSources}
+\section{\quad Test: LogSources}
+
+Clase del modelo relacional ORM - LogSources. Es la clase que almacena toda la información de la fuente de seguridad a monitorizar. Estos son la descripción de los campos que se registran.\\
+
+\begin{itemize}
+\item Description: Descripción de la fuente de seguridad.
+\item Type: Tipo de la fuente de seguridad.
+\item Model: Modelo o versión de la fuente de seguridad.
+\item Active: Si se encuentra activa dentro del sistema o no (1 ó 0).
+\item Software\_Class: Clase a la que pertenece la fuente (Firewall, IDS, etc).
+\item Path: Comando que se usará para la ejecución de la fuente dentro del sistema.
+\end{itemize}
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos una instancia de la clase LogSources, que se usará para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-logsources-class.py}
 
 \subsection{\quad Método: test\_logsources\_description}
 
+Descripción: Comprobación de que la descripción de la fuente de seguridad coincide con su asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Description}) cuyo valor coincida con el valor de: ``Firewall of gnu/linux kernel''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{log\_source} coincide con el valor: ``Firewall of gnu/linux kernel''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-logsources-test-logsources-description.py}
 
 \subsection{\quad Método: test\_logsources\_type}
+
+Descripción: Comprobación de que el tipo de la fuente de seguridad coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Type}) cuyo valor coincida con el valor de: ``Iptables''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{log\_source} coincide con el valor: ``Iptables''.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-logsources-test-logsources-type.py}
 
 \subsection{\quad Método: test\_logsources\_model}
 
+Descripción: Comprobación de que el modelo de la fuente de seguridad coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Model}) cuyo valor coincida con el valor de: ``iptables v1.4.21''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{log\_source} coincide con el valor: ``iptables v1.4.21''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-logsources-test-logsources-model.py}
 
 \subsection{\quad Método: test\_logsources\_active}
+
+Descripción: Comprobación de que la fuente de seguridad se encuentra activa una vez instanciada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Active}) cuyo valor coincida con el valor de: 1.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{log\_source} coincide con el valor: 1.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-logsources-test-logsources-active.py}
 
 \subsection{\quad Método: test\_logsources\_software\_class}
 
+Descripción: Comprobación de que la clase de software de la fuente de seguridad coincide con su asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Software\_Class}) cuyo valor coincida con el valor de: ``Firewall''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{log\_source} coincide con el valor: ``Firewall''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-logsources-test-logsources-software-class.py}
 
 \subsection{\quad Método: test\_logsources\_path}
 
+Descripción: Comprobación de que el comando o path de ejecución de la fuente de seguridad coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Path}) cuyo valor coincida con el valor de: ``iptables''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{log\_source} coincide con el valor: ``iptables''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-logsources-test-logsources-path.py}
 
-\section{\quad Historic}
+\section{\quad Test: Historic}
+
+Clase del modelo relacional ORM - Historic. Es la clase que almacena toda la información histórica de eventos en un determinado espacio de tiempo de la fuente de seguridad a monitorizar.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos unas instancias de las clases LogSources e Historic, que se usarán para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-historic-class.py}
 
 \subsection{\quad Método: test\_historic\_source}
 
+Descripción: Comprobación de que la fuente de seguridad a la que pertenece es igual a la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Type}) cuyo valor coincida con el valor de: ``Iptables''.
+\item Se consulta sobre la instancia Historic creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Source} con una referencia de una instancia similar, en este caso: \textbf{log\_sources}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de LogSources como la consulta de la referencia interna asociada dentro de Historic.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-historic-test-historic-source.py}
 
 \subsection{\quad Método: test\_historic\_timestamp}
+
+Descripción: Comprobación de que el timestamp del histórico coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Historic, generada anteriormente en el método setUp, si existen algún campo (\textbf{Timestamp}) cuyo valor coincida con el valor de la variable \textbf{self.timestamp} perteneciente a los atributos internos de la clase de test.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{Historic} coincide con el valor de la variable interna de la clase: \textbf{self.timestamp}.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-historic-test-historic-timestamp.py}
 
 \subsection{\quad Método: test\_historic\_events}
 
+Descripción: Comprobación de que el número de eventos del histórico coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Historic, generada anteriormente en el método setUp, si existen algún campo (\textbf{Events}) cuyo valor coincida con el valor: 1.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{Historic} coincide con el valor: 1.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-historic-test-historic-events.py}
 
-\section{\quad Events}
+\section{\quad Test: Events}
+
+Clase del modelo relacional ORM - Events. Es la clase que almacena toda la información de eventos recogidos por la fuente de seguridad que se han procesado y obtenidos de los logs.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos unas instancias de las clases LogSources y Events, que se usarán para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-events-class.py}
 
 \subsection{\quad Método: test\_events\_timestamp}
 
+Descripción: Comprobación de que el timestamp del evento corresponde al del asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Events, generada anteriormente en el método setUp, si existen algún campo (\textbf{Timestamp}) cuyo valor coincida con el valor de la variable \textbf{self.timestamp} perteneciente a los atributos internos de la clase de test.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{Events} coincide con el valor de la variable interna de la clase: \textbf{self.timestamp}.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-events-test-events-timestamp.py}
 
 \subsection{\quad Método: test\_events\_timestamp\_insertion}
+
+Descripción: Comprobación de que el timestamp de inserción del evento corresponde con el asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Events, generada anteriormente en el método setUp, si existen algún campo (\textbf{Timestamp}) cuyo valor coincida con el valor de la variable \textbf{self.timestamp\_insertion} perteneciente a los atributos internos de la clase de test.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{Events} coincide con el valor de la variable interna de la clase: \textbf{self.timestamp\_insertion}.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-events-test-events-timestamp-insertion.py}
 
 \subsection{\quad Método: test\_events\_source}
 
+Descripción: Comprobación de que la fuente de seguridad, a la que pertenece, es igual a la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Type}) cuyo valor coincida con el valor de: ``Iptables''.
+\item Se consulta sobre la instancia Events creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Source} con una referencia de una instancia similar, en este caso: \textbf{log\_sources}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de LogSources como la consulta de la referencia interna asociada dentro de Events.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-events-test-events-source.py}
 
 \subsection{\quad Método: test\_events\_comment}
 
+Descripción: Comprobación de que el comentario asociado al evento pertenece al asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Events, generada anteriormente en el método setUp, si existen algún campo (\textbf{Comment}) cuyo valor coincida con el valor de: ``Iptables Events''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{events} coincide con el valor: ``Iptables Events''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-events-test-events-comment.py}
 
-\section{\quad Visualizations}
+\section{\quad Test: Visualizations}
+
+Clase del modelo relacional ORM - Visualizations. Es la clase que almacena toda la información de las visualizaciones de la parte web que pertenecen a los eventos recogidos por la fuente de seguridad que se han procesado y obtenidos de los logs.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos unas instancias de las clases LogSources y Visualizations, que se usarán para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-class.py}
 
 \subsection{\quad Método: test\_visualizations\_week\_month}
 
+Descripción: Comprobación de que la semana del mes pertenece a la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Visualizations, generada anteriormente en el método setUp, si existen algún campo (\textbf{Week\_Month}) cuyo valor coincida con el valor de: 1.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{visualizations} coincide con el valor: 1.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-week-month.py}
 
 \subsection{\quad Método: test\_visualizations\_week\_day}
+
+Descripción: Comprobación de que el día de la semana pertenece a la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Visualizations, generada anteriormente en el método setUp, si existen algún campo (\textbf{Week\_Day}) cuyo valor coincida con el valor de: 2.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{visualizations} coincide con el valor: 2.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-week-day.py}
 
 \subsection{\quad Método: test\_visualizations\_name\_day}
 
+Descripción: Comprobación de que el nombre del día procesado coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Visualizations, generada anteriormente en el método setUp, si existen algún campo (\textbf{Name\_Day}) cuyo valor coincida con el valor de: ``Wednesday''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{visualizations} coincide con el valor: ``Wednesday''.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-name-day.py}
 
 \subsection{\quad Método: test\_visualizations\_date}
+
+Descripción: Comprobación de que la fecha registrada en el sistema coincide con la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Visualizations, generada anteriormente en el método setUp, si existen algún campo (\textbf{Date}) cuyo valor coincida con el valor de una instancia de la clase Date (python): date(2016, 8, 10).
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{visualizations} coincide con el valor de una instancia de la clase Date (python): date(2016, 8, 10).
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-date.py}
 
 \subsection{\quad Método: test\_visualizations\_hour}
 
+Descripción: Comprobación de que la hora registrada en el sistema para la fecha procesada, coincide con la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Visualizations, generada anteriormente en el método setUp, si existen algún campo (\textbf{Hour}) cuyo valor coincida con el valor de: 18.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{visualizations} coincide con el valor: 18.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-hour.py}
 
 \subsection{\quad Método: test\_visualizations\_source}
+
+Descripción: Comprobación de que la fuente de seguridad a la que pertenece, es igual a la asociada.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de LogSources, generada anteriormente en el método setUp, si existen algún campo (\textbf{Type}) cuyo valor coincida con el valor de: ``Iptables''.
+\item Se consulta sobre la instancia Visualizations creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Source} con una referencia de una instancia similar, en este caso: \textbf{log\_sources}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de LogSources como la consulta de la referencia interna asociada dentro de Visualizations.
+\end{itemize}
 
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-source.py}
 
 \subsection{\quad Método: test\_visualizations\_process\_events}
 
+Descripción: Comprobación de que el número de eventos registrados para la fecha coincide con el asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Visualizations, generada anteriormente en el método setUp, si existen algún campo (\textbf{Process\_Events}) cuyo valor coincida con el valor de: 5.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{visualizations} coincide con el valor: 5.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-visualizations-test-visualizations-process-events.py}
 
-\section{\quad Packet Additional Information}
+\sectionmark{Test: Visualizations}
+\section{\quad Test: Packet Additional Information}
+\sectionmark{Test: Packet Additional}
+
+Clase del modelo relacional ORM - Packet Additional Information. Es la clase que almacena toda la información adicional de los paquetes registrados en el sistema para una fuente de seguridad.\\
+
+Con éste método se crean las instancias temporales en la base de datos \textbf{test} a la hora de la ejecución de la misma para comprobar su integridad. Para este caso creamos instancias de todas las clases que componen el modelo ORM (a excepción de Historic, Tcp y Udp), que se usarán para poder obtener la información en los test siguientes.\\
 
 \lstinputlisting{trozos-codigo/codigo-9-additional-class.py}
 
 \subsection{\quad Método: test\_packet\_additional\_id\_tag}
 
+Descripción: Comprobación de que el objeto tag (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Tags, generada anteriormente en el método setUp, si existen algún campo (\textbf{Tag}) cuyo valor coincida con el valor de: ``ID''.
+\item Se consulta sobre la instancia Packet AdditionalInfo creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Tag} con una referencia de una instancia similar, en este caso: \textbf{tag}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de Tags como la consulta de la referencia interna asociada dentro de PacketAdditionalInfo.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-additional-test-additional-id-tag.py}
 
 \subsection{\quad Método: test\_packet\_additional\_id\_packet\_events}
 
+Descripción: Comprobación de que el packet events information al que pertenece (referencia al modelo relacional) coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de Events, generada anteriormente en el método setUp, si existen algún campo (\textbf{Timestamp}) cuyo valor coincida con el valor de la variable \textbf{self.timestamp} perteneciente a los atributos internos de la clase de test.
+\item Se consulta sobre la instancia de PacketEventsInformation creada anteriomente, si existe una coincidencia para el campo identificador \textbf{id} con una referencia de una instancia similar, en este caso: \textbf{event}.
+\item Se consulta sobre la instancia PacketAdditionalInfo creada anteriomente, si existe una coincidencia para el campo identificador \textbf{ID\_Packet\_Events} con una referencia de una instancia similar, en este caso: \textbf{packet}.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba la integridad de la información que deben contener tanto la consulta a la instancia temporal de PacketEventsInformation como la consulta de la referencia interna asociada dentro de PacketAdditionalInfo.
+\end{itemize}
+
 \lstinputlisting{trozos-codigo/codigo-9-additional-test-additional-id-packet-events.py}
 
 \subsection{\quad Método: test\_packet\_additional\_value}
+
+Descripción: Comprobación de que el valor del paquete, correspondiente a la etiqueta, coincide con su asociado.\\
+Pasos:
+\begin{itemize}
+\item Se consulta sobre la instancia de PacketAdditionalInfo, generada anteriormente en el método setUp, si existen algún campo (\textbf{Value}) cuyo valor coincida con el valor de: ``32731 DF''.
+\item Usando el método interno de la clase TestCase, \emph{assertEqual}, se comprueba que la información almacenada en la instancia temporal \textbf{pai} coincide con el valor: 5.
+\end{itemize}
+
 
 \lstinputlisting{trozos-codigo/codigo-9-additional-test-additional-value.py}
