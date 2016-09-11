@@ -1,0 +1,3 @@
+\frametitle{\textcolor{black}{Test de integridad - Events}}
+\lstinputlisting{codigo-9-events-test-events-timestamp.py}
+\hspace*{.75in}{Figura - Método de la clase Test test\_events\_timestamp}
